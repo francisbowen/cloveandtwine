@@ -1,0 +1,1912 @@
+{% include 'form-builder-details'%}
+
+{% schema %}
+  {
+    "name": "Form Builder",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "radio",
+        "id": "contained",
+        "label": "Form should:",
+        "options": [
+          { "value": "container", "label": "Constrain to container" },
+          { "value": "container-fluid", "label": "Flow to the width of screen" }
+        ],
+        "default": "container"
+      },
+      {
+        "type": "checkbox",
+        "id": "proform",
+        "label": "Is this a Pro Signup Form?",
+		"default":false
+      },
+	  {
+        "type": "text",
+        "id": "submiturl",
+        "label": "URL to send this submission to",
+		"info": "This would be your webhook url"
+      },
+		{
+        "type": "text",
+        "id": "emailget",
+        "label": "Email(s) to Send these to",
+		"info": "To add multiples seperate each email by a comma"
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color"
+      },
+      {
+        "type": "text",
+        "id": "form_title",
+        "label": "Form Heading"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Form Heading Alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "center"
+      },
+      {
+        "type": "color",
+        "id": "form_title_color",
+        "label": "Form title color"
+      },
+      {
+        "type": "select",
+        "id": "extra_padding",
+        "label": "Padding type",
+        "options": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "large",
+            "label": "Large padding"
+          },
+          {
+            "value": "xlarge",
+            "label": "Extra large padding"
+          }
+        ],
+        "default": "normal"
+      },
+      	{
+            "type":      "header",
+            "content":   "Form Style"
+   		},
+        {
+              "type":      "range",
+              "id":        "font_size",
+              "min":       12,
+              "max":        36,
+              "step":       2,
+              "unit":       "px",
+              "label":     "Label Font size",
+              "default":   16
+        },
+          {
+            "type": "checkbox",
+            "id": "labelhide",
+            "label": "Hide Lables?"
+          },
+        {
+            "type": "color",
+            "id": "color",
+            "label": "Label color"
+        },
+          {
+            "type": "color",
+            "id": "append_color",
+            "label": "Append / prepend text color"
+          },
+          {
+            "type": "color",
+            "id": "append_background_color",
+            "label": "Append / prepend background color"
+          },
+      	{
+            "type":      "header",
+            "content":   "Form Messaging"
+   		},
+      {
+        "type": "text",
+        "id": "submittingmsg",
+        "label": "Message While Submitting",
+		"default": "Submitting, Please Wait...",
+		"info": "This will show while it's submitting"
+      },
+      {
+        "type": "text",
+        "id": "successmsg",
+        "label": "Message upon success",
+		"default": "Recieved, Our team will be in touch shortly",
+		"info": "This will show upon success"
+      },
+      {
+        "type": "text",
+        "id": "submitmsg",
+        "label": "Submit Button",
+		"default": "Submit Form"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "heading",
+        "name": "Heading",
+        "settings": [
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "From group heading"
+          },
+          {
+              "type":      "range",
+              "id":        "font_size",
+              "min":       12,
+              "max":        36,
+              "step":       2,
+              "unit":       "px",
+              "label":     "Font size",
+              "default":   24
+          },
+          {
+              "type":      "range",
+              "id":        "padding",
+              "min":       0,
+              "max":        50,
+              "step":       2,
+              "unit":       "px",
+              "label":     "Padding",
+              "default":   20
+          },
+          {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "Text Alignment",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ],
+            "default": "left"
+          },
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color"
+          },
+          {
+            "type": "color",
+            "id": "color",
+            "label": "Text Color"
+          },
+          {
+            "type": "select",
+            "id": "field_width",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+      },
+      {
+        "type": "divider",
+        "name": "Divider",
+        "settings": [
+          {
+            "type":      "header",
+            "content":   "Divider"
+          },
+          {
+            "type": "select",
+            "id": "divider",
+            "label": "Divider type",
+            "options": [
+              {
+                "value": "line",
+                "label": "Line"
+              },
+              {
+                "value": "image",
+                "label": "Custom divider image"
+              }
+            ],
+            "default": "line"
+          },
+          {
+            "type": "image_picker",
+            "id": "divider_image",
+            "label": "Divider Image",
+            "info": "If you select image as divider then this image will show"
+          },
+          {
+              "type":      "range",
+              "id":        "padding",
+              "min":       0,
+              "max":        100,
+              "step":       5,
+              "unit":       "px",
+              "label":     "Padding",
+              "default":   0
+          },
+          {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "Divider position",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ],
+            "default": "left"
+          },
+          {
+            "type": "select",
+            "id": "field_width",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+        },
+      {
+        "type": "textinput",
+        "name": "Text Input",
+        "settings": [
+          {
+            "type":      "header",
+            "content":   "Text Input"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "ID / Name"
+          },
+          {
+            "type": "text",
+            "id": "input_label",
+            "label": "Label",
+            "default": "Label"
+          },
+           {
+            "type": "text",
+            "id": "input_placeholder",
+            "label": "Placeholder",
+            "default": "Placeholder"
+          },
+          {
+            "type": "text",
+            "id": "input_help_text",
+            "label": "Help"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required",
+            "label": "Required"
+          },
+          {
+            "type": "select",
+            "id": "field_width",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type": "select",
+            "id": "field_height",
+            "label": "Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          },
+          {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          },
+          {
+            "type": "header",
+            "content": "Input Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "only_number",
+            "label": "Only number"
+          }
+        ]
+      },
+      {
+        "type": "prependtextinut",
+        "name": "Prepend Text",
+        "settings": [
+          {
+            "type":      "header",
+            "content":   "Prepended Input"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "ID / Name"
+          },
+          {
+            "type": "text",
+            "id": "input_label",
+            "label": "Label",
+            "default": "Label"
+          },
+          {
+            "type": "text",
+            "id": "prepend_input",
+            "label": "Prepend Text",
+            "default": "Prepend"
+          },
+           {
+            "type": "text",
+            "id": "input_placeholder",
+            "label": "Placeholder",
+            "default": "Placeholder"
+          },
+          {
+            "type": "text",
+            "id": "input_help_text",
+            "label": "Help"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required",
+            "label": "Required"
+          },
+          {
+            "type": "select",
+            "id": "field_width",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type": "select",
+            "id": "field_height",
+            "label": "Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          },
+          {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+      },
+      {
+        "type": "appenededtextinut",
+        "name": "Appended Text",
+        "settings": [
+          {
+            "type":      "header",
+            "content":   "Appended Input"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "ID / Name"
+          },
+          {
+            "type": "text",
+            "id": "input_label",
+            "label": "Label",
+            "default": "Label"
+          },
+          {
+            "type": "text",
+            "id": "append_input",
+            "label": "Append Text",
+            "default": "Append"
+          },
+           {
+            "type": "text",
+            "id": "input_placeholder",
+            "label": "Placeholder",
+            "default": "Placeholder"
+          },
+          {
+            "type": "text",
+            "id": "input_help_text",
+            "label": "Help"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required",
+            "label": "Required"
+          },
+          {
+            "type": "select",
+            "id": "field_width",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type": "select",
+            "id": "field_height",
+            "label": "Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          },
+          {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+      },
+      {
+        "type": "paragraphtext",
+        "name": "Text Area",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Paragraph Input"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "ID / Name"
+          },
+          {
+            "type": "text",
+            "id": "input_label",
+            "label": "Paragraph Label",
+            "default": "Paragraph"
+          },
+           {
+            "type": "text",
+            "id": "input_placeholder",
+            "label": "Placeholder",
+            "default": "Placeholder"
+          },
+          {
+            "type": "text",
+            "id": "input_help_text",
+            "label": "Help"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required",
+            "label": "Required"
+          },
+          {
+            "type": "select",
+            "id": "field_width",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type": "select",
+            "id": "field_height",
+            "label": "Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          },
+          {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+      },
+      {
+       "type": "dropdown",
+        "name": "Select",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Dropdown Options"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Group Name",
+            "default": "Select"
+          },
+          {
+            "type": "text",
+            "id": "input_label",
+            "label": "Label",
+            "default": "Label"
+          },
+          {
+            "type": "textarea",
+            "id": "choices",
+            "label": "Choices",
+            "info": "Enter each choice on a new line."
+          },
+          {
+            "type": "text",
+            "id": "default_choice",
+            "label": "Default choice"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required",
+            "label": "Required"
+          },
+          {
+            "type": "text",
+            "id": "place_pholder_value",
+            "label": "Placepholder value",
+            "info": "ex: 'Please Select xx'"
+          },
+          {
+            "type": "select",
+            "id": "field_width",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "name": "Checkbox",
+        "settings": [
+          {
+            "type":  "header",
+            "content": "Checkbox Options"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Group Name",
+            "default": "Checkbox"
+          },
+          {
+            "type": "text",
+            "id": "input_label",
+            "label": "Label",
+            "default": "Label"
+          },
+
+           {
+            "type": "textarea",
+            "id": "choices",
+            "label": "Choices",
+            "info": "Enter each choice on a new line."
+          },
+         {
+            "type": "text",
+            "id": "default_choice",
+            "label": "Default choice"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required",
+            "label": "Required"
+          },
+          {
+            "type": "checkbox",
+            "id": "inline_style",
+            "label": "Show Inline?"
+          },
+          {
+            "type": "select",
+            "id": "field_width",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "name": "Radio Button",
+        "settings": [
+          {
+            "type":  "header",
+            "content": "Radio Buttons"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Group Name",
+            "default": "Radios"
+          },
+          {
+            "type": "text",
+            "id": "input_label",
+            "label": "Label",
+            "default": "Label"
+          },
+           {
+            "type": "textarea",
+            "id": "choices",
+            "label": "Choices",
+            "info": "Enter each choice on a new line."
+          },
+          {
+            "type": "text",
+            "id": "default_choice",
+            "label": "Default choice"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required",
+            "label": "Required"
+          },
+          {
+            "type": "checkbox",
+            "id": "inline_style",
+            "label": "Show Inline?"
+          },
+          {
+            "type": "select",
+            "id": "field_width",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+      },
+      {
+        "type": "customhtml",
+        "name": "Custom Html",
+        "settings": [
+          {
+            "type":      "header",
+            "content":   "Custom Html"
+          },
+          {
+            "type": "html",
+            "id": "custom_html",
+            "label": "Custom Html"
+          },
+          {
+            "type": "select",
+            "id": "field_width",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "Button",
+        "settings": [
+          {
+            "type":      "header",
+            "content":   "Button"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "ID / Name"
+          },
+          {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button Text",
+            "default": "Button"
+          },
+          {
+              "type":      "range",
+              "id":        "padding",
+              "min":       8,
+              "max":        16,
+              "step":       2,
+              "unit":       "px",
+              "label":     "Padding",
+              "default":   8
+          },
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color"
+          },
+          {
+            "type": "color",
+            "id": "color",
+            "label": "Text Color"
+          },
+          {
+            "type": "select",
+            "id": "field_height",
+            "label": "Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          },
+          {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+      },
+      {
+        "type": "image",
+        "name": "Image Upload",
+        "settings": [
+          {
+            "type":      "header",
+            "content":   "Image"
+          },
+          {
+            "type": "select",
+            "id": "multiple_images",
+            "label": "Select Single /Multiple Images",
+            "options": [
+              {
+                "value": "single",
+                "label": "Single"
+              },
+              {
+                "value": "multiple",
+                "label": "Multiple"
+              }
+            ],
+            "default": "single"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "ID / Name"
+          },
+          {
+            "type": "text",
+            "id": "input_label",
+            "label": "Label",
+            "default": "Label"
+          },
+          {
+            "type": "text",
+            "id": "input_help_text",
+            "label": "Help"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required",
+            "label": "Required"
+          },
+          {
+            "type": "select",
+            "id": "field_width",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type": "select",
+            "id": "field_height",
+            "label": " Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          },
+           {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+      },
+      {
+        "type": "address",
+        "name": "Address",
+        "settings": [
+          {
+            "type":      "header",
+            "content":   "Address"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "ID / Name"
+          },
+          {
+            "type":      "header",
+            "content":   "Street Address"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_field1",
+            "default": true,
+            "label": "Show field"
+          },
+          {
+            "type": "text",
+            "id": "input_label1",
+            "label": "Label",
+            "default": "Address"
+          },
+          {
+            "type": "text",
+            "id": "input_placeholder1",
+            "label": "Placeholder",
+            "default": "Address"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required1",
+            "default": true,
+            "label": "Required"
+          },
+          {
+            "type": "select",
+            "id": "field_width1",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type": "select",
+            "id": "field_height1",
+            "label": "Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          }
+          ,
+          {
+            "type":      "header",
+            "content":   "Address Line 2"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_field2",
+            "default": true,
+            "label": "Show field"
+          },
+          {
+            "type": "text",
+            "id": "input_label2",
+            "label": "Label",
+            "default": "Address 2"
+          },
+          {
+            "type": "text",
+            "id": "input_placeholder2",
+            "label": "Placeholder",
+            "default": "Apartment, Suite, etc (optional)"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required2",
+            "label": "Required"
+          },
+          {
+            "type": "select",
+            "id": "field_width2",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "1"
+          },
+          {
+            "type": "select",
+            "id": "field_height2",
+            "label": "Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          },
+          {
+            "type":      "header",
+            "content":   "City"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_field3",
+            "default": true,
+            "label": "Show field"
+          },
+          {
+            "type": "text",
+            "id": "input_label3",
+            "label": "Label",
+            "default": "City"
+          },
+          {
+            "type": "text",
+            "id": "input_placeholder3",
+            "label": "Placeholder",
+            "default": "City"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required3",
+            "default": true,
+            "label": "Required"
+          },
+          {
+            "type": "select",
+            "id": "field_width3",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "2"
+          },
+          {
+            "type": "select",
+            "id": "field_height3",
+            "label": "Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          },
+          {
+            "type":      "header",
+            "content":   "State Field"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_field4",
+            "default": true,
+            "label": "Show field"
+          },
+          {
+            "type": "text",
+            "id": "input_label4",
+            "label": "Label",
+            "default": "State"
+          },
+          {
+            "type": "text",
+            "id": "input_placeholder4",
+            "label": "Placeholder",
+            "default": "State"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required4",
+            "default": true,
+            "label": "Required"
+          },
+          {
+            "type": "select",
+            "id": "field_width4",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "2"
+          },
+          {
+            "type": "select",
+            "id": "field_height4",
+            "label": "Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          }
+          ,
+          {
+            "type":      "header",
+            "content":   "Zip Code"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_field5",
+            "default": true,
+            "label": "Show field"
+          },
+          {
+            "type": "text",
+            "id": "input_label5",
+            "label": "Label",
+            "default": "Zip Code"
+          },
+          {
+            "type": "text",
+            "id": "input_placeholder5",
+            "label": "Placeholder",
+            "default": "Zip Code"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required5",
+            "default": true,
+            "label": "Required"
+          },
+          {
+            "type": "select",
+            "id": "field_width5",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "2"
+          },
+          {
+            "type": "select",
+            "id": "field_height5",
+            "label": "Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          }
+          ,
+          {
+            "type":      "header",
+            "content":   "Country"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_field6",
+            "default": true,
+            "label": "Show Field"
+          },
+          {
+            "type": "text",
+            "id": "input_label6",
+            "label": "Label",
+            "default": "Country"
+          },
+          {
+            "type": "text",
+            "id": "input_placeholder6",
+            "label": "Placeholder",
+            "default": "Country"
+          },
+          {
+            "type": "checkbox",
+            "id": "input_required6",
+            "default": true,
+            "label": "Required"
+          },
+          {
+            "type": "select",
+            "id": "field_width6",
+            "label": "Width",
+            "options": [
+              {
+                "value": "4",
+                "label": "1/4"
+              },
+              {
+                "value": "4-3",
+                "label": "3/4"
+              },
+              {
+                "value": "3",
+                "label": "1/3"
+              },
+              {
+                "value": "3-2",
+                "label": "2/3"
+              },
+              {
+                "value": "2",
+                "label": "1/2"
+              },
+              {
+                "value": "1",
+                "label": "Full Width"
+              }
+            ],
+            "default": "2"
+          },
+          {
+            "type": "select",
+            "id": "field_height6",
+            "label": "Height",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ],
+            "default": "default"
+          },
+          {
+            "type":      "header",
+            "content":   "Logical Condition"
+          },
+          {
+            "type": "checkbox",
+            "id": "condition",
+            "label": "Enable Conditional Logic",
+            "info": "Create rules to dynamically display or hide this field based on values from another field."
+          },
+          {
+            "type": "text",
+            "id": "field",
+            "label": "This field of the following match"
+          },
+          {
+            "type": "text",
+            "id": "match",
+            "label": "Has value"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Form Builder",
+        "category": "Advanced layout"
+
+      }
+    ]
+  }
+{% endschema %}

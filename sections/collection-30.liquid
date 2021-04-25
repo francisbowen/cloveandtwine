@@ -1,0 +1,1014 @@
+{%- assign ad = "false" %}
+{% for block in section.blocks %}
+	{% if block.settings.active %}
+		{% if block.settings.collection == collection.handle %}
+			{%- assign active = block.settings.active -%}
+			{%- assign activeone = block.settings.activeone -%}
+			{%- assign imageone = block.settings.image -%}
+			{%- assign alignment = block.settings.alignment -%}
+			{%- assign textoverlay = block.settings.textoverlay -%}
+			{%- assign title = block.settings.title -%}
+			{%- assign adcopy = block.settings.adcopy -%}
+			{%- assign adcta = block.settings.adcta -%}
+			{%- assign link = block.settings.link -%}
+			{%- assign activetwo = block.settings.activetwo -%}
+			{%- assign imagetwo = block.settings.imagetwo -%}
+			{%- assign alignmenttwo = block.settings.alignmenttwo -%}
+			{%- assign textoverlaytwo = block.settings.textoverlaytwo -%}
+			{%- assign titletwo = block.settings.titletwo -%}
+			{%- assign adcopytwo = block.settings.adcopytwo -%}
+			{%- assign adctatwo = block.settings.adctatwo -%}
+			{%- assign linktwo = block.settings.linktwo -%}
+			{%- assign position = block.settings.position | times: 1 -%}
+			{%- assign positiontwo = block.settings.positiontwo | times: 1 -%}
+			{% if block.settings.position %}
+				{%- assign ad = "one" %}
+			{%endif%}
+			{% if block.settings.positiontwo %}
+				{%- assign ad = "one" %}
+			{%endif%}
+			{% if block.settings.position and block.settings.positiontwo and block.settings.activetwo %}
+				{%- assign ad = "two" %}{% break %}
+			{%endif%}
+			{% break %}
+		{% endif %}
+	{% endif %}
+{% endfor %}
+
+{% if section.settings.layout == 'grid' %}
+	{%- assign grid = section.settings.grid | times: 1 -%}
+	{%- assign rows = section.settings.rows | times: 1 -%}
+	{%- assign limitstart = grid| times: rows -%}
+  	{% if ad == "one" %}
+		{%- assign limit = limitstart | minus: 1 -%}
+  	{% elsif ad == "two" %}
+		{%- assign limit = limitstart | minus: 2 -%}
+  	{% else %}
+	  	{%- assign limit = grid | times: rows -%}
+	{% endif %}
+{% else %}
+		{%- assign limit = 42 -%}
+{% endif %}
+
+
+{% paginate collection.products by 32 %}
+<div data-section-id="{{ section.id }}" data-section-type="collection-template">
+  <div class="container-fluid" id="collection_featured_product">
+ <div class="collection-header-wrap ">
+  <div class="row">
+     
+     <div class="col-md-30 col-sm-60" style="margin-top:-40px;">
+          {% for block in section.blocks %}
+              {% if block.type == 'featured_product' %}
+                {% if collection.handle == block.settings.collection %}
+                 {%- assign product = all_products[block.settings.product] -%}
+                <div class="product-image">
+                    <a href="{{product.url}}" class="product-grid-image">
+                      <img style="max-height:350px;" src="{{ product.featured_image.src | img_url: '500x' }}" alt="">
+                    </a>
+                </div>
+                {% break %}
+              {% endif %}
+           {% endif %}
+          {% endfor %}
+    </div>
+    <div class="col-md-30 col-sm-60 collection-img">
+      <h1 class="coltitle">{{collection.title}}</h1>
+      <p>{{collection.description}}</p>
+          {% for block in section.blocks %}
+              {% if block.type == 'featured_product' %}
+                {% if collection.handle == block.settings.collection %}
+                 {%- assign product = all_products[block.settings.product] -%}
+                <a href="{{product.url}}" class="btn colbutton"><strong>BUY</strong> {{product.title}}</a>
+                {% break %}
+              {% endif %}
+           {% endif %}
+          {% endfor %}
+    </div>
+  </div>
+ </div>
+  </div>
+ {% if section.settings.sort_enable %}
+  {% include 'sorting' %}
+  {% endif %}
+<div class="clearfix"></div>
+
+  <div class="container-fluid" id="Collection">
+    
+    
+    		<div class="row">
+			{% if section.settings.tags_enable %}
+				<div class="col-lg-10">
+                  
+                  
+					<div class="filters-toolbar">
+						<div class="filters-toolbar-placeholder"></div>
+					</div>
+				</div>
+			{% endif %}
+			<div class="{% if section.settings.tags_enable %}col-lg-50{% else %}col-60{% endif %} row">
+    
+    
+    {% if section.settings.layout == 'grid' %}
+      {% case section.settings.grid %}
+      {% when '2' %}
+        {%- assign grid_item_width = 'col-md-30' -%}
+        {%- assign image_size = '540x600' -%}
+      {% when '3' %}
+        {%- assign grid_item_width = 'col-md-20 col-sm-30' -%}
+        {%- assign image_size = '345x550' -%}
+      {% when '4' %}
+        {%- assign grid_item_width = 'col-md-15 col-sm-30' -%}
+        {%- assign image_size = '250x' -%}
+      {% when '5' %}
+        {%- assign grid_item_width = 'col-md-12 col-sm-30' -%}
+        {%- assign image_size = '195x' -%}
+      {% endcase %}
+       
+    
+        
+        
+        {% for product in collection.products %}
+{%- include 'bold-product' with product, hide_action: 'skip' -%}
+          {% if ad != "false" %}
+        		{% if active %}
+            		{% if forloop.index == position %}
+                  		{% if activeone %}
+                            <div class="grid__item  {{ grid_item_width }} grid-item-size">
+                              <div class="grid-view-item colad" style="margin:0px;padding:0px;">
+                                <div class="grid-view-item colad" style="margin:0px;padding:0px;">
+                                  <{% if link %}a href="{{ link }}"{% else %}span{% endif %} class="grid-view-item__image colad {% if link %}animsition-link{% endif %}" style="{% if textoverlay %}{% else %}padding-top: 100%;{% endif %}background-image:url({{ imageone | img_url: '1500x' }});background-position:{{ alignment }};background-size:cover;">
+                                    {% if textoverlay %}	
+                                    <div class="collectionad">
+                                      <div class="h4 grid-view-item__title colover">
+                                        {{ title }}
+                                      </div>
+                                      <div class="grid-view-item__meta colad2">
+                                        {{ adcopy}}
+                                        
+                                      </div>
+                                    </div>
+                                    {% endif %}
+                                    </{% if link %}a{% else %}span{% endif %}>
+                                </div>
+                              </div>
+                            </div>
+        				{% endif %}
+        			{% endif %}
+            		{% if forloop.index == positiontwo %}
+                  		{% if activetwo %}
+                            <div class="grid__item {{ grid_item_width }} grid-item-size">
+                              <div class="grid-view-item" style="margin:0px;padding:0px;">
+                                <div class="grid-view-item" style="margin:0px;padding:0px;">
+                                  <{% if link %}a href="{{ linktwo }}"{% else %}span{% endif %} class="grid-view-item__image {% if linktwo %}animsition-link{% endif %}" style="{% if textoverlaytwo %}{% else %}padding-top: 100%;{% endif %}background-image:url({{ imagetwo | img_url: image_size }});background-position:{{ alignmenttwo }};background-size:cover;">
+                                    {% if textoverlaytwo %}	
+                                    <div class="collectionad">
+                                      <div class="h4 grid-view-item__title">
+                                        {{ titletwo }}
+                                      </div>
+                                      <div class="grid-view-item__meta">
+                                        {{ adcopytwo}}
+                                        {% if linktwo %} 
+                                        <br/><span style="margin-top:10px;" class="btn">{{ adctatwo }}</span>
+                                        {% endif %}
+                                      </div>
+                                    </div>
+                                    {% endif %}
+                                    </{% if linktwo %}a{% else %}span{% endif %}>
+                                </div>
+                              </div>
+                            </div>
+        				{% endif %}
+        			{% endif %}
+        		{% endif %}
+        	{% endif %}        
+          <div class="{{ grid_item_width }} grid-item-size">
+            {% include 'product-card-grid', grid_image_width: image_size %}
+          </div>
+        {% else %}
+          {% comment %}
+          Add default products to help with onboarding for collections/all only.
+
+          The onboarding styles and products are only loaded if the
+          store has no products.
+          {% endcomment %}
+          {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0 %}
+            <div class="grid__item">
+              <div class="grid grid--uniform">
+                {% for i in (1..limit) %}
+                  <div class="grid__item  {{ grid_item_width }}">
+                    <div class="grid-view-item">
+                      <a href="#" class="grid-view-item__link">
+                        <div class="grid-view-item__image">
+                          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                          {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                        <div class="h4 grid-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+                        <div class="grid-view-item__meta">
+                          <span class="product-price__price">$19.99</span>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% else %}
+            {%- assign is_empty_collection = true -%}
+          {% endif %}
+        {% endfor %}
+      
+        {% if limit ==15 and position ==16 %}
+                            <div class="grid__item  {{ grid_item_width }} grid-item-size ">
+                              <div class="grid-view-item colad" style="margin:0px;padding:0px;">
+                                <div class="grid-view-item colad" style="margin:0px;padding:0px;">
+                                  <{% if link %}a href="{{ link }}"{% else %}span{% endif %} class="grid-view-item__image colad {% if link %}animsition-link{% endif %}" style="{% if textoverlay %}{% else %}padding-top: 100%;{% endif %}background-image:url({{ imageone | img_url: '1500x' }});background-position:{{ alignment }};background-size:cover;">
+                                    {% if textoverlay %}  
+                                    <div class="collectionad">
+                                      <div class="h4 grid-view-item__title colover">
+                                        {{ title }}
+                                      </div>
+                                      <div class="grid-view-item__meta colad2">
+                                        {{ adcopy}}
+                                        
+                                      </div>
+                                    </div>
+                                    {% endif %}
+                                    </{% if link %}a{% else %}span{% endif %}>
+                                </div>
+                              </div>
+                            </div>
+                {% endif %}
+            {% if limit ==15 and positiontwo ==16  %}
+                            <div class="grid__item {{ grid_item_width }} grid-item-size">
+                              <div class="grid-view-item" style="margin:0px;padding:0px;">
+                                <div class="grid-view-item" style="margin:0px;padding:0px;">
+                                  <{% if link %}a href="{{ linktwo }}"{% else %}span{% endif %} class="grid-view-item__image {% if linktwo %}animsition-link{% endif %}" style="{% if textoverlaytwo %}{% else %}padding-top: 100%;{% endif %}background-image:url({{ imagetwo | img_url: image_size }});background-position:{{ alignmenttwo }};background-size:cover;">
+                                    {% if textoverlaytwo %} 
+                                    <div class="collectionad">
+                                      <div class="h4 grid-view-item__title">
+                                        {{ titletwo }}
+                                      </div>
+                                      <div class="grid-view-item__meta">
+                                        {{ adcopytwo}}
+                                        {% if linktwo %} 
+                                        <br/><span style="margin-top:10px;" class="btn">{{ adctatwo }}</span>
+                                        {% endif %}
+                                      </div>
+                                    </div>
+                                    {% endif %}
+                                    </{% if linktwo %}a{% else %}span{% endif %}>
+                                </div>
+                              </div>
+                            </div>
+                {% endif %}
+
+
+      </div>
+    {% else %}
+      <div class="list-view-items">
+        {% for product in collection.products %}
+{%- include 'bold-product' with product, hide_action: 'skip' -%}
+          <a href="{{ product.url | within: collection }}" class="list-view-item">
+            {% include 'product-card-list', product: product %}
+          </a>
+        {% else %}
+
+          {% comment %}
+          Add default products to help with onboarding for collections/all only.
+
+          The onboarding styles and products are only loaded if the
+          store has no products.
+          {% endcomment %}
+          {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0%}
+            {% for i in (1..4) %}
+              <a href="#" class="list-view-item">
+                <div class="list-view-item__image-column">
+                  <div class="list-view-item__image-wrapper">
+                    <div class="list-view-item__image">
+                      {%- assign placeholder = 'placeholder-product-' | append: i -%}
+                      {% include placeholder %}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="list-view-item__title-column">
+                  <div class="list-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+                </div>
+
+                <div class="list-view-item__price-column">
+                  <span class="product-price__price">$19.99</span>
+                </div>
+              </a>
+            {% endfor %}
+          {% else %}
+            {%- assign is_empty_collection = true -%}
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if is_empty_collection %}
+      <div class="col small--text-center">
+        <p class="text-center">{{ 'collections.general.no_matches' | t }}</p>
+      </div>
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+      {% include 'pagination' %}
+    {% endif %}
+  </div>
+</div>
+<script type="text/javascript">
+var product = $("#collection_featured_product").html();
+localStorage.setItem("product", product);
+
+$('.product-slide').slick({
+  slidesToShow: 5,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 2000,
+   responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+});
+  </script>
+{% endpaginate %}
+
+{% schema %}
+  {
+    "name": "Collection pages",
+    "settings": [
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "default": "grid",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid"
+          },
+          {
+            "value": "list",
+            "label": "List"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "grid",
+        "label": "Products per row (grid only)",
+        "default": "4",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "rows",
+        "label": "Rows per page (grid only)",
+        "default": "2",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          },
+          {
+            "value": "7",
+            "label": "7"
+          },
+          {
+            "value": "8",
+            "label": "8"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_collection_image",
+        "label": "Show collection image",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show product vendors",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "sort_enable",
+        "label": "Enable sorting",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "tags_enable",
+        "label": "Enable tag filtering",
+        "default": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Collection Ad",
+        "settings": [
+         {
+            "type": "checkbox",
+            "id": "active",
+            "label": "Collection Ad Active?",
+            "default": false
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Pick Collection For this Ad"
+          },
+          {
+            "type": "header",
+            "content": "Ad #1"
+          },
+         {
+            "type": "checkbox",
+            "id": "activeone",
+            "label": "Collection Ad One Active?",
+            "default": false
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "alignment",
+            "label": "Image alignment",
+            "default": "center",
+            "options": [
+              {"value": "top", "label": "Top"},
+              {"value": "center", "label": "Middle"},
+              {"value": "bottom", "label": "Bottom"}
+            ]
+          },
+          {
+            "type": "select",
+            "id": "position",
+            "label": "Ad Position (on row 2)",
+            "default": "5",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              },
+              {
+                "value": "7",
+                "label": "7"
+              },
+              {
+                "value": "8",
+                "label": "8"
+              },
+              {
+                "value": "9",
+                "label": "9"
+              },
+              {
+                "value": "10",
+                "label": "10"
+              },
+              {
+                "value": "11",
+                "label": "11"
+              },
+              {
+                "value": "12",
+                "label": "12"
+              },
+              {
+                "value": "13",
+                "label": "13"
+              },
+              {
+                "value": "14",
+                "label": "14"
+              },
+              {
+                "value": "15",
+                "label": "15"
+              },
+              {
+                "value": "16",
+                "label": "16"
+              },
+              {
+                "value": "17",
+                "label": "17"
+              },
+              {
+                "value": "18",
+                "label": "18"
+              },
+              {
+                "value": "19",
+                "label": "19"
+              },
+              {
+                "value": "20",
+                "label": "20"
+              },
+              {
+                "value": "21",
+                "label": "21"
+              },
+              {
+                "value": "22",
+                "label": "22"
+              },
+              {
+                "value": "23",
+                "label": "23"
+              },
+              {
+                "value": "24",
+                "label": "24"
+              },
+              {
+                "value": "25",
+                "label": "25"
+              },
+              {
+                "value": "26",
+                "label": "26"
+              },
+              {
+                "value": "27",
+                "label": "27"
+              },
+              {
+                "value": "28",
+                "label": "28"
+              },
+              {
+                "value": "29",
+                "label": "29"
+              },
+              {
+                "value": "30",
+                "label": "30"
+              },
+              {
+                "value": "31",
+                "label": "31"
+              },
+              {
+                "value": "32",
+                "label": "32"
+              },
+              {
+                "value": "33",
+                "label": "33"
+              },
+              {
+                "value": "34",
+                "label": "34"
+              },
+              {
+                "value": "35",
+                "label": "35"
+              },
+              {
+                "value": "36",
+                "label": "36"
+              },
+              {
+                "value": "37",
+                "label": "37"
+              },
+              {
+                "value": "38",
+                "label": "38"
+              },
+              {
+                "value": "39",
+                "label": "39"
+              },
+              {
+                "value": "40",
+                "label": "40"
+              },
+              {
+                "value": "41",
+                "label": "41"
+              },
+              {
+                "value": "42",
+                "label": "42"
+              },
+              {
+                "value": "43",
+                "label": "43"
+              },
+              {
+                "value": "44",
+                "label": "44"
+              },
+              {
+                "value": "45",
+                "label": "45"
+              },
+              {
+                "value": "46",
+                "label": "46"
+              },
+              {
+                "value": "47",
+                "label": "47"
+              },
+              {
+                "value": "48",
+                "label": "48"
+              },
+              {
+                "value": "49",
+                "label": "49"
+              }
+            ]
+          },
+         {
+            "type": "checkbox",
+            "id": "textoverlay",
+            "label": "Show Text Overlay?",
+            "default": true
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Ad Title"
+          },
+			{
+            "type": "textarea",
+            "id": "adcopy",
+            "label": "Ad Copy"
+          },
+          {
+            "type": "text",
+            "id": "adcta",
+            "label": "CTA Copy"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "AD link"
+          },
+          {
+            "type": "header",
+            "content": "Ad #2"
+          },
+         {
+            "type": "checkbox",
+            "id": "activetwo",
+            "label": "Collection Ad Two Active?",
+            "default": false
+          },
+          {
+            "type": "image_picker",
+            "id": "imagetwo",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "alignmenttwo",
+            "label": "Image alignment",
+            "default": "center",
+            "options": [
+              {"value": "top", "label": "Top"},
+              {"value": "center", "label": "Middle"},
+              {"value": "bottom", "label": "Bottom"}
+            ]
+          },
+          {
+            "type": "select",
+            "id": "positiontwo",
+            "label": "Ad Position Two (on row 4)",
+            "default": "11",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              },
+              {
+                "value": "7",
+                "label": "7"
+              },
+              {
+                "value": "8",
+                "label": "8"
+              },
+              {
+                "value": "9",
+                "label": "9"
+              },
+              {
+                "value": "10",
+                "label": "10"
+              },
+              {
+                "value": "11",
+                "label": "11"
+              },
+              {
+                "value": "12",
+                "label": "12"
+              },
+              {
+                "value": "13",
+                "label": "13"
+              },
+              {
+                "value": "14",
+                "label": "14"
+              },
+              {
+                "value": "15",
+                "label": "15"
+              },
+              {
+                "value": "16",
+                "label": "16"
+              },
+              {
+                "value": "17",
+                "label": "17"
+              },
+              {
+                "value": "18",
+                "label": "18"
+              },
+              {
+                "value": "19",
+                "label": "19"
+              },
+              {
+                "value": "20",
+                "label": "20"
+              },
+              {
+                "value": "21",
+                "label": "21"
+              },
+              {
+                "value": "22",
+                "label": "22"
+              },
+              {
+                "value": "23",
+                "label": "23"
+              },
+              {
+                "value": "24",
+                "label": "24"
+              },
+              {
+                "value": "25",
+                "label": "25"
+              },
+              {
+                "value": "26",
+                "label": "26"
+              },
+              {
+                "value": "27",
+                "label": "27"
+              },
+              {
+                "value": "28",
+                "label": "28"
+              },
+              {
+                "value": "29",
+                "label": "29"
+              },
+              {
+                "value": "30",
+                "label": "30"
+              },
+              {
+                "value": "31",
+                "label": "31"
+              },
+              {
+                "value": "32",
+                "label": "32"
+              },
+              {
+                "value": "33",
+                "label": "33"
+              },
+              {
+                "value": "34",
+                "label": "34"
+              },
+              {
+                "value": "35",
+                "label": "35"
+              },
+              {
+                "value": "36",
+                "label": "36"
+              },
+              {
+                "value": "37",
+                "label": "37"
+              },
+              {
+                "value": "38",
+                "label": "38"
+              },
+              {
+                "value": "39",
+                "label": "39"
+              },
+              {
+                "value": "40",
+                "label": "40"
+              },
+              {
+                "value": "41",
+                "label": "41"
+              },
+              {
+                "value": "42",
+                "label": "42"
+              },
+              {
+                "value": "43",
+                "label": "43"
+              },
+              {
+                "value": "44",
+                "label": "44"
+              },
+              {
+                "value": "45",
+                "label": "45"
+              },
+              {
+                "value": "46",
+                "label": "46"
+              },
+              {
+                "value": "47",
+                "label": "47"
+              },
+              {
+                "value": "48",
+                "label": "48"
+              },
+              {
+                "value": "49",
+                "label": "49"
+              }
+            ]
+          },
+         {
+            "type": "checkbox",
+            "id": "textoverlaytwo",
+            "label": "Show Text Overlay?",
+            "default": true
+          },
+          {
+            "type": "text",
+            "id": "titletwo",
+            "label": "Ad Title"
+          },
+			{
+            "type": "textarea",
+            "id": "adcopytwo",
+            "label": "Ad Copy"
+          },
+          {
+            "type": "text",
+            "id": "adctatwo",
+            "label": "CTA Copy"
+          },
+          {
+            "type": "url",
+            "id": "linktwo",
+            "label": "AD link"
+          }
+        ]
+      },
+
+      {
+        "type": "featured_product",
+        "name": "Featured Product",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Pick Collection For Featured Product"
+          },
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Featured Product"
+          }
+      ]
+      }    
+    ]
+  }
+{% endschema %}

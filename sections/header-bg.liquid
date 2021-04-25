@@ -1,0 +1,77 @@
+{% include 'header-image' %}
+
+
+{% schema %}
+  {
+    "name": "Page Header",
+    "blocks": [
+      {
+        "type": "page_header",
+        "name": "Page Header",
+        "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Page Title"
+        },
+        {
+            "type": "color",
+            "id": "heading_color",
+            "label": "Heading color",
+            "default": "#fff"
+        },
+        {
+            "type": "page",
+            "id": "page",
+            "label": "Page",
+            "info": "Header image defined below will be used for this specific page"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Header image"
+          },
+          {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Sub Title"
+        },
+        {
+          "type": "color",
+          "id": "subtitle_color",
+          "label": "Subtitle color",
+          "default": "#d1b380"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "color",
+          "id": "contnet_color",
+          "label": "Content color",
+          "default": "#fff"
+        },
+        {
+          "id": "link",
+          "type": "url",
+          "label": "Button link"
+        },
+        {
+          "id": "linktext",
+          "type": "text",
+          "label": "Button text",
+          "default": "Contact Us"
+        },
+        {
+            "type": "image_picker",
+            "id": "arrow_down",
+            "label": "Down image"
+        }
+        
+        ]
+      }
+    ]
+  }
+{% endschema %}

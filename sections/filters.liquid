@@ -1,0 +1,127 @@
+{% for block in section.blocks %}
+  {%- assign filter_tags_simple = block.settings.filter_tags | replace: ', ', ',' -%}
+  {%- assign filter_tags_simple = filter_tags_simple | replace: ' ,', ',' -%}
+  {%- assign fitler_tags = filter_tags_simple | split: ',' -%}
+  {%- assign curr_tags = '' -%}
+  {% for tag in current_tags %}
+    {% capture curr_tags %}{{ curr_tags }},{{ tag | handleize }}{% if forloop.last %},{% endif %}{% endcapture %}
+  {% endfor %}
+  <div class="filter_holder hide">
+    <label for="SortTags_{{ block.settings.title | handleize }}" class="label--hidden">{{ block.settings.title }}</label>
+    <select class="filters-toolbar__input filters-toolbar__input--filter custom-select" name="SortTags" id="SortTags_{{ block.settings.title | handleize }}" data-template="{% if template contains 'collection-of-collections' %}multiproduct{% else %}{{ collection.url }}{% endif %}" placeholder="{%- assign placeholder = block.settings.title -%}{% for filter_tag in fitler_tags %}{% capture filter_tag_handleized %},{{ filter_tag | handleize }},{% endcapture %}{% if curr_tags contains filter_tag_handleized %}{%- assign placeholder = filter_tag -%}{% endif %}{% endfor %}{{ placeholder }}" data-filtertype="{{ block.settings.title }}">
+      <option value="">{{ block.settings.title }}</option>
+      {% for filter_tag in fitler_tags %}
+        <option value="{{ filter_tag | handleize }}"{% capture filter_tag_handleized %},{{ filter_tag | handleize }},{% endcapture %}{% if curr_tags contains filter_tag_handleized %} selected="selected"{% endif %}>{{ filter_tag }}</option>
+      {% endfor %}
+    </select>
+  </div>
+{% endfor %}
+
+<script>
+	$(document).ready(function(){
+		var arr = [],
+				count_select = $('#shopify-section-filters select').length;
+		$('#SortTags').hide();
+		$('#SortTags option').each(function () {
+			arr.push($(this).val());
+		});
+    console.log(arr);
+		$('#shopify-section-filters select').each(function(){
+      console.log($(this));
+			var originalElems = $(this),
+					filterName = originalElems.find('option:first').text(),
+					elems = originalElems.find('option'),
+					count = elems.length,
+					currSelect;
+			elems.each(function(){
+				if ($.inArray($(this).val(), arr) == -1 && $(this).val() != '') {
+					$(this).remove();
+				};
+				if (!--count) {
+					if(originalElems.find('option').length > 2) {
+						$('.filters-toolbar-placeholder').append('<div class="full sidebar-filter" data-name="'+ originalElems.attr('id') +'">' + originalElems.parent('.filter_holder').html() + '</div>');
+						$('.custom-select').each(function(i, select){
+						    var $select = $(select);
+						    $select.find('option').each(function(j, option){
+									var $option = $(option);
+									if($option.val() != '') {
+										// Create a radio:
+						        var $swatchbox = $('<div class="filter-element" />'),
+												$radio = $('<input type="radio" />'),
+												$label = $('<label />');
+						        // Set name and value:
+						        $radio.attr('name', $select.attr('id')).attr('value', $option.val());
+						        // Set checked if the option was selected
+						        if ($option.attr('selected')) {
+											$swatchbox.addClass('selected');
+											$radio.attr('checked', 'checked');
+										}
+						        // Insert a label:
+										$label.append($option.text()).prepend($radio);
+										$swatchbox.addClass($option.val()).append($label);
+						        $select.after($swatchbox);
+									} else {
+										var check_check = '';
+										if($select.val() == '') {
+											check_check = ' checked="checked"';
+										}
+										$select.before($('<h5 />').text($option.text())).before($('<div class="filter-element"><label><input type="radio" name="'+ $select.attr('id') +'" value=""'+ check_check +'> All</label></div>'));
+									}
+						    });
+						    $select.removeClass('custom-select').addClass('hide');
+						});
+					}
+				}
+			});
+		});
+    $('body').on('change', '.sidebar-filter input',function(){
+			$(this).closest('.sidebar-filter').find('select#'+$(this).attr('name')).val($(this).val()).trigger('change');
+		});
+		$('body').on('change', '.sidebar-filter select',function(e){
+			e.preventDefault();
+			var params = [],
+					str = '';
+			$('.sidebar-filter select').each(function(){
+				if($(this).val() != '') {
+					params.push($(this).val());
+				}
+			});
+			$.each( params, function(i,v){
+				if (i != 0) {
+					str += '+';
+				}
+				str += v;
+			});
+			console.log(str);
+			window.location.href = window.location.protocol + '//' + window.location.host + '{{ collection.url }}/' + str;
+		});
+	});
+</script>
+
+{% schema %}
+  {
+    "name": "Collection page filters",
+    "settings": [
+    ],
+    "blocks": [
+      {
+        "type": "collection_filters",
+        "name": "Collection Filters",
+        "limit": 12,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Filter Name"
+          },
+          {
+            "type": "textarea",
+            "id": "filter_tags",
+            "label": "Tags",
+            "info": "Separate with a comma"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

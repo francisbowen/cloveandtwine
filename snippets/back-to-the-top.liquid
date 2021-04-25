@@ -1,0 +1,56 @@
+{% comment %} 
+  Reduce below value if you need the back to the top button to appear higher up on the page. 
+  That value is in pixels.
+{% endcomment %}
+{% assign vertical_offset_for_trigger = 300 %}
+{% comment %} 
+  Vertical offset from bottom of browser for the position of the button.
+{% endcomment %}
+{% assign position_from_bottom = '4em' %}
+<div class="backtop">
+<a href="#" title="Back to the top" class="back-to-top">
+  <img src="{{ 'top-bg.png' | asset_img_url: '300x' }}" alt="Back to top">
+</a>
+</div>
+<style>
+.back-to-top {
+  text-decoration: none;
+  color: #999;
+  background-color: #eee;
+  font-size: 16px;
+  display: none;
+  z-index: 60000;
+  border: 2px solid #000;
+    right: 40px;
+    top: 60%;
+    width: 52px;
+    height: 52px;
+    opacity: 0.6;
+    text-align: center;
+    position:fixed;
+    line-height: 40px;
+}
+.backtop{position: fixed;}
+
+</style>
+<script>
+window.onload = function() {
+ jQuery(function($) {
+   var offset = {{ vertical_offset_for_trigger }};
+   var duration = 500;
+   $(window).scroll(function() {
+     if ($(this).scrollTop() > offset) {
+       $('.back-to-top').fadeIn(duration);
+     } 
+     else {
+       $('.back-to-top').fadeOut(duration);
+     }
+   });
+   $('.back-to-top').unbind('click.smoothscroll').bind('click', function(e) {
+     e.preventDefault();
+     $('html, body').animate( { scrollTop: 0 }, duration);
+     return false;
+   })
+ });
+}
+</script>

@@ -1,0 +1,107 @@
+<div class="container">
+  <div class="row">
+    <div class="fulfillment col-md-30 offset-md-15">
+      <div class="fullfill-top-item">
+        <h1 class="section-header__title text-center">
+        {{ section.settings.title}}</h1>
+        {% if section.settings.image-top %} 
+        <img src="{{ section.settings.image-top | img_url: 'master' }}"  alt="{{ block.settings.image-top.alt}}"> {% endif %}
+        <div class="page-content">
+          <p>{{page.content}}</p>
+        </div>
+        <div class="subtitle-item text-center">
+         <h3>{{ section.settings.subtitle}}</h3>
+     </div>
+        <div class="fullfill-btn">
+      {% if section.settings.button != blank %}
+  <a class="btn btn-secondary product-btn-popup " href="{{ section.settings.button-link}}">{{ section.settings.button}}</a>
+  {% endif %}
+      </div>
+  </div>
+    <div class="services-image text-center">
+       {% if section.settings.image-two %} 
+        <img src="{{ section.settings.image-two | img_url: 'master' }}"  alt="{{ block.settings.image-two.alt}}"> {% endif %}
+        <h3 class="title-color">{{ section.settings.title_two }}</h3>
+  </div>
+   {% unless forloop.last %}<div class="border-item"></div>{% endunless %} 
+<div class="text-with-title-block">
+	{% for block in section.blocks %}
+	 <div class="text-block text-center">
+	<h3>{{block.settings.title}}</h3>
+	<p>{{block.settings.text-box}}</p>
+</div>
+{% unless forloop.last %}<div class="border-item"></div>{% endunless %} 
+
+	{% endfor %}
+	</div>
+<div class="title-btm text-center">
+	<h5>{{section.settings.title_bottom}}</h5>
+</div>
+</div>
+
+
+   </div>
+</div>
+
+   {% schema %}
+  {
+    "name": "Brands Makers",
+    "class": "bottom",
+    "settings": [
+       {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Title Here"
+       },
+       {
+          "type": "image_picker",
+          "id": "image-top",
+          "label": "Image"
+       },
+       {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Title",
+          "default": "Title Here"
+       },
+       {
+          "type": "image_picker",
+          "id": "image-two",
+          "label": "Image"
+       },
+       {
+          "type": "text",
+          "id": "title_two",
+          "label": "Title",
+          "default": "Title Here"
+       },
+       {
+          "type": "text",
+          "id": "title_bottom",
+          "label": "Title",
+          "default": "Title Here"
+       }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "block",
+        "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Title Her"
+       },
+       {
+         "id": "text-box",
+         "type": "richtext",
+         "label": "Text",
+         "default": "<p>Content Here</p>"
+      }
+      ]  
+      } 
+    ]
+  }
+{% endschema %}

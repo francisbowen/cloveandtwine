@@ -1,0 +1,36 @@
+ {% if field_type == 'divider' %}
+  <div class="w-100">
+    <div class="{{ field-width }} {{content-position}} {% if block.settings.condition != blank %} {{ block.settings.field | replace: ' ', '-' | downcase}}-{{ block.settings.match | replace: ' ', '-' | downcase}} hidden {% endif %}" 
+      style="padding:{{block.settings.padding}}px 15px;">
+      {% if block.settings.divider !=blank %}
+        {% if block.settings.divider=='line' %}
+          <hr>
+        {% endif %}
+      {% if block.settings.divider=='image' %}
+        <img src="{{block.settings.divider_image | img_url:'1500x' }}">
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+ {% elsif field_type == 'html' %}
+  <div class="{{ field-width }} {% if block.settings.condition != blank %} {{ block.settings.field | handleize}}-{{ block.settings.match | handleize}} hidden {% endif %}">
+    {% if block.settings.custom_html !=blank %}
+      {{block.settings.custom_html}}
+    {% endif %}
+  </div>          
+ {% elsif field_type == 'heading' %}
+  <div class="w-100">
+    <div class="{{ field-width }} {% if block.settings.condition != blank %} {{ block.settings.field | replace: ' ', '-' | downcase}}-{{ block.settings.match | replace: ' ', '-' | downcase}} hidden {% endif %}">
+      <h2 class=" {{text-alignment}} form-group-heading-{{forloop.index}}">{{ block.settings.heading }}</h2>
+    </div>
+  </div>
+  <style>
+    .form-group-heading-{{forloop.index}}
+    {
+      background-color:{{ background_color }};
+      color: {{color}};
+      font-size:{{font_size}}px;
+      padding:{{padding}}px;
+    }
+  </style>
+{% endif %}

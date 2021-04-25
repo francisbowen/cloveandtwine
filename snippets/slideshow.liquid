@@ -1,0 +1,227 @@
+<div class="{{ section.settings.contained }}">
+  <div class="row" data-section-id="{{ section.id }}" data-section-type="slideshow-section">
+
+    {% if section.blocks.size > 0 %}
+      <div class="col-60 slideshow-wrapper slide-show">
+        <button type="button" class="visually-hidden slideshow__pause" data-id="{{ section.id }}" aria-live="polite">
+          <span class="slideshow__pause-stop">
+            {% include 'icon-pause' %}
+            <span class="icon__fallback-text">{{ 'sections.slideshow.pause_slideshow' | t }}</span>
+          </span>
+          <span class="slideshow__pause-play">
+            {% include 'icon-play' %}
+            <span class="icon__fallback-text">{{ 'sections.slideshow.play_slideshow' | t }}</span>
+          </span>
+        </button>
+
+        <div class="slideshow slideshow--{{ section.settings.slideshow_height }}" id="Slideshow-{{ section.id }}" data-autoplay="{{ section.settings.autoplay }}" data-speed="{{ section.settings.autoplay_speed }}" data-dots="{{ section.settings.dots }}" data-arrows="{{ section.settings.arrows }}">
+          {% for block in section.blocks %}
+            {%- assign is_background_video = false -%}
+            {% if block.type == 'video' %}
+              {% if block.settings.video_type == 'background' or block.settings.video_type =='background-chrome' %}
+                {%- assign is_background_video = true -%}
+              {% endif %}
+            {% endif %}
+
+            <div class="slideshow__slide slideshow__slide--{{ block.id }}{% if is_background_video %} slideshow__slide--background-video{% endif %}" {{ block.shopify_attributes }}>
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}" class="slideshow__link">
+              {% endif %}
+
+              <style>
+                {% if block.settings.image != blank %}
+                  .slideshow__image--{{ block.id }} {
+                    background-position: {{ block.settings.alignment }};
+                  }
+
+                  @media screen and (max-width: 150px) {
+                    .slideshow__image--{{ block.id }} {
+                      {% if block.settings.imagem != empty %}
+                      background-image: url('{{ block.settings.imagem | img_url: '600x' }}');
+                      {% else %}
+                      background-image: url('{{ block.settings.image | img_url: '600x' }}');
+                      {% endif %}
+                      height: 80vh;
+ 
+                    }
+
+                   .slideshow, #shopify-section-slideshow .slideshow.slideshow--maintain_ratio .slideshow__slide {
+                        height: 80vh !important;
+                    }
+                  }
+
+                  @media screen and (min-width: 151px) and (max-width: 300px) {
+                    .slideshow__image--{{ block.id }} {
+                      {% if block.settings.imagem != empty %}
+                      background-image: url('{{ block.settings.imagem | img_url: '1000x' }}');
+                      {% else %}
+                      background-image: url('{{ block.settings.image | img_url: '1000x' }}');
+                      {% endif %}
+                      height: 80vh;
+                    }
+                    .slideshow ,#shopify-section-slideshow .slideshow.slideshow--maintain_ratio .slideshow__slide{
+                        height: 80vh !important;
+                    }
+                  }
+
+                  @media screen and (min-width: 301px) and (max-width: 600px) {
+                    .slideshow__image--{{ block.id }} {
+                      {% if block.settings.imagem != empty %}
+                      background-image: url('{{ block.settings.imagem | img_url: '1000x' }}');
+                      {% else %}
+                      background-image: url('{{ block.settings.image | img_url: '1000x' }}');
+                      {% endif %}
+                      height: 80vh;
+                    }
+                   .slideshow, #shopify-section-slideshow .slideshow.slideshow--maintain_ratio .slideshow__slide {
+                         height: 80vh !important;
+                    }
+                  }
+
+                  @media screen and (min-width: 601px) and (max-width: 800px) {
+                    .slideshow__image--{{ block.id }} {
+                      background-image: url('{{ block.settings.image | img_url: '800x' }}');
+                    }
+                  }
+
+                  @media screen and (min-width: 801px) and (max-width: 1000px) {
+                    .slideshow__image--{{ block.id }} {
+                      background-image: url('{{ block.settings.image | img_url: '1000x' }}');
+                    }
+                  }
+
+                  @media screen and (min-width: 1001px) {
+                    .slideshow__image--{{ block.id }} {
+                      background-image: url('{{ block.settings.image | img_url: '2000x' }}');
+                    }
+                  }
+                {% endif %}
+                {% if block.settings.heading_color != blank %}
+                  .slideshow__text--{{ block.id }} h2.h1 {
+                    color: {{ block.settings.heading_color }};
+                  }
+                {% endif %}
+
+                {% if block.settings.subheading_color != blank %}
+                  .slideshow__text--{{ block.id }} span.mega-subtitle {
+                    color: {{ block.settings.subheading_color }};
+                  }
+                  .slideshow__text--{{ block.id }} hr {
+                    border-top-color: {{ block.settings.subheading_color }};
+                  }
+                {% endif %}
+
+                {% if block.settings.textunderlay %}
+                  .slideshow__text--{{ block.id }} .slideshow__text-content .page-width:before {
+                    opacity: 1;
+                  }
+                {% endif %}
+              </style>
+
+              {% if block.type == 'video' %}
+                {% if block.settings.video_id != blank %}
+                  <div class="video-loader"></div>
+                {% endif %}
+                {% unless block.settings.video_type == 'background' %}
+                  <button type="button" class="text-link slideshow__video-control slideshow__video-control--close" data-controls="SlideshowVideo-{{ block.id }}">
+                    {% include 'icon-close' %}
+                    <span class="icon__fallback-text">{{ 'sections.slideshow.close_video' | t }}</span>
+                  </button>
+                {% endunless %}
+                {% if block.settings.video_id != blank %}
+                  <div id="SlideshowVideo-{{ block.id }}" class="slideshow__video {% if is_background_video %}slideshow__video--background{% endif %} slideshow__video--{{ block.settings.video_type }}"
+                    data-id="{{ block.settings.video_id }}"
+                    data-type="{{ block.settings.video_type }}"
+                    data-slideshow="Slideshow-{{ section.id }}"></div>
+                {% endif %}
+              {% endif %}
+
+              <div class="slideshow__image slideshow__image--{{ block.id }}">
+                {% if block.settings.image == blank %}
+                  <div class="placeholder-background">
+                    {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                    {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="slideshow__text-wrap slideshow__text--{{ block.id }} row{% if block.settings.overlay %} slideshow__overlay{% endif %}">
+                <div class="col-md-30{% if block.settings.text_layout == 'center' %} offset-md-15{% elsif block.settings.text_layout == 'right' %} offset-md-30{% endif %} text-{{ block.settings.text_align }} slideshow__text-content">
+                  <div class="page-width">
+                    {% unless block.settings.title == blank %}
+                      <h2 class="h1 mega-title slideshow__title{% if settings.link != blank %} slideshow__title--has-link{% endif %}{% if section.settings.text_size == 'large' %} mega-title--large{% endif %}">
+                        {{ block.settings.title }}
+                      </h2>
+                    {% endunless %}
+                    {% unless block.settings.title == blank and block.settings.subheading == blank %}
+                    {% endunless %}
+                    {% unless block.settings.subheading == blank %}
+                      <span class="mega-subtitle slideshow__subtitle{% if section.settings.text_size == 'large' %} mega-subtitle--large{% endif %}">
+                        {{ block.settings.subheading | escape }}
+                      </span>
+                    {% endunless %}
+
+                    {% if block.type == 'video' %}
+
+                      {% unless block.settings.video_type == 'background' %}
+                        <div class="slideshow__video-control--play-wrapper{% if block.settings.title != blank or block.settings.subheading != blank %} slideshow__video-control--play-wrapper--push{% endif %}">
+                          <button type="button" class="text-link slideshow__video-control slideshow__video-control--play" data-controls="SlideshowVideo-{{ block.id }}">
+                            {% comment %}{% include 'icon-play-video' %}{% endcomment %}
+                            <span class="icon__fallback-text">{{ 'sections.slideshow.play_video' | t }}</span>
+
+                            <div class="play"></div>
+                          </button>
+                        </div>
+                      {% endunless %}
+                                      
+                    {% else %}
+                      {% if block.settings.link != blank and block.settings.button != blank %}
+                        <span class="btn">{{ block.settings.button }}</span>
+                      {% endif %}
+                    {% endif %}
+                    
+                  </div>
+
+                </div>
+
+              </div>
+                 
+
+              {% if block.settings.link != blank %}
+                </a>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+          
+
+    {% if section.blocks.size == 0 %}
+      <div class="placeholder-noblocks">
+        {{ 'homepage.onboarding.no_content' | t }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% if section.settings.slideshow_height == 'maintain_ratio' %}
+  <style type="text/css">
+    #shopify-section-{{ section.id }} .slideshow.slideshow--maintain_ratio {
+      height: auto;
+    }
+    #shopify-section-{{ section.id }} .slideshow.slideshow--maintain_ratio .slideshow__slide {
+      height: auto;
+    }
+    #shopify-section-{{ section.id }} .slideshow.slideshow--maintain_ratio .slideshow__slide:before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 0px;
+      {% capture img_width %}{{ section.blocks[0].settings.image.width }}{% endcapture %}
+      {% capture img_height %}{{ section.blocks[0].settings.image.height | times: 100 }}{% endcapture %}
+      {% capture rounddown %}{{ img_height | divided_by: img_width }}{% endcapture %}
+      padding-top: {{ rounddown | plus: 1 }}%;
+    }
+  </style>
+{% endif %}

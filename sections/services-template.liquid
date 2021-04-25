@@ -1,0 +1,294 @@
+<div class="full-width">
+  <div class="container">
+    <div class="row">
+      <article class="col-lg-30 offset-lg-15 col-md-40 offset-md-10">
+        <div class="rte">
+          {%- assign start_title = page.content | slice: 0, 3 -%}
+          {% if start_title contains 'h1' %}
+            {%- assign page_title = page.content | split: '</h1>' -%}
+            {{ page_title[1] }}
+          {% else %}
+            {{ page.content }}
+          {% endif %}
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+{% for block in section.blocks %}
+  {% case block.type %}
+    {% when 'heading_row' %}
+      <div class="full-width full-{{ block.type }} block-img-item">
+        <div class="container about-container">
+          <div class="row row-{{ block.type }} align-items-center">
+            <div class="col-lg-25 col-md-30 img-with-text {% if block.settings.image_side =='right' %}push-md-30{% else %}offset-lg-5{% endif %}">
+              <img src="{{ block.settings.image | img_url: '650x' }}" alt="{{ block.settings.image.alt }}" />
+            </div>
+            <div class="col-lg-25 col-md-30{% if block.settings.image_side =='right' %} pull-lg-20 pull-md-30{% endif %} text-left rte">
+              {% if block.settings.subtitle != blank %}
+                <h4>{{ block.settings.subtitle }}</h4>
+              {% endif %}
+              {% if block.settings.title != blank %}
+                <h2>{{ block.settings.title }}</h2>
+                <hr />
+              {% endif %}
+              {{ block.settings.content }}
+              {% if block.settings.linktext != blank %}
+              <a href="{{ block.settings.link }}" class="btn btn--secondary">{{ block.settings.linktext }}</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% when 'image_type' %}
+      <div class="full-width full-{{ block.type }} full-block">
+        <div class="container about-container">
+          
+          <div class="row row-{{ block.type }}">            
+            <div class="{% if block.settings.width =='33%' %} col-md-20 text-center {% endif %}{% if block.settings.width =='50%' %} col-md-30 text-center {% endif %} ">
+              {% if block.settings.image_one  %}
+              <img src="{{ block.settings.image_one | img_url: '1500x' }}" alt="{{ block.settings.image.alt }}" />
+               {% endif %}
+              <h3>{{ block.settings.title_one }}</h3>
+              {{ block.settings.content_one }}
+            </div>
+             <div class="{% if block.settings.width =='33%' %} col-md-20 text-center {% endif %}{% if block.settings.width =='50%' %} col-md-30 text-center {% endif %} ">
+               {% if block.settings.image_two  %}
+              <img src="{{ block.settings.image_two | img_url: '1500x' }}" alt="{{ block.settings.image.alt }}" />
+                {% endif %}
+              <h3>{{ block.settings.title_two }}</h3>
+              {{ block.settings.content_two }}
+            </div>
+             <div class="{% if block.settings.width =='33%' %} col-md-20 text-center {% endif %}{% if block.settings.width =='50%' %} col-md-30 text-center  {% endif %} ">
+                {% if block.settings.image_three  %}
+              <img src="{{ block.settings.image_three | img_url: '1500x' }}" alt="{{ block.settings.image.alt }}" />
+              {% endif %}
+              <h3>{{ block.settings.title_three }}</h3>
+              {{ block.settings.content_three }}
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+{% when 'custom-block' %}
+    <div class="quotes-block text-center " >
+        <div class="inner custom--{{ block.id }} wow fadeInUp animated animated">
+                 {% if block.settings.title != blank %}
+                <h3>{{ block.settings.title }}</h3>
+              {% endif %}
+              {% if block.settings.quotes-content %}
+              {{ block.settings.quotes-content }}
+              {% endif %}
+          </div>
+       </div>
+   {% when 'join-us-section' %}
+    <div class="join-us-section text-center " >
+        <div class="inner join-us-section col-md-30 offset-md-15 wow fadeInUp animated animated">
+                 {% if block.settings.title != blank %}
+                <h3>{{ block.settings.title }}</h3>
+              {% endif %}
+              {% if block.settings.join-us-content %}
+              {{ block.settings.join-us-content }}
+              {% endif %}
+              {% if block.settings.linktext != blank %}
+            <a href="{{ block.settings.link }}" class="btn product-btn-popup">{{ block.settings.linktext }}</a>
+            {% endif %}
+          </div>
+       </div>
+
+       {% when 'two_item_block' %}
+  <div class="two-items four-items text-center container " >
+    <div class="row">
+          <div class="col-md-30 image-block-item block-row-content">
+              <h3>{{ block.settings.title_one }}</h3>
+                {{ block.settings.text_one }}
+                 </div>
+                 <div class="col-md-30 image-block-item block-row-content">
+              <h3>{{ block.settings.title_two }}</h3>
+                {{ block.settings.text_two }}
+                 </div>
+            </div>
+          </div>
+  {% endcase %}
+
+{% endfor %}
+      
+{% if section.blocks.size == 0 %}
+<div class="full-width">
+  <div class="container about-container">
+    <div class="row row-{{ block.type }}{% if block.type == 'heading_row' %} align-items-center{% endif %}">
+      {% include 'no-blocks' %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% schema %}
+
+  {
+    "name": "Services",
+    "blocks": [
+      {
+        "type": "heading_row",
+        "name": "Image/Short Text",
+        "settings": [
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+          },
+          {
+          "id": "link",
+          "type": "url",
+          "label": "Button link"
+        },
+        {
+          "id": "linktext",
+          "type": "text",
+          "label": "Button text",
+          "default": "Read More"
+        },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "radio",
+            "id": "image_side",
+            "label": "Image side",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "custom-block",
+        "name": "Custom Block",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          }
+        ]
+      },
+      {
+        "type": "join-us-section",
+        "name": "Join Us",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "join-us-content",
+            "label": "text"
+          },
+          {
+          "id": "link",
+          "type": "url",
+          "label": "Button link"
+        },
+        {
+          "id": "linktext",
+          "type": "text",
+          "label": "Button text",
+          "default": "Click here"
+        }
+        ]
+      },
+      {
+        "type": "image_type",
+        "name": "Image Block",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image_one",
+            "label": "One Image"
+          },
+          {
+            "type": "text",
+            "id": "title_one",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "content_one",
+            "label": "Content"
+          },
+
+          {
+            "type": "image_picker",
+            "id": "image_two",
+            "label": "Two Image"
+          },
+          {
+            "type": "text",
+            "id": "title_two",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "content_two",
+            "label": "Content"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_three",
+            "label": "Three Image"
+          },
+          {
+            "type": "text",
+            "id": "title_three",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "content_three",
+            "label": "Content"
+          },
+          {
+            "type": "select",
+            "id": "width",
+            "label": "Container width",
+            "default": "33%",
+            "options": [
+              {
+                "value": "33%",
+                "label": "33%"
+              },
+              {
+                "value": "50%",
+                "label": "50%"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

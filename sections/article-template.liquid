@@ -1,0 +1,206 @@
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ shop.url }}{{ article.url }}"
+    },
+    "headline": "{{ article.title }}",
+    "image": [
+      "https:{{ article.image.src | img_url: 'original' }}"
+    ],
+    "datePublished": "{{ article.published_at }}",
+    "dateModified": "{{ article.published_at | date: "%Y-%m-%dT%H:%M:%SZ" }}",
+    "author": {
+      "@type": "Person",
+      "name": "{{ article.author }}"
+    },
+     "publisher": {
+      "@type": "Organization",
+      "name": "{{ shop.name }}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:{{ settings.logo | img_url: 'original' }}"
+      }
+    },
+    "description": "{{ article.excerpt_or_content | strip_html | truncatewords: 100 | escape }}"
+  }
+</script>
+
+
+
+  <div class="row">
+        <img class="" src="{{ article.image.src | img_url: '1024x1024' }}">
+    
+  <div class="col-sm-60 col-md-45 blog-detail col-main">
+
+  <div class="section-header text-center">
+    <h1 class="article__title">{{ article.title }}</h1>
+    {% if section.settings.blog_show_author %}
+      <span class="article__author">{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+    {% endif %}
+
+    {% if section.settings.blog_show_date %}
+      <span class="article__date">
+        {{ article.published_at | time_tag: format: 'month_day_year' }}
+      </span>
+    {% endif %}
+  
+</div>
+  
+    <div class="rte">
+      {{ article.content }}
+    </div>
+    {% assign current_found = false %}
+{% assign done = false %}
+{% for a in blog.articles %}
+  {% if current_found and done == false %}
+    {% assign next_article = a %}
+    {% assign done = true %}
+  {% endif %}
+  {% unless done %}
+    {% if a.id == article.id %}
+      {% assign current_found = true %}
+    {% else %}
+      {% assign prev_article = a %}
+    {% endif %}
+  {% endunless %}
+{% endfor %}
+{% if prev_article or next_article %}
+<div class="row">
+         <div class="col-md-25 offset-md-2 half-article">
+        {% if next_article %}
+          <div class="prev-prod ">
+            <a  href="{{ next_article.url }}" class="btn btn--secondary block-btn">Next Article
+              {% comment%}
+              <div class="sustainable-repeater">
+                <div class="half-top {{ next_article.handle }}" style="{% if next_article.image %}background-image:url('{{ next_article | img_url: 'original' }}');{% else %}background-color:#d8d7d3;{%endif%}width:100%;background-size:cover;height:300px"></div>{% endcomment%}
+                {% comment%}<h4>{{ next_article.title | truncatewords: 10 }}</h4>
+                <div class="btnholder">
+                  <span class="btn btn--secondary btn--has-icon-before return-link" href="{{ next_article.url }}">{{ 'blogs.article.read_more' | t }}</span>
+                </div>{% endcomment%}
+             
+            </a>
+             </div>
+     
+        {% endif %}
+
+          </div>
+   <div class="col-md-25 offset-md-2">
+           {% if section.settings.show_share_buttons %}
+    <span class=" wow fadeInUp mobilehide">
+              <button>
+                
+<div class="sharebox">
+  <div class="left-share">SHARE
+    </div>
+  <div class="right mt-xs-10" style="float:left; margin-left:20px;color:#fff;">
+    <span><a href="mailto:your@friend.com?subject=Check%20out%20this%20article&body={{ article.title | url_encode }}%0ASeen%20at%20{{ shop.url }}{{ article.url }}"><i class="fa fa-envelope"></i></a></span>
+    <span><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ article.url }}"><i class="fa fa-facebook"></i></a></span>
+    <span><a target="_blank" href="https://twitter.com/share"><i class="fa fa-twitter"></i></a></span>
+    <span><a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shop.url }}{{ article.url }}&title={{ article.title | url_encode }}"><i class="fa fa-linkedin"></i></a></span>
+    <span><a target="_blank" href="http://pinterest.com/pin/create/button/?url={{ shop.url }}{{ article.url }}&description={% capture pindescript %}{{ article.title }} - {{ shop.name }}{% endcapture %}{{ pindescript | url_encode }}&media={{ article.image.src | img_url: 'grande'}}"><i class="fa fa-pinterest"></i></a></span>
+  </div>
+</div>
+              </button>
+            </span>
+
+   
+    {% endif %}
+
+        </div>
+      </div>
+  </div>
+   <div class="col-sm-60 col-md-12 offset-md-3 sidebar">
+      <div class="widget widget-recent-articles">
+        <div class="widget-title">
+    <h5> <span class="widget-title-article">Recent Articles</span> </h5>
+<div class="widget-content">
+    <ul>
+       {% for article in blogs.blog.articles limit: 5 %}
+      <div class="article">
+        <p>
+          <a href={{ article.url }}>
+            <span class="lang1">{{ article.title }}</span>
+          </a>
+        </p>
+        <em>{{ article.published_at | date: "%B %d, %Y" }}</em>
+
+      </div>
+      {% endfor %}
+    </ul>
+  </div>
+  
+    {% for block in section.blocks %}
+    <p class="sidebar-banner">
+      
+      {% if block.settings.image %}
+  <a href="{{ block.settings.link}}">
+    <img src="{{ block.settings.image | img_url: '500x500' }}" alt="{{ block.settings.image.alt }}">
+  </a>
+  {% endif %}
+</p>
+{% endfor %}
+  </div>
+ 
+      </div>
+    </div>
+
+</div>
+</div>
+
+
+          </div>
+      </div>
+      </div>
+    <!-- END post article BAR -->
+{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Post",
+    "class": "bottom",
+    "settings": [
+{
+        "type": "checkbox",
+        "id": "blog_show_author",
+        "label": "Show author",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": true
+      }
+     
+    ],
+    "blocks": [
+      {
+        "type": "Images",
+        "name": "Sidebar Images",
+        "settings": [
+      {
+          "type": "image_picker",
+            "id": "image",
+            "label": "Add Sidebar Image"
+       },
+       {
+          "type": "url",
+            "id": "link",
+            "label": "Add Image LInk"
+       }
+
+        ]  
+        }  
+    ]
+  }
+{% endschema %}

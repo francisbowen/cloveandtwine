@@ -1,0 +1,235 @@
+{% if block.settings.title != blank %}
+	{% assign name = block.settings.title | handleize %}
+{% else %}
+ 	{% if block.settings.input_label != blank %}
+      	{% assign name = block.settings.input_label | handleize %}
+    {% elsif block.settings.input_placeholder != blank  %}
+      	{% assign name = block.settings.input_placeholder | handleize %}
+  	{% else %}
+    	{% assign name =  field_type | append: "-" | append: forloop.index  %}
+   	{% endif %}
+{% endif %}
+
+{% if block.settings.input_label != blank %}
+	{% capture label %}
+    	<label class="control-label " for="{{ name }}">{{ block.settings.input_label}}{% if block.settings.input_required != blank %}*{% endif %}</label>
+   	{% endcapture %}
+
+   	{% capture input %}
+     	{% if block.type == 'paragraphtext'  %}
+        	<textarea rows="4" id="{{ name }}" data-name="{{ name }}" name="array[{{ name }}]" placeholder="{{block.settings.input_placeholder}}" class="form-control" {% if block.settings.input_required != blank %} required {% endif %}></textarea>
+      	{% else %}
+         	<input id="{{ name }}_{{ block.id }}" data-name="{{ name }}" name="array[{{ name }}]" type="{{field_type}}" placeholder="{{ block.settings.input_placeholder }}" class="form-control{{ field-height }}" {% if block.settings.multiple_images == 'multiple' %} multiple="true" {% endif %} {% if block.settings.input_required != blank %} required {% endif %}>
+      	{% endif %}
+   	{% endcapture %}
+{% endif %}
+
+{% capture help %}
+	{% if block.settings.input_help_text %}
+  		<span class="help-block">{{block.settings.input_help_text}}</span>
+  	{% endif %}
+{% endcapture %}
+
+
+<div class="{{ field-width }} {% if block.settings.condition != blank %} {{ block.settings.field | handleize}}-{{ block.settings.match | handleize}} hidden {% endif %}">
+	<div class="form-group form-group-{{forloop.index}} {% if block.type == 'prependtextinut' %} input-group-prepend{% endif %}">
+		{% if field_type == 'text' %}
+        	{{label}}
+        	{% if block.type == 'prependtextinut' or block.type == 'appenededtextinut' %}
+        		<div class="input-group prepend">
+          			{% if block.type == 'prependtextinut' %}
+            			<span class="input-group-addon">{{block.settings.prepend_input}}</span>
+          			{% endif %}
+      			</div>
+        	{% endif %}
+           	{{input}}
+         	{% if block.type == 'prependtextinut' or block.type == 'appenededtextinut' %}
+         		{% if block.type == 'appenededtextinut' %}
+            		<span class="input-group-addon">{{block.settings.append_input}}</span>
+          		{% endif %}
+      		{% endif %}
+			{{help}}
+
+			{% if block.settings.only_number == true %}
+			<script>
+				(function($) {
+				$.fn.inputFilter = function(inputFilter) {
+
+					return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+					if (inputFilter(this.value)) {
+						this.oldValue = this.value;
+						this.oldSelectionStart = this.selectionStart;
+						this.oldSelectionEnd = this.selectionEnd;
+					} else if (this.hasOwnProperty("oldValue")) {
+						this.value = this.oldValue;
+						this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+					} else {
+						this.value = "";
+					}
+					});
+				};
+				}(jQuery));
+
+				$(document).ready(function() {
+					$("#{{ name }}_{{ block.id }}").inputFilter(function(value) {
+						return /^\d*$/.test(value);    // Allow digits only, using a RegExp
+					});
+				});
+			
+			</script>
+			{% endif %}
+      
+		{% elsif field_type == 'checkbox' or field_type == 'radio' or field_type == 'select' %}
+      		{{label}}
+    		{% assign choices = block.settings.choices | newline_to_br | strip_newlines | split: '<br />' %}
+      
+            {% if block.type == 'dropdown'  %}
+            	<select for="{{name}}-{{block.id}}" data-name="{{name}}" name="array[{{name}}]" id="{{name}}-{{block.id}}" data-class="{{class}}" class="form-control" 
+				{% if block.settings.input_required != blank %} required {% endif %} {% if block.settings.place_pholder_value != blank %} data-placepolder-value = '{{ block.settings.place_pholder_value | handleize }}' {% endif %}>
+          	{% endif %}
+
+           	{% if field_type == 'checkbox' or field_type == 'radio' and block.settings.inline_style %}
+            	<div class="d-md-flex">
+          	{% endif %}
+                  
+           	{% for choice in choices %}
+            	{% assign class = block.settings.title | handleize  | append: '-' | append: choice  | handleize %}
+                {% if block.type == 'dropdown'  %}
+                	<option name="array[{{name}}]" data-class="{{class}}" value="{{choice | handleize }}" {% if block.settings.default_choice == choice %}selected="selected"{% endif %}>{{choice}}</option>
+                {% else %}
+                	<label class="control-label {% if block.settings.inline_style != blank %} pr-2 {% endif %}" for="{{name}}-{{block.id}}-{{forloop.index}}">
+                  		<input type="{{field_type}}" name="array[{{name}}]" id="{{name}}-{{block.id}}-{{forloop.index}}" data-class="{{class}}"  value="{{choice | handleize }}" {% if block.settings.default_choice == choice %}checked{% endif %} > {{choice}}
+               		</label>
+                {% endif %}
+         	{% endfor %}
+
+          	{% if field_type == 'checkbox' or field_type == 'radio' and block.settings.inline_style %}
+            	</div>
+          	{% endif %}
+
+          	{% if block.type == 'dropdown'  %}
+            	</select>
+            {% endif %}
+
+            <script>
+          		{% if block.type == 'dropdown'  %}
+              		$('#{{name}}-{{block.id}}').change(function(){
+
+						$( "option", this ).each(function( index ) {
+							var index_dataClass = $(this).attr("data-class");
+              				var index_selectedClass = $(this).attr("name");
+
+							$('.' + index_selectedClass).removeClass(index_selectedClass);
+							$('.' + index_dataClass).hide(100);
+							$('.' + index_dataClass).addClass('hidden',100);
+						});
+
+                		var dataClass = $('option:selected', this).attr("data-class");
+              			var selectedClass = $('option:selected', this).attr("name");
+
+              			if($('option:selected', this)){
+
+							$('.' + selectedClass).hide(100);
+                			$('.' + selectedClass).addClass('hidden',100);
+
+							$('.' + dataClass).show(200);
+                			$('.' + dataClass).removeClass('hidden',200);
+                			$( '.' + dataClass ).addClass(selectedClass);
+              			}else{
+							$('.' + dataClass).hide(100);
+                			$('.' + dataClass).addClass('hidden',100);
+              			}
+              		});
+          		{% else %}
+             		$('input:{{field_type}}[name={{name}}]').change(function(){
+                   		var dataClass = $(this).attr("data-class");
+                      	var selectedClass = $(this).attr("name");
+                      	var type = $(this).attr("type");
+                    	if($(this).is(":checked")) {
+                        	if(type=='radio'){
+                            	$('.' + selectedClass).hide(100);
+                           	}
+                         	$('.' + dataClass).show(200);
+                          	$( '.' + dataClass ).addClass(selectedClass);
+                    	}else{
+                       		$('.' + dataClass).hide(100);
+                     	}
+                	});
+           		{% endif %}
+            </script>
+      
+		{% elsif field_type == 'file' %}
+     		{{label}}
+
+           	<input id="{{ name }}" type="file" /> 
+           	<button class="uploaded-{{ name }} btn realsubmit">Upload</button>
+
+          	<label for="{{ name }}-file_name" class="label--hidden">File Name</label>
+           	<input id="{{ name }}-file_name" type="hidden" name="array[{{ name }}-name]" />
+           	<label for="{{ name }}-file_link" class="label--hidden">File Link</label>
+           	<input id="{{ name }}-file_link" type="hidden" name="array[{{ name }}-link]" /> 
+      
+      		<script>
+  				$(document).ready(function() {
+     				var logopart = $('.integro').find('#{{ name }}');
+				});
+  				$( ".uploaded-{{ name }}" ).click(function(e) {
+    				e.preventDefault();
+    				$(".uploaded-{{ name }}").html('Now Uploading...');
+    				var logopart = $('.integro').find('#{{ name }}');
+    
+    				if(logopart.length > 0 && logopart.val() != '') {
+      					var logosplitter = logopart.prop('files')[0],
+          				timestamp = new Date().getTime(),
+          				logoname = logosplitter.name,
+          				encoded = encodeURIComponent(logoname),
+          				form = this.$form,
+          				t = this;
+      					$.ajax({
+        					url: 'https://content.dropboxapi.com/2/files/upload',
+        					type: 'post',
+        					data: logosplitter,
+        					processData: false,
+        					contentType: 'application/octet-stream',
+        					headers: {
+          						"Authorization": "Bearer {{settings.dbat}}",
+          						"Dropbox-API-Arg": '{"path": "/' + timestamp + '/' + logoname + '","mode": "add"}'
+        					},
+        					success: function (d) {
+          						console.log(d);
+          						var str = d.path_display;
+          						$('.integro').find('#{{ name }}-file_name').val(str.split('/')[2]);
+          						setTimeout(function(){
+            						var datael = {
+              							'path': d.path_display
+            						};
+            						$.ajax({
+              							url: 'https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings',
+              							type: 'post',
+              							data: JSON.stringify(datael),
+              							contentType: 'application/json',
+              							headers: {
+                                          "Authorization": "Bearer {{settings.dbat}}"
+              							},
+              							success: function (data) {
+                							console.log(data);
+                							$('.integro').find('#{{ name }}-file_link').val(data.url);
+                							$(".uploaded-{{ name }}").html('Thanks! We Got It.');
+              							},
+              							error: function (data) {
+                							console.log(data);
+              							}
+            						});
+          						},1000);
+        					},
+        					error: function (d) {
+          						alert('Your image name contains invalid characters');
+          						console.log(d);
+        					}
+      					});
+    				}; 
+    			});
+      		</script>    
+		{% endif %}
+	</div>
+</div>

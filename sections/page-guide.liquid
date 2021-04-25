@@ -1,0 +1,134 @@
+{% if section.settings.enable_sidebar %}
+  {% if section.settings.sidebar_position == 'sidebar-left' %}
+    {%- assign col_width = 'col-md-35 push-md-25' -%}
+    {%- assign side_width = 'col-md-20 pull-md-40' -%}
+  {% else %}
+    {%- assign col_width = 'col-md-35' -%}
+    {%- assign side_width = 'col-md-20 offset-md-5' -%}
+  {% endif %}
+{% else %}
+  {%- assign col_width = 'col-md-60' -%}
+{% endif %}
+
+<div class="container">
+  <div class="row">
+    <article class="{{ col_width }}">
+     <div class="section-header text-center">
+        <h1 class="section-header__title">Shop by {{ page.title }}</h1>
+      </div>
+      
+      <div class="rte">
+        <div class="row">
+          {% for block in section.blocks %}
+            {% if page.handle == block.settings.page %}
+              <div class="col-md-30 offset-md-0 col-sm-60 col-md-offset-10 rel collection2-block sameheight" style="position: relative;     padding: 0px 60px; margin-top: 40px;">
+                <div class="col " style="padding:0px;min-height:300px;">
+                <a style="color:white;text-transform:uppercase;" class="view" href="{{block.settings.url}}">
+                <div class="colover"></div>
+                </a><div class="full left collection-overlay jarallax sameheight" style="min-height: 300px; background-image: url('{{ block.settings.image | img_url: '800x' }}'); height: 340px;"><a style="color:white;text-transform:uppercase;" class="view" href="{{block.settings.url}}">
+                  <div class="colls-title">
+                    <div class="colls-titleblock" style="position:relative;">
+                      <h2>{{block.settings.title}}</h2>
+                      Go To Collection
+                    </div>
+                  </div>
+                  </a>
+                </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+          
+
+
+        </div>
+  
+      </div>
+    </article>
+
+    {% if section.settings.enable_sidebar %}
+      <aside class="sidebar-page {{ side_width }}">
+        {% include 'sidebar' %}
+      </aside>
+    {% endif %}
+  </div>
+</div>
+<style type="text/css">
+  .colls-titleblock h2 {
+    color: white;
+    text-transform: uppercase;
+    font-size: 34px;
+    position: relative;
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.colls-titleblock {
+    padding-top: 15%;
+    text-align: center;
+    color: white;
+}
+.colover {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.3);
+    outline: 2px solid white;
+    outline-offset: -40px;
+  }
+.colover:hover{
+  outline: none;
+}
+</style>
+{% schema %}
+  {
+    "name": "Page Guide",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_sidebar",
+        "label": "Enable sidebar?"
+      },
+      {
+        "type": "radio",
+        "id": "sidebar_position",
+        "options": [
+          { "value": "sidebar-left", "label": "Left"},
+          { "value": "sidebar-right", "label": "Right"}
+        ],
+        "label": "Sidebar position"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "type": "page",
+            "id": "page",
+            "label": "Page"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Collection Title"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Collection Link"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Collection Image"
+          }
+          
+        ]
+      }
+    ]
+  }
+{% endschema %}

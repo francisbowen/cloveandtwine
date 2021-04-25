@@ -1,0 +1,10 @@
+<li class="product-single__thumbnails-item">
+  <a
+    href="{{ image.src | img_url: product_image_size }}"
+    class="text-link product-single__thumbnail product-single__thumbnail--{{ product.id }}"
+    {% for variant in image.variants limit: 1 %}
+{%- include 'bold-variant' with variant, hide_action: 'skip' -%}data-varattach="{{ variant.id }}" data-sectionid="{{ product.id }}"{% endfor %}
+    {% if enable_zoom %}data-zoom="{{ image.src | img_url: product_image_zoom_size }}"{% endif %}
+    style="background-image:url({{ image.src | img_url: product_thumb_size }});">
+  </a>
+</li>

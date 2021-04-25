@@ -1,0 +1,225 @@
+<div class="full-width">
+  <div class="container">
+    <div class="row">
+      <article class="col-lg-30 offset-lg-15 col-md-40 offset-md-10">
+        <div class="rte">
+          {%- assign start_title = page.content | slice: 0, 3 -%}
+          {% if start_title contains 'h1' %}
+            {%- assign page_title = page.content | split: '</h1>' -%}
+            {{ page_title[1] }}
+          {% else %}
+            {{ page.content }}
+          {% endif %}
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+{% for block in section.blocks %}
+  {% case block.type %}
+    {% when 'heading_row' %}
+      <div class="full-width full-{{ block.type }}">
+        <div class="container fulfil-container">
+          <div class="row row-{{ block.type }} align-items-center">
+            <div class="col-lg-20 col-md-30 img-with-text {% if block.settings.image_side =='right' %}push-md-40{% else %}{% endif %}">
+              <img src="{{ block.settings.image | img_url: '650x' }}" alt="{{ block.settings.image.alt }}" />
+            </div>
+            <div class="col-lg-40 col-md-30{% if block.settings.image_side =='right' %} pull-lg-20 pull-md-30{% endif %} text-left rte">
+              {% if block.settings.subtitle != blank %}
+                <h4>{{ block.settings.subtitle }}</h4>
+              {% endif %}
+              {{ block.settings.content }}
+              <div class=" Fulfilment-wrap text-left">
+              {{ block.settings.content_html }}
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+          {% when 'packaging' %}
+        <div class="container-fluid">
+          <div class="row">            
+            <div class="col-md-40 offset-md-10 text-center">
+              <h3>{{ block.settings.title }}</h3>
+              {{ block.settings.content }}
+              <div class="col-md-60 stores-wrap text-left">
+              {{ block.settings.html }}
+            </div>
+          </div>
+          </div>
+        </div>
+     
+  {% when 'half_background_image' %}
+     <div class="full-width full-{{ block.type }}">
+      <div class="container-fluid">
+      <div class="row">
+      <div class="col-md-30 no-padding ">
+        <div class="about-img" style="background-image: url({{ block.settings.image | img_url: '1500x' }});"></div>
+     </div>
+       <div class=" col-md-30 no-padding">
+      <div class="about-img" style="background-image: url({{ block.settings.image_one | img_url: '1500x' }});"></div>
+   </div>
+  </div>
+</div>
+</div>
+<div id="scroll-down">
+   {% when 'custom-block' %}
+     <div class="quotes-custom-block text-center">
+        <div class="inner custom--{{ block.id }}">
+                 {% if block.settings.title != blank %}
+                <h3>{{ block.settings.title }}</h3>
+              {% endif %}             
+           </div>
+          </div>
+      </div>
+   {% when 'join-us-section' %}
+    <div class="join-us-section text-center">
+        <div class="inner join-us-section join--{{ block.id }} col-md-30 offset-md-15 ">
+                 {% if block.settings.title != blank %}
+                <h3>{{ block.settings.title }}</h3>
+              {% endif %}
+              {% if block.settings.join-us-content %}
+              {{ block.settings.join-us-content }}
+              {% endif %}
+            {% if block.settings.linktext != blank %}
+              <a href="#questionpop" class="btn product-btn-popup popup-with-form fulfil-btn">{{ block.settings.linktext }}</a>
+          {% endif %}
+            <div id="questionpop" class="mfp-hide white-popup-block ">
+            {% include 'question-form'%}
+          </div>
+          </div>
+       </div>
+  {% when 'two_item_block' %}
+  <div class="two-items four-items text-center container " >
+    <div class="row">
+          <div class="col-md-30 image-block-item block-row-content">
+              <h3>{{ block.settings.title_one }}</h3>
+                {{ block.settings.text_one }}
+                 </div>
+                 <div class="col-md-30 image-block-item block-row-content">
+              <h3>{{ block.settings.title_two }}</h3>
+                {{ block.settings.text_two }}
+                 </div>
+            </div>
+          </div>
+  {% endcase %}
+
+{% endfor %}
+      
+{% if section.blocks.size == 0 %}
+<div class="full-width">
+  <div class="container about-container">
+    <div class="row row-{{ block.type }}{% if block.type == 'heading_row' %} align-items-center{% endif %}">
+      {% include 'no-blocks' %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% schema %}
+
+  {
+    "name": "Fulfilment",
+    "blocks": [
+      {
+        "type": "heading_row",
+        "name": "Image/Short Text",
+        "settings": [
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+          },
+           {
+            "type": "html",
+            "id": "content_html",
+            "label": "html"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "radio",
+            "id": "image_side",
+            "label": "Image side",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "custom-block",
+        "name": "Custom Block",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          }
+        ]
+      },
+      {
+        "type": "join-us-section",
+        "name": "Join Us",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "join-us-content",
+            "label": "text"
+          },
+        {
+          "id": "linktext",
+          "type": "text",
+          "label": "Button text",
+          "default": "Click here"
+        }
+        ]
+      },
+      
+      {
+        "type": "half_background_image",
+        "name": "Half image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Background Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_one",
+            "label": "Background Image"
+          }
+        
+        ]
+      }
+
+    ]
+  }
+{% endschema %}

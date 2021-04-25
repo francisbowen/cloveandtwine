@@ -1,0 +1,143 @@
+
+<div class="container">
+  {% if section.settings.title != blank %}
+    <div class="section-header text-center">
+      <h4 class="h2">{{ section.settings.title | escape }}</h4>
+    </div>
+  {% endif %}
+  <div class="custom-content-wrap">
+  <div class="row">
+    {% for block in section.blocks %}
+      {% case block.settings.width %}
+        {% when '25%' %}
+          {%- assign block_width = 'col-md-15 col-sm-30' -%}
+          {%- assign image_size = '620x' -%}
+        {% when '33%' %}
+          {%- assign block_width = 'col-md-20 col-sm-30' -%}
+          {%- assign image_size = '660x' -%}
+        {% when '50%' %}
+          {%- assign block_width = 'col-sm-30' -%}
+          {%- assign image_size = '900x' -%}
+        {% when '66%' %}
+          {%- assign block_width = 'col-md-40' -%}
+          {%- assign image_size = '1100x' -%}
+        {% when '75%' %}
+          {%- assign block_width = 'col-md-45' -%}
+          {%- assign image_size = '1230x' -%}
+        {% when '100%' %}
+          {%- assign block_width = 'col-md-60' -%}
+          {%- assign image_size = '1500x' -%}
+      {% endcase %}
+      <div class="{{ block_width }} {% if block.settings.alignment %}{{ block.settings.alignment }}{% endif %}" {{ block.shopify_attributes }}>
+        <div class="custom__item-inner custom__item-inner--{{ block.type }}">
+          {% case block.type %}
+
+            {% when 'image' %}
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | img_url: image_size, crop: 'top' | img_tag }}
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+
+            {% when 'text' %}
+              <div class="medium-up--text-{{ block.settings.align_text }}">
+                {% capture subhead %}
+                  {% if block.settings.subheading != blank %}
+                    <p class="title">{{ block.settings.subheading }}</p>
+                  {% endif %}
+                {% endcapture %}
+                {% if block.settings.position == 'above' %}
+                  {{ subhead }}
+                {% endif %}
+                {% if block.settings.title != blank %}
+                  <h4 class="h5">{{ block.settings.title | escape }}</h4>
+                {% endif %}
+                {% if block.settings.position == 'below' %}
+                  {{ subhead }}
+                {% endif %}
+                {% if block.settings.text != blank %}
+                  <div class="rte-setting">{{ block.settings.text }}</div>
+                {% endif %}
+                {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+                  <a href="{{ block.settings.button_link }}" class="btn {% unless section.settings.background != blank %}btn--secondary{% endunless %}">{{ block.settings.button_text }}</a>
+                {% endif %}
+              </div>
+
+            {% when 'video' %}
+              <div class="video-wrapper">
+                {% if block.settings.video_url == blank %}
+                  <iframe src="//www.youtube.com/embed/_9VUPq3SxOc?rel=0&showinfo=0&vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+                {% else %}
+                  {% if block.settings.video_url.type == "youtube" %}
+                    <iframe src="//www.youtube.com/embed/{{ block.settings.video_url.id }}?rel=0&showinfo=0&vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+                  {% endif %}
+                  {% if block.settings.video_url.type == "vimeo" %}
+                    <iframe src="//player.vimeo.com/video/{{ block.settings.video_url.id }}?byline=0&portrait=0&badge=0" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+                  {% endif %}
+                {% endif %}
+              </div>
+
+            {% when 'product' %}
+              {%- assign product = all_products[block.settings.product] -%}
+              {% if product.title.size > 0 %}
+                {% include 'product-card-grid', grid_image_width: image_size %}
+              {% else %}
+                {% comment %}
+                  No product yet. Show onboarding one.
+                {% endcomment %}
+                <div class="grid-view-item">
+                  <a class="grid-view-item__link" href="#">
+                    <div class="grid-view-item__image">
+                      {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                      {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                    <div class="h4 grid-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+                    <div class="grid-view-item__meta">
+                      {{ 1999 | money }}
+                    </div>
+                  </a>
+                </div>
+              {% endif %}
+
+            {% when 'collection' %}
+              {%- assign collection = collections[block.settings.collection] -%}
+              {% include 'collection-grid-item', collection_image_size: image_size %}
+
+            {% when 'html' %}
+              {% if block.settings.code != blank %}
+                {{ block.settings.code }}
+              {% endif %}
+
+            {% when 'hr' %}
+              <hr />
+
+          {% endcase %}
+        </div>
+      </div>
+
+    {% endfor %}
+  </div>
+</div>
+  {% if section.blocks.size == 0 %}
+    {% include 'no-blocks' %}
+  {% endif %}
+</div>
+<style>
+  {% if section.settings.background != blank %}
+    #shopify-section-{{ section.id }} {
+      background: {{ section.settings.background }};
+    }
+  {% endif %}
+
+  {% if section.settings.extra_padding == 'large' %}
+    #shopify-section-{{ section.id }} .custom__item-inner {
+      padding: 6%;
+    }
+  {% endif %}
+
+  {% if section.settings.extra_padding == 'xlarge' %}
+    #shopify-section-{{ section.id }} .custom__item-inner {
+      padding: 12%;
+    }
+  {% endif %}
+</style>

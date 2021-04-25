@@ -1,0 +1,427 @@
+{% if section.settings.text_alignment == 'left' %}
+  {%- assign text-alignment = 'text-left' -%}
+{% endif %}
+{% if section.settings.text_alignment == 'center' %}
+  {%- assign text-alignment = 'text-center' -%}
+  {% endif %}
+{% if section.settings.text_alignment == 'right' %}
+  {%- assign text-alignment = 'text-right' -%}
+{% endif %}
+<div class="{{ section.settings.contained }}">
+  {% if section.settings.form_title != blank %}
+    <div class="section-header {{ text-alignment }}">
+      <h4 class="h2 form-title">{{ section.settings.form_title | escape }}</h4>
+    </div>
+  {% endif %}
+<div class="custom__item-inner">
+   <form class="integro" novalidate>
+    <input name="emailget" type="hidden" value="{{section.settings.emailget}}">
+    <input name="pagetitle" type="hidden" value="{{page.title}}"> 
+    <input name="shop" type="hidden" value="{{shop.domain}}">
+    {% if settings.appkey %}
+    	<input name="appkey" type="hidden" value="{{settings.appkey}}">     
+    {%endif%}
+    {% if section.settings.proform %}
+		<input name="proform" type="hidden" value="yes">
+    {% endif %}
+     {%if settings.aprovecodes %}
+     	<input name="approvedcodes" type="hidden" value="{{settings.aprovecodes}}">
+     {% endif %}
+  <div class="row" data-section-id="{{ section.id }}">
+        {% for block in section.blocks %}
+        {% assign background_color = block.settings.background_color %}
+        {% assign color = block.settings.color %}
+        {% assign font_size = block.settings.font_size %}
+        {% assign padding = block.settings.padding -%}
+
+          {% case block.settings.field_width %}
+            {% when '1' %}
+              {%- assign field-width = 'col-md-60' -%}
+            {% when '2' %}
+              {%- assign field-width = 'col-lg-30 col-md-30' -%}
+            {% when '3' %}
+              {%- assign field-width = 'col-lg-20 col-md-30' -%}
+            {% when '3-2' %}
+              {%- assign field-width = 'col-lg-40 col-md-30' -%}
+            {% when '4' %}
+              {%- assign field-width = 'col-lg-15 col-md-30' -%}
+            {% when '4-3' %}
+              {%- assign field-width = 'col-lg-45 col-md-30' -%}
+          {% endcase %}
+
+          {% case block.settings.field_height %}
+            {% when 'small' %}
+              {%- assign field-height = ' form-control-sm' -%}
+            {% when 'default' %}
+              {%- assign field-height = '' -%}
+            {% when 'large' %}
+              {%- assign field-height = ' form-control-lg' -%}
+          {% endcase %}
+
+
+          {% case block.settings.text_alignment %}
+            {% when 'left' %}
+              {%- assign text-alignment = 'text-left' -%}
+              {%- assign content-position = '' -%}
+
+            {% when 'center' %}
+              {%- assign text-alignment = 'text-center' -%}
+              {%- assign content-position = 'm-auto' -%}
+            {% when 'right' %}
+              {%- assign text-alignment = 'text-right' -%}
+              {%- assign content-position = 'float-right' -%}
+          {% endcase %}
+
+          {% if block.settings.input_text != blank %}
+            {% assign name = block.settings.input_text | handleize %}
+            {% else %}
+              {% if block.settings.input_label != blank %}
+                {% assign name = block.settings.input_label | handleize | append: "-" | append: block.id %}
+                {% elsif block.settings.input_placeholder != blank  %}
+                  {% assign name = block.settings.input_placeholder | handleize | append: "-" | append: block.id %}
+                {% else %}
+                {% assign name =  "field-" | append: block.id  %}
+              {% endif %}
+          {% endif %}
+
+        {% case block.type %}
+         {% when 'heading' %}
+          {% assign field_type = 'heading' %}
+         {% include 'form-divider' %}
+
+        {% when 'textinput' %}
+         {% assign field_type = 'text' %}
+         {% include 'form-field' %}
+
+        {% when 'prependtextinut' %}
+         {% assign field_type = 'text' %}
+         {% include 'form-field' %}
+
+        {% when 'appenededtextinut' %}
+          {% assign field_type = 'text' %}
+          {% include 'form-field' %}
+
+        {% when 'paragraphtext' %}
+        {% assign field_type = 'text' %}
+         {% include 'form-field' %}
+
+        {% when 'image' %}
+         {% assign field_type = 'file' %}
+         {% include 'form-field' %}
+
+         {% when 'address' %}
+         {% assign field_type = 'address' %}
+
+          {% for num in (1..6) %}
+             {% assign input_text =  'input_text' | append: num  %}
+            {% assign show_field =  'show_field' | append: num  %}
+            {% assign field_width =  'field_width' | append: num %}
+            {% assign input_label =  'input_label' | append: num %}
+            {% assign input_required =  'input_required' | append: num %}
+            {% assign input_placeholder =  'input_placeholder' | append: num %}
+            {% assign field_height =  'field_height' | append: num %}
+           
+            {% if block.settings[input_text] != blank %}
+              {% assign name = block.settings[input_text] | handleize %}
+              {% else %}
+                {% if block.settings[input_label] != blank %}
+                  {% assign name = block.settings[input_label] | handleize %}
+                  {% elsif block.settings[input_placeholder] != blank  %}
+                    {% assign name = block.settings[input_placeholder] | handleize %}
+                  {% else %}
+                  {% assign name =  field_type | append: "-" | append: forloop.index  %}
+                {% endif %}
+           {% endif %} 
+            {% case block.settings[field_height] %}
+            {% when 'small' %}
+              {%- assign field-height = ' form-control-sm' -%}
+            {% when 'default' %}
+              {%- assign field-height = '' -%}
+            {% when 'large' %}
+              {%- assign field-height = ' form-control-lg' -%}
+          {% endcase %}
+        
+         {% case block.settings[field_width] %}
+            {% when '1' %}
+              {%- assign field-width = 'col-md-60' -%}
+            {% when '2' %}
+              {%- assign field-width = 'col-lg-30 col-md-30' -%}
+            {% when '3' %}
+              {%- assign field-width = 'col-lg-20 col-md-30' -%}
+            {% when '3-2' %}
+              {%- assign field-width = 'col-lg-40 col-md-30' -%}
+            {% when '4' %}
+              {%- assign field-width = 'col-lg-15 col-md-30' -%}
+            {% when '4-3' %}
+              {%- assign field-width = 'col-lg-45 col-md-30' -%}
+          {% endcase %}
+            {% if block.settings[show_field] %}
+            
+              <div class="{{ field-width }} {% if block.settings.condition != blank %} {{ block.settings.field | handleize}}-{{ block.settings.match | handleize}} hidden {% endif %}">
+                 <div class="form-group form-group-{{forloop.index}}">
+                  <label class="control-label " for="{{ name }}">{{ block.settings[input_label]}}{% if block.settings[input_required] != blank %}*{% endif %}</label>
+                  <input id="{{ name }}" data-name="{{ name }}" name="array[{{ name }}]" type="text" placeholder="{{ block.settings[input_placeholder] }}" class="form-control{{ field-height }}" {% if block.settings[input_required] != blank %} required {% endif %}>
+                </div>
+            </div>
+            {% endif %}
+           {% endfor %}
+            
+
+         {% when 'customhtml' %}
+         {% assign field_type = 'html' %}
+         {% include 'form-divider' %}
+
+
+         {% when 'divider' %}
+           {% assign field_type = 'divider' %}
+         {% include 'form-divider' %}
+        {% when 'dropdown' %}
+          {% assign field_type = 'select' %}
+          {% include 'form-field' %}
+
+
+         {% when 'button' %}
+          {% include 'form-button' %}
+        {% when 'checkbox' %}
+        {% assign field_type = 'checkbox' %}
+         {% include 'form-field' %}
+      {% when 'radio' %}
+        {% assign field_type = 'radio' %}
+        {% include 'form-field' %}
+        {% endcase %}
+
+  {% endfor %}
+<div class="col-md-60">
+    <input type="submit" id="formsubmit" class="btn" value="{{section.settings.submitmsg}}">
+    <input type="submit" id="formwaiting" class="btn" value="{{section.settings.submittingmsg}}" style="display:none;">
+    <input type="submit" id="formsuccess" class="btn" value="{{section.settings.successmsg}}" style="display:none;">
+    <button type="submit" class="btn zapsubmit" style="display:none;"></button>  
+  <br/><br/><br/>
+  </div>
+     </div>
+</form>
+</div>
+</div>
+
+<style>
+  {% if section.settings.background != blank %}
+    #shopify-section-{{ section.id }} {
+      background: {{ section.settings.background }};
+    }
+  {% endif %}
+  
+  {% if section.settings.extra_padding == 'large' %}
+    #shopify-section-{{ section.id }} .custom__item-inner {
+      padding: 6%;
+    }
+  {% endif %}
+  {% if section.settings.extra_padding == 'xlarge' %}
+    #shopify-section-{{ section.id }} .custom__item-inner {
+      padding: 12%;
+    }
+  {% endif %}
+{% if section.settings.font_size != blank %}
+   #shopify-section-{{ section.id }} .form-group label
+    {
+      {% if section.settings.color != blank %}
+        color: {{ section.settings.color }};
+      {% endif %}
+      font-size:{{ section.settings.font_size }}px;
+    }
+{% endif %}
+{% if section.settings.append_color != blank %}
+    #shopify-section-{{ section.id }} .input-group-addon{
+      color: {{ section.settings.append_color }};
+    }
+  {% endif %}
+{% if section.settings.append_background_color != blank %}
+    #shopify-section-{{ section.id }} .input-group-addon{
+      background: {{ section.settings.append_background_color }};
+    }
+  {% endif %}
+  .hidden{
+  display:none;
+  }
+   #shopify-section-{{ section.id }} .form-title {
+    color:{{ section.settings.form_title_color }};
+  }
+   #shopify-section-{{ section.id }} .prepend
+  {
+    display: flex;
+  }
+.form-vertical input.hide,
+  .form-vertical select.hide,
+  .form-vertical textarea.hide {
+    display: none;
+  }
+  .btn.uploaded {
+    background-color: #fff;
+    color: #3d4246;
+    border-color: #e8e9eb;
+    display: block;
+  }
+  /* entire container, keeps perspective */
+  .flip-container {
+    perspective: 1000px;
+  }
+  .flip-container.flipped .flipper {
+    transform: rotateY(180deg);
+  }
+  .flip-container.flipped-ie11 .flipper {
+    transform: rotateY(0);
+  }
+  .flip-container,
+  .front,
+  .back {
+    width: 100%;
+    height: 1250px;
+    background: #FFF;
+  }
+  .flipper {
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+  }
+  .front,
+  .back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .front {
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+  .flip-container.flipped-ie11 .front {
+    display: none;
+  }
+  .back {
+    transform: rotateY(180deg);
+  }
+  .flip-container.flipped-ie11 .back {
+    transform: rotateY(0);
+  }
+  .error {
+    background: #c00;
+    color: #FFF !important;
+    text-align: center;
+    padding: 5px 15px;
+  }
+  .zapsubmit {
+    position: relative;
+  }
+  .zapsubmit.spinning {
+      padding-right: 40px;
+  }
+  .zapsubmit.spinning:after {
+    content: '';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    width: 0;
+    height: 0;
+    box-shadow: 0px 0px 0 1px #FFFFFF;
+    border-radius: 50%;
+    animation: rotate360 .5s infinite linear, exist .1s forwards ease;
+  }
+  .zapsubmit.spinning:before {
+    content: "";
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    right: 6px;
+    top: 50%;
+    border: 2px #FFFFFF;
+    border-right: 3px solid #2d2d2d;
+    animation: rotate360 .5s infinite linear, exist .1s forwards ease ;
+  }
+  @keyframes rotate360 { 
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes exist { 
+    100% {
+      width: 15px;
+      height: 15px;
+      margin: -8px 5px 0 0;
+    }
+  }
+  {% if section.settings.labelhide %}
+  .control-label {display:none !important;}
+  {% endif %}
+</style>
+
+<script>  
+
+  function inputRequiredLoad() {
+    var fail = false;
+    var fail_log = '';
+    var name;
+
+    console.log('inputRequiredLoad');
+
+    $('form.integro').find( 'select, textarea, input' ).each(function(){
+      if( ! $( this ).prop( 'required' )){
+      } else {        
+        if ( ! $( this ).val() ) {
+          if ($( this ).parents('.hidden ').length) {
+          } else {
+            fail = true;
+            name = $( this ).attr( 'data-name' );
+            fail_log += name + " is required \n";
+          }
+        } else {
+          var placeholdervalue = $(this).attr('data-placepolder-value');
+          console.log('placeholdervalue = ',placeholdervalue);
+          console.log(' $(this).value = ',  $(this).val());
+          if (placeholdervalue == $(this).val()) {
+            fail = true;
+            name = $( this ).attr( 'data-name' );
+            fail_log += name + " is required \n";
+          }
+        }
+      }
+    });
+
+    //submit if fail never got set to true
+    if ( ! fail ) {
+        //process form here.
+      return true;
+    } else {
+      alert( fail_log );
+      return false;
+    }
+  }
+
+  $('form.integro').on('submit',function(e){
+    e.preventDefault();
+
+    if (!inputRequiredLoad())
+      return;
+
+    $('#formsubmit').hide();
+    $('#formwaiting').show();
+    var $error = $(this).closest('.form-vertical').find('.error'),
+        integro_url = '{{section.settings.submiturl}}';
+    $error.hide().text('');
+    $.ajax({
+    	type: "POST",
+      	url: integro_url,
+      	data: $(this).serialize(),
+      	success: function(data) {
+          if(data) {
+            $('#formwaiting').hide();
+        	$('#formsuccess').show();
+          }
+      	},
+      	fail: function(jqXHR, textStatus) {
+        	console.log(jqXHR + ' -- ' +textStatus);
+        	$loadingbtn.removeClass('spinning');
+        	alert('Process failed, please reload the page and try again');
+      	}
+    });
+  });
+</script>

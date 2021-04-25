@@ -1,0 +1,228 @@
+{% if section.settings.related_featured or section.settings.related_tag or section.settings.related_recent  %}
+ <div class="page-wrap">
+  <div class="container related-item">
+    {% unless forloop.last %}<div class="hr-bar"></div>{% endunless %}
+        {% unless forloop.last %}<div class="hr-bar"></div>{% endunless %}
+    <div class="row products-related ">
+        {% if section.settings.related_tag %}
+        {%- assign number_of_products = 4 -%}
+        {%- assign number_of_products_to_fetch = number_of_products | plus: 1 -%}
+
+        {% if collection == null or collection.handle == 'frontpage' or collection.handle == 'all' or collection.handle == 'best-sellers' or collection.handle == 'best-sellers-for-export' or collection.handle == 'csv2' or collection.handle == 'csvfeed' or collection.handle == 'everything-except-kanken' or collection.handle == 'facebook-feed' or collection.handle == 'fathers-day' or collection.handle == 'summer-2016-collection' or collection.handle == 'sku-and-id' or collection.handle == 'tax-clothing' or collection.handle == 'ny-exemptions' or collection.handle == 'new' or collection.handle == 'labor-day-sale' or collection.handle == 'ny-tax' %}
+          {%- assign found_a_collection = false -%}
+          {% for c in product.collections %}
+            {% if found_a_collection == false and c.handle != 'frontpage' and c.handle != 'all' and c.handle != 'best-sellers' and c.handle != 'best-sellers-for-export' and c.handle != 'csv2' and c.handle != 'csvfeed' and c.handle != 'everything-except-kanken' and c.handle != 'facebook-feed' and c.handle != 'fathers-day' and c.handle != 'summer-2016-collection' and c.handle != 'sku-and-id' and c.handle != 'tax-clothing' and c.handle != 'ny-exemptions' and c.handle != 'new' and c.handle != 'labor-day-sale' and c.handle != 'ny-tax' and c.all_products_count > 1 %}
+              {%- assign found_a_collection = true -%}
+              {%- assign collection_related_second = c -%}
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          {%- assign collection_related_second = collection -%}
+        {% endif %}
+
+        {% if collection_related_second and collection_related_second.products_count > 1 %}
+      <!-- {{ collection_related_second.handle }} -->
+
+          <div class="related-single__row col" data-tabtype="Related">
+            <div class="row">
+              {%- assign current_product = product -%}
+              {%- assign current_product_found = false -%}
+              {% for product in collection_related_second.products limit: number_of_products_to_fetch %}
+{%- include 'bold-product' with product, hide_action: 'skip' -%}
+                {% if product.handle == current_product.handle %}
+                  {%- assign current_product_found = true -%}
+                {% else %}
+                  {% unless current_product_found == false and forloop.last %}
+                    <div class="col-md-14 ">
+                      {% include 'product-card-grid', grid_image_width: '250x' %}
+                    </div>
+                  {% endunless %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+        {% endif %}
+      {% endif %}
+
+      {% if section.settings.related_featured %}
+        <div class="related-single__row col" data-tabtype="Featured">
+          <div class="row">
+            {%- assign collection_related = collections[section.settings.related_collection] -%}
+            {% for product in collection_related.products limit:4 %}
+{%- include 'bold-product' with product, hide_action: 'skip' -%}
+              <div class="col-md-15 half-columns ">
+                {% include 'product-card-grid', grid_image_width: '250x' %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    
+      {% if section.settings.related_recent %}
+        <div class="related-single__row col" data-tabtype="Recently Viewed">
+          <div id="recently-viewed-products" class="collection clearfix row" style="display:none"></div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if section.settings.related_recent %}
+      <script>
+        Shopify.handleize = function (str) {
+          return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
+        }
+        Shopify.variantcontain = function (str,comp) {
+          return ~str.indexOf(comp)
+        }
+      </script>
+      {{ '//ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js' | script_tag }}
+      {{ 'jquery.products.min.js' | asset_url | script_tag }}
+      <script id="recently-viewed-product-template"  type="text/x-jquery-tmpl">
+        {% raw %}
+          <div class="col-md-15">
+            <div class="grid-view-item product-item{{if !available}} product-price--sold-out grid-view-item--sold-out{{/if}}">
+              <a class="grid-view-item__link animsition-link" href="${url}">
+                <div class="product-top">
+                <div class="grid-view-item__image" style="background-image:url(${Shopify.Products.resizeImage(images[1], "600x")})" alt="${title}">
+             <div class="action">
+                  <p class="btn-hover btn" type="button" onclick="window.location.href='/products/waxed-canvas-travel-backpack'"><span data-translate="products.product.select_options">Customize It</span></p>
+                </div>
+                </div>
+              </div>
+                {% endraw %}
+                {% if section.settings.show_vendor %}
+                  {% raw %}<div class="grid-view-item__vendor">${vendor}</div>{% endraw %}
+                {% endif %}
+                {% raw %}
+                <div class="grid-view-item__meta">
+                  {{if compare_at_price > price}}
+                    {{if price_varies}}
+                      <span class="visually-hidden">Regular price</span>
+                      <s class="product-price__price">${Shopify.formatMoney(compare_at_price)}</s>
+                      <span class="product-price__price product-price__sale">
+                        <span class="product-price__price">${Shopify.formatMoney(price)}</span>
+                        <span class="product-price__sale-label">Sale</span>
+                      </span>
+                    {{else}}
+                      <span class="visually-hidden">Regular price</span>
+                      <s class="product-price__price">${Shopify.formatMoney(compare_at_price)}</s>
+                      <span class="product-price__price product-price__sale">
+                        ${Shopify.formatMoney(price)}
+                        <span class="product-price__sale-label">Sale</span>
+                      </span>
+                    {{/if}}
+                  {{else}}
+
+                    {{if price_varies}}
+                      <span class="product-price__price">${Shopify.formatMoney(price)}</span>
+                    {{else}}
+                      <span class="visually-hidden">Regular price</span>
+                      <span class="product-price__price">${Shopify.formatMoney(price)}</span>
+                    {{/if}}
+                  {{/if}}
+
+                  {{if !available}}
+                    <span class="product-price__sold-out">Sold Out</span>
+                  {{/if}}
+                </div>
+                                <div class="h4 grid-view-item__title">${title}</div>
+
+              </a>
+            </div>
+          </div>
+        {% endraw %}
+      </script>
+      <script>
+        Shopify.Products.recordRecentlyViewed();
+        Shopify.Products.showRecentlyViewed( { howManyToShow: 4, onComplete: function(){ } } );
+        $(document).ready(function(){
+          var e=0;
+          function recent_check(){var i=[];var j=$.cookie('shopify_recently_viewed');if(j!==null){i=j.split(" ")}return i}
+          function moveAlong(i){
+            e++;
+            if (i.length && e <= 4) {
+              var request = i.shift(),
+                  temp = request,
+                  params = {
+                    dataType:"json",
+                    url:"/products/"+ temp +".js",
+                    cache:false,
+                    success:function(e){
+                      var json_string = JSON.stringify(e);
+                      $('body').append('<script type="application/json" id="ProductJson-'+ e.id +'">'+ json_string +'<\/script>');
+                      moveAlong(i);
+                    },
+                    error: function(jqXHR, status, err) {
+                      console.log(jqXHR);
+                      console.log(status);
+                      console.log(err);
+                      moveAlong(i);
+                    }
+                  };
+              $.ajax(params);
+            }
+          }
+          moveAlong(recent_check());
+        });
+      </script>
+    {% endif %}
+</div>
+  </div>
+{% endif %}
+
+{% javascript %}
+  $(document).ready(function(){
+    $('.products-related').slick({
+      infinite: false,
+      arrows: false,
+      dots: true,
+      fade: true,
+      customPaging : function(slider, i) {
+        var tabtype = $(slider.$slides[i]).data('tabtype');
+        return '<a class="btn btn--secondary">'+tabtype+'</a>';
+      }
+    });
+  });
+
+
+{% endjavascript %}
+
+{% schema %}
+  {
+    "name": "Related/Featured/Recent",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Related Products - Featured"
+      },
+      {
+        "type": "checkbox",
+        "id": "related_featured",
+        "label": "Enable featured block?"
+      },
+      {
+        "type": "collection",
+        "id": "related_collection",
+        "label": "Featured collection"
+      },
+      {
+        "type": "header",
+        "content": "Related Products - Related"
+      },
+      {
+        "type": "checkbox",
+        "id": "related_tag",
+        "label": "Enable related block?"
+      },
+      {
+        "type": "header",
+        "content": "Related Products - Recent"
+      },
+      {
+        "type": "checkbox",
+        "id": "related_recent",
+        "label": "Enable recently viewed block?"
+      }
+    ]
+  }
+{% endschema %}

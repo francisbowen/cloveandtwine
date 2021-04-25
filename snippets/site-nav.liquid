@@ -1,0 +1,88 @@
+<ul class="site-nav list--inline {{ nav_alignment }} jetmenu" id="SiteNav">
+  {% for link in linklists[settings.main_linklist].links %}
+    {%- assign child_list_handle = link.title | handleize -%}
+
+    {% if settings.megamenu1 == link.title %}
+      <li class="{% if link.active %} site-nav--active active{% endif %}">
+        <a href="{{ link.url }}" class="site-nav__link site-nav__link--main animsition-link" aria-has-popup="true" aria-expanded="false" aria-controls="SiteNavLabel-{{ child_list_handle }}">
+          <span>{{ link.title }}</span>
+          {% include 'icon-chevron-down' %}
+          <span class="visually-hidden">{{ 'layout.navigation.expand' | t }}</span>
+        </a>
+        {% section 'megamenu1' %}
+      </li>
+    
+    {% elsif settings.megamenu2 == link.title %}
+      <li class="{% if link.active %} site-nav--active active{% endif %}">
+        <a href="{{ link.url }}" class="site-nav__link site-nav__link--main animsition-link" aria-has-popup="true" aria-expanded="false" aria-controls="SiteNavLabel-{{ child_list_handle }}">
+          <span>{{ link.title }}</span>
+          {% include 'icon-chevron-down' %}
+          <span class="visually-hidden">{{ 'layout.navigation.expand' | t }}</span>
+        </a>
+        {% section 'megamenu2' %}
+      </li>
+    
+    {% elsif settings.megamenu3 == link.title %}
+      <li class="{% if link.active %} site-nav--active active{% endif %}">
+        <a href="{{ link.url }}" class="site-nav__link site-nav__link--main animsition-link" aria-has-popup="true" aria-expanded="false" aria-controls="SiteNavLabel-{{ child_list_handle }}">
+          <span>{{ link.title }}</span>
+          {% include 'icon-chevron-down' %}
+          <span class="visually-hidden">{{ 'layout.navigation.expand' | t }}</span>
+        </a>
+        {% section 'megamenu3' %}
+      </li>
+    
+    {% elsif settings.megamenu4 == link.title %}
+      <li class="{% if link.active %} site-nav--active active{% endif %}">
+        <a href="{{ link.url }}" class="site-nav__link site-nav__link--main animsition-link" aria-has-popup="true" aria-expanded="false" aria-controls="SiteNavLabel-{{ child_list_handle }}">
+          <span>{{ link.title }}</span>
+          {% include 'icon-chevron-down' %}
+          <span class="visually-hidden">{{ 'layout.navigation.expand' | t }}</span>
+        </a>
+        {% section 'megamenu4' %}
+      </li>
+    
+    {% elsif settings.megamenu5 == link.title %}
+      <li class="{% if link.active %} site-nav--active active{% endif %}">
+        <a href="{{ link.url }}" class="site-nav__link site-nav__link--main animsition-link" aria-has-popup="true" aria-expanded="false" aria-controls="SiteNavLabel-{{ child_list_handle }}">
+         <span> {{ link.title }}</span>
+          {% include 'icon-chevron-down' %}
+          <span class="visually-hidden">{{ 'layout.navigation.expand' | t }}</span>
+        </a>
+        {% section 'megamenu5' %}
+      </li>
+    
+    {% elsif settings.megamenu6 == link.title %}
+      <li class="{% if link.active %} site-nav--active active{% endif %}">
+        <a href="{{ link.url }}" class="site-nav__link site-nav__link--main animsition-link" aria-has-popup="true" aria-expanded="false" aria-controls="SiteNavLabel-{{ child_list_handle }}">
+         <span> {{ link.title }}</span>
+          {% include 'icon-chevron-down' %}
+          <span class="visually-hidden">{{ 'layout.navigation.expand' | t }}</span>
+        </a>
+        {% section 'megamenu6' %}
+      </li>
+    
+    {% elsif linklists[child_list_handle].links != blank %}
+      <li class="site-nav--has-dropdown{% if link.active %} site-nav--active active{% endif %}">
+        <a href="{{ link.url }}" class="site-nav__link site-nav__link--main animsition-link" aria-has-popup="true" aria-expanded="false" aria-controls="SiteNavLabel-{{ child_list_handle }}">
+          <span>{{ link.title }}</span>
+          {% include 'icon-chevron-down' %}
+          <span class="visually-hidden">{{ 'layout.navigation.expand' | t }}</span>
+        </a>
+
+        <ul class="dropdown">
+          {% for childlink in linklists[child_list_handle].links %}
+            <li {% if childlink.active %}class="site-nav--active"{% endif %}>
+              <a href="{{ childlink.url }}" class="site-nav__link site-nav__child-link animsition-link{% if forloop.last %} site-nav__link--last{% endif %}">{{ childlink.title | escape }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </li>
+
+    {% else %}
+      <li {% if link.active %}class="site-nav--active active"{% endif %}>
+        <a href="{{ link.url }}" class="site-nav__link site-nav__link--main animsition-link"><span>{{ link.title }}</span></a>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>

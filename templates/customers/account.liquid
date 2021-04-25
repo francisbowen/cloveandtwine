@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="section-header text-center">
+    <h1>{{ 'customer.account.title' | t }}</h1>
+    {{ 'layout.customer.log_out' | t | customer_logout_link }}
+  </div>
+
+  <div class="row">
+    <div class="col-md-40">
+      <h2>{{ 'customer.orders.title' | t }}</h2>
+
+      {% paginate customer.orders by 20 %}
+        {% if customer.orders.size != 0 %}
+
+          <table class="responsive-table">
+            <thead>
+              <tr>
+                <th>{{ 'customer.orders.order_number' | t }}</th>
+                <th>{{ 'customer.orders.date' | t }}</th>
+                <th>{{ 'customer.orders.payment_status' | t }}</th>
+                <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                <th>{{ 'customer.orders.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in customer.orders %}
+                <tr>
+                  <td data-label="{{ 'customer.orders.order_number' | t }}">
+                    <a href="{{ order.customer_url }}" class="btn btn--secondary btn--small">{{ order.name }}</a>
+                  </td>
+                  <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
+                  <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                  <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                  <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+        {% else %}
+
+          <p>{{ 'customer.orders.none' | t }}</p>
+
+        {% endif %}
+        {% if paginate.pages > 1 %}
+          {% include 'pagination' %}
+        {% endif %}
+      {% endpaginate %}
+      {%assign haskits = false%}
+      {% for metas in customer.metafields.kits %}{% if forloop.index >0%}{%assign haskits = true%}{%endif%}{%endfor%}
+      {%if haskits%}
+      <br/><br/>
+      <h2>Kit Builder Submissions</h2>
+                <table class="responsive-table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Order Number</th>
+                <th>Pre Tax & Ship Subtotal</th>
+                <th>Quantity</th>
+                <th>Item List</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for metas in customer.metafields.kits reversed%}
+                <tr>
+                {% assign mbit = metas.last | split: "::"%}
+                {% assign mitem = mbit[0] | split: ","%}
+              	{% for mpiece in mitem %}
+                  <td>{{mpiece}}</td>
+                {%endfor%}
+                  <td style="width:40%;">{{mbit[1]}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+      {%endif%}
+    </div>
+    <div class="col-md-20">
+      <h2>{{ 'customer.account.details' | t }}</h2>
+
+      {{ customer.default_address | format_address }}
+
+      <p><a href="/account/addresses" class="btn btn--small">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a></p>
+    </div>
+  </div>
+</div>

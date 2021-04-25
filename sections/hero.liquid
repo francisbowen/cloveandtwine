@@ -1,0 +1,288 @@
+<style>
+  {% unless section.settings.image == blank and section.settings.parallax_me %}
+    .hero--{{ section.id }} {
+      background-position: {{ section.settings.alignment }};
+    }
+
+    @media screen and (max-width: 150px) {
+      .hero--{{ section.id }} {
+        background-image: url('{{ section.settings.image | img_url: '150x150' }}');
+      }
+    }
+
+    @media screen and (min-width: 151px) and (max-width: 300px) {
+      .hero--{{ section.id }} {
+        background-image: url('{{ section.settings.image | img_url: '300x300' }}');
+      }
+    }
+
+    @media screen and (min-width: 301px) and (max-width: 600px) {
+      .hero--{{ section.id }} {
+        background-image: url('{{ section.settings.image | img_url: '600x600' }}');
+      }
+    }
+
+    @media screen and (min-width: 601px) and (max-width: 800px) {
+      .hero--{{ section.id }} {
+        background-image: url('{{ section.settings.image | img_url: '800x800' }}');
+      }
+    }
+
+    @media screen and (min-width: 801px) and (max-width: 1000px) {
+      .hero--{{ section.id }} {
+        background-image: url('{{ section.settings.image | img_url: '1000x1000' }}');
+      }
+    }
+
+    @media screen and (min-width: 1001px) {
+      .hero--{{ section.id }} {
+        background-image: url('{{ section.settings.image | img_url: '2000x2000' }}');
+      }
+    }
+  {% endunless %}
+
+  {% if section.settings.title_color %}
+    .hero--{{ section.id }} .hero__inner h2.mega-title {
+      color: {{ section.settings.title_color }};
+    }
+  {% endif %}
+
+  {% if section.settings.text_color %}
+    .hero--{{ section.id }} .hero__inner .mega-subtitle {
+      color: {{ section.settings.text_color }};
+    }
+  {% endif %}
+
+  {% unless section.settings.overlay %}
+    .animsition.finished .hero--{{ section.id }} .hero__overlay::before {
+      display: none;
+    }
+  {% endunless %}
+</style>
+
+<div class="{{ section.settings.contained }}">
+  <div class="hero hero--{{ section.id }} hero--{{ section.settings.hero_size }}{% if section.settings.title != blank or section.settings.text != blank or section.settings.button_label != blank %} hero__overlay{% endif %}">
+    {% if section.settings.image == blank %}
+      <div class="placeholder-background">
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {% endif %}
+    {% if section.settings.image != blank and section.settings.parallax_me %}
+      <img class="parallaxer" src="{{ section.settings.image | img_url: '1000x1000' }}" data-parallax='{"y" : {{ section.settings.parallax_sensitivity }}}' />
+    {% endif %}
+    <div class="hero__inner row">
+      <div class="col-md-30{% if section.settings.text_layout == 'center' %} offset-md-15{% elsif section.settings.text_layout == 'right' %} offset-md-30{% endif %} text-{{ section.settings.text_align }}">
+        {% if section.settings.title != blank %}
+          <h2 class="h1 mega-title{% if section.settings.text_size == 'large' %} mega-title--large{% endif %}">{{ section.settings.title | escape }}</h2>
+        {% endif %}
+        {% if section.settings.text != blank %}
+          <div class="rte-setting mega-subtitle{% if section.settings.text_size == 'large' %} mega-subtitle--large{% endif %}">{{ section.settings.text }}</div>
+        {% endif %}
+        {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+          <a href="{{ section.settings.button_link }}" class="btn hero__btn">
+            {{ section.settings.button_label }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Image with text overlay",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "radio",
+        "id": "contained",
+        "label": "Image should:",
+        "options": [
+          { "value": "container", "label": "Contstrain to container" },
+          { "value": "container-fluid", "label": "Flow to the width of screen" }
+        ],
+        "default": "container-fluid"
+      },
+      {
+        "type": "checkbox",
+        "id": "overlay",
+        "label": "Overlay image with color?",
+        "info": "Color and opacity found in 'General settings'",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "parallax_me",
+        "label": "Parallax the background?",
+        "info": "This will disable 'Image alignment' below"
+      },
+      {
+        "type": "select",
+        "id": "parallax_sensitivity",
+        "label": "Parallax sensitivity",
+        "default": "200",
+        "options": [
+          {
+            "value": "100",
+            "label": "low"
+          },
+          {
+            "value": "200",
+            "label": "normal"
+          },
+          {
+            "value": "300",
+            "label": "high"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "alignment",
+        "label": "Image alignment",
+        "default": "center",
+        "options": [
+          {
+            "value": "top",
+            "label": "Top"
+          },
+          {
+            "value": "center",
+            "label": "Middle"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Image with text overlay"
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "Heading color"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Use overlay text to give your customers insight into your brand. Select imagery and text that relates to your style and story.</p>"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Subheading color"
+      },
+      {
+        "type": "select",
+        "id": "hero_size",
+        "label": "Section height",
+        "default": "medium",
+        "options": [
+          {
+            "label": "Extra Small",
+            "value": "x-small"
+          },
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          },
+          {
+            "label": "Extra Large",
+            "value": "x-large"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "text_size",
+        "label": "Text size",
+        "default": "medium",
+        "options": [
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label"
+      },
+      {
+        "type": "text",
+        "id": "button_link",
+        "label": "Button link"
+      },
+      {
+        "type": "select",
+        "id": "text_layout",
+        "label": "Text Position",
+        "default": "center",
+        "options": [
+          {
+            "value": "left",
+            "label": "Text on Left"
+          },
+          {
+            "value": "center",
+            "label": "Text on Center"
+          },
+          {
+            "value": "right",
+            "label": "Text on right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "text_align",
+        "label": "Text Aligment",
+        "default": "center",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left Aligned Text"
+          },
+          {
+            "value": "center",
+            "label": "Center Aligned Text"
+          },
+          {
+            "value": "right",
+            "label": "Right Aligned Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image with text overlay",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}

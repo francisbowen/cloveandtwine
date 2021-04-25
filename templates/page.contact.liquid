@@ -1,0 +1,76 @@
+
+
+<div class="container">
+  <div class="contcat-form-wrap">
+  <div class="row">
+    <div class="col-md-60   ">
+      {%- assign start_title = page.content | slice: 0, 3 -%}
+      {% unless start_title contains 'h1' %}
+        <div class="section-header">
+        </div>
+      {% endunless %}
+
+     
+      <div class="contact-form form-vertical">
+        
+        {% form 'contact' %}
+
+          {% if form.posted_successfully? %}
+            <p class="note form-success">
+              {{ 'contact.form.post_success' | t }}
+            </p>
+          {% endif %}
+
+          {{ form.errors | default_errors }}
+
+          <div class="row">
+            <div class="col-md-40 contact-left-bar">
+               {% if page.content.size > 0 %}
+        <div class="rte" id="scroll-down">
+          {{ page.content }}
+          </div>
+           {% endif %}
+              <h2>Drop Us A Line!</h2>
+        <div class="contact-text" style="margin-bottom:20px;">
+          Hola! 
+          <br>
+			We hope our website is easy to use, but sometimes stuff just doesn’t work. If you have a question, can’t find what you’re seeking, looking for an order status, or just want to get help from an actual human being - fill out the form below and we’ll address your request.
+			We aren’t 24/7 machines, but we promise we’ll get back to you as soon as possible. We care about quality products, and in turn, quality service. Therefore we’ll even give you a call if you provide your phone number. Because that’s what mom would do.</div>
+              
+            
+   				<div data-paperform-id="2jnkgwp0"></div><script>(function() {var script = document.createElement('script'); script.src = "https://paperform.co/__embed.min.js"; document.body.appendChild(script); })()</script>
+             
+
+              {% comment %}
+              {% section 'form-builder-pro' %}
+              {% endcomment %}
+              
+
+              
+              {% comment %} OLD CONTACT FORM
+              <div class="contactFormWrapper">
+              <label for="ContactFormName">{{ 'contact.form.name' | t }}</label>
+              <input type="text" id="ContactFormName" name="contact[name]" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+               <label for="ContactFormEmail" class="{% if form.errors contains 'email' %}label--error{% endif %}">{{ 'contact.form.email' | t }}</label>
+              <input type="email" id="ContactFormEmail" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" class="{% if form.errors contains 'email' %}input--error{% endif %}">
+              <label for="ContactFormPhone">{{ 'contact.form.phone' | t }}</label>
+          <input type="tel" id="ContactFormPhone" name="contact[phone]" pattern="[0-9\-]*" value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+
+          <label for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
+          <textarea rows="10" id="ContactFormMessage" name="contact[body]">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+          <input type="submit" class="btn contact-form-btn" value="{{ 'contact.form.submit' | t }}">
+            </div>
+              {% endcomment %}
+              
+          </div>
+           <div class="col-md-20">
+    	{% section 'contact-sidebar' %}
+          </div>
+        {% endform %}
+      </div>
+    </div>
+    
+  </div>
+  </div>
+</div>

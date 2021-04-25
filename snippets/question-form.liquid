@@ -1,0 +1,78 @@
+  <div class="container-product">
+  <div class="contcat-form-wrap">
+  <div class="row-col">
+    <div class="max-product-item">
+      <div class="contact-form form-vertical">
+           <div class="contact-image" style="background:url({{ section.settings.product-bg | img_url: '1500x' }});">
+        </div>
+        <div class="window-window" style="background:#33373f;">
+        {% form 'contact' %}
+
+          {% if form.posted_successfully? %}
+            <p class="note form-success">
+              {{ 'contact.form.post_success' | t }}
+            </p>
+          {% endif %}
+
+          {{ form.errors | default_errors }}
+
+          <div class="row">
+            <div class="contact-popup-heading">
+             <h3>We're Here to Help</h3>
+                <p>Fill out the form or call us at +1.720.710.0010. Please include as much information as possible for us to provide you the possible quote, including: quantity, required dates, etc.</p>
+              </div>
+
+               {% if page.content.size > 0 %}
+           {% endif %}
+              <div class="contactFormWrapper">
+                
+              <label for="ContactFormName">{{ 'contact.form.name' | t }}</label>
+              <input type="text" id="ContactFormName" name="contact[name]" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+               <label for="ContactFormEmail" class="{% if form.errors contains 'email' %}label--error{% endif %}">{{ 'contact.form.email' | t }}</label>
+              <input type="email" id="ContactFormEmail" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" class="{% if form.errors contains 'email' %}input--error{% endif %}">
+                <label for="ContactFormPhone">{{ 'contact.form.phone' | t }}</label>
+          <input type="tel" id="ContactFormPhone" name="contact[phone]" pattern="[0-9\-]*" value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+                
+                
+                
+          <label for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
+          <textarea rows="10" id="ContactFormMessage" name="contact[body]">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+          <input type="submit" class="btn contact-form-btn popup-contact-btn" value="{{ 'contact.form.submit' | t }}">
+ 
+
+          </div>
+
+        {% endform %}
+      </div>
+
+    </div>
+    
+  </div>
+
+  </div>
+   </div>
+</div>
+
+</div>
+<script type="text/javascript">
+        $(document).ready(function() {
+  $('.popup-with-form').magnificPopup({
+    type: 'inline',
+    preloader: false,
+    focus: '#name',
+
+    // When elemened is focused, some mobile browsers in some cases zoom in
+    // It looks not nice, so we disable it:
+    callbacks: {
+      beforeOpen: function() {
+        if($(window).width() < 700) {
+          this.st.focus = false;
+        } else {
+          this.st.focus = '#name';
+        }
+      }
+    }
+  });
+});
+</script>

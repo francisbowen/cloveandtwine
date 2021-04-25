@@ -1,0 +1,85 @@
+{% capture newsletter_title %}
+  {% if section.settings.subhead %}<h5>{{ section.settings.subhead }}</h5>{% endif %}
+  <label for="Email" class="h4">{{ 'general.newsletter_form.newsletter_email' | t }}</label>
+{% endcapture %}
+
+{% if settings.newsletter_action_url != blank %}
+  <form class="mailing-list-signup-form row align-items-center" action="{{ settings.newsletter_action_url }}" method="post" name="mc-embedded-subscribe-form" target="_blank">
+
+    {% if newsletter_alone %}
+      <div class="col-md-30">
+    {% endif %}
+
+    {{ newsletter_title }}
+
+    {% if newsletter_alone %}
+      </div>
+      <div class="col-md-30">
+    {% endif %}
+
+    <div class="input-group">
+             <label for="email" class="label--hidden">Email</label>
+
+      <input class="mailing-list-signup-form-email"
+        name="EMAIL"
+        id="Email"
+        type="email"
+        placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+        value="{% if customer %}{{ customer.email }}{% endif %}"
+        aria-label="{{ 'general.newsletter_form.email_placeholder' | t }}" />
+      <span class="input-group__btn">
+        <button type="submit" class="btn btn--secondary newsletter__submit" name="commit" id="Subscribe">
+          <span class="newsletter__submit-text--large">{{ 'general.newsletter_form.submit' | t }}</span>
+        </button>
+      </span>
+    </div>
+
+    {% if newsletter_alone %}
+      </div>
+    {% endif %}
+
+  </form>
+{% else %}
+  {% form 'customer', class:'contact-form row align-items-center' %}
+    {{ form.errors | default_errors }}
+    {% if form.posted_successfully? %}
+      <p class="form--success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+    {% else %}
+
+      {% if newsletter_alone %}
+        <div class="col-md-30">
+      {% endif %}
+
+      {{ newsletter_title }}
+
+      {% if newsletter_alone %}
+        </div>
+        <div class="col-md-30">
+      {% endif %}
+
+        <div class="input-group">
+                       <label for="email" class="label--hidden">Email</label>
+
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input type="email"
+            name="contact[email]"
+            id="Email"
+            class="input-group__field newsletter__input"
+            value="{% if customer %}{{ customer.email }}{% endif %}"
+            placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+            autocorrect="off"
+            autocapitalize="off">
+          <span class="input-group__btn">
+            <button type="submit" class="btn btn--secondary newsletter__submit" name="commit" id="Subscribe">
+              <span class="newsletter__submit-text--large">{{ 'general.newsletter_form.submit' | t }}</span>
+            </button>
+          </span>
+        </div>
+
+      {% if newsletter_alone %}
+        </div>
+      {% endif %}
+
+    {% endif %}
+  {% endform %}
+{% endif %}

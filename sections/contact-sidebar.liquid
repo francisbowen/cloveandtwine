@@ -1,0 +1,36 @@
+  <div class="location lang1">
+        <h5>{{ section.settings.title}}</h5>
+        <p><img src="{{ section.settings.image | img_url: '500x500' }}" alt="Image"></p>
+    {{ section.settings.htm}}
+        </div>
+      </div>
+
+{% schema %}
+  {
+    "name": "Sidebar",
+    "settings": [
+{
+          "type": "text",
+            "id": "title",
+            "label": "Title"
+       },
+{
+          "type": "image_picker",
+            "id": "image",
+            "label": "Image Logo"
+       },
+{
+          "type": "html",
+            "id": "htm",
+            "label": "Add html"
+       }
+
+]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

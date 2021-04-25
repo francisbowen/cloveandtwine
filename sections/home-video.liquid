@@ -1,0 +1,360 @@
+<div class="{{ section.settings.contained }}">
+  <div class="row" data-section-id="{{ section.id }}" data-section-type="slideshow-section">
+
+    {% if section.blocks.size > 0 %}
+      <div class="col-md-60">
+        <div class="video-wrap-main">
+        <button type="button" class="visually-hidden slideshow__pause" data-id="{{ section.id }}" aria-live="polite">
+          <span class="slideshow__pause-stop">
+            {% include 'icon-pause' %}
+            <span class="icon__fallback-text">{{ 'sections.slideshow.pause_slideshow' | t }}</span>
+          </span>
+          <span class="slideshow__pause-play">
+            {% include 'icon-play' %}
+            <span class="icon__fallback-text">{{ 'sections.slideshow.play_slideshow' | t }}</span>
+          </span>
+        </button>
+
+        <div class="slideshow slideshow--{{ section.settings.slideshow_height }}" id="Slideshow-{{ section.id }}" data-autoplay="{{ section.settings.autoplay }}" data-speed="{{ section.settings.autoplay_speed }}" data-dots="{{ section.settings.dots }}" data-arrows="{{ section.settings.arrows }}">
+          {% for block in section.blocks %}
+            {%- assign is_background_video = false -%}
+            {% if block.type == 'video' %}
+              {% if block.settings.video_type == 'background' or block.settings.video_type =='background-chrome' %}
+                {%- assign is_background_video = true -%}
+              {% endif %}
+            {% endif %}
+
+            <div class="slideshow__slide slideshow__slide--{{ block.id }}{% if is_background_video %} slideshow__slide--background-video{% endif %}" {{ block.shopify_attributes }}>
+             
+
+     <style>
+                {% if block.settings.image != blank %}
+                  .slideshow__image--{{ block.id }} {
+                    background-position: {{ block.settings.alignment }};
+                  }
+
+                  @media screen and (max-width: 150px) {
+                    .slideshow__image--{{ block.id }} {
+                      background-image: url('{{ block.settings.image | img_url: '150x' }}');
+                    }
+                  }
+
+                  @media screen and (min-width: 151px) and (max-width: 300px) {
+                    .slideshow__image--{{ block.id }} {
+                      background-image: url('{{ block.settings.image | img_url: '300x' }}');
+                    }
+                  }
+
+                  @media screen and (min-width: 301px) and (max-width: 600px) {
+                    .slideshow__image--{{ block.id }} {
+                      background-image: url('{{ block.settings.image | img_url: '600x' }}');
+                    }
+                  }
+
+                  @media screen and (min-width: 601px) and (max-width: 800px) {
+                    .slideshow__image--{{ block.id }} {
+                      background-image: url('{{ block.settings.image | img_url: '800x' }}');
+                    }
+                  }
+
+                  @media screen and (min-width: 801px) and (max-width: 1000px) {
+                    .slideshow__image--{{ block.id }} {
+                      background-image: url('{{ block.settings.image | img_url: '1000x' }}');
+                    }
+                  }
+
+                  @media screen and (min-width: 1001px) {
+                    .slideshow__image--{{ block.id }} {
+                      background-image: url('{{ block.settings.image | img_url: '2000x' }}');
+                    }
+                  }
+                {% endif %}
+
+               
+              </style>
+
+              {% if block.type == 'video' %}
+                {% if block.settings.video_id != blank %}
+                  <div class="video-loader"></div>
+                {% endif %}
+                {% unless block.settings.video_type == 'background' %}
+                  <button type="button" class="text-link slideshow__video-control slideshow__video-control--close" data-controls="SlideshowVideo-{{ block.id }}">
+                    {% include 'icon-close' %}
+                    <span class="icon__fallback-text">{{ 'sections.slideshow.close_video' | t }}</span>
+                  </button>
+                {% endunless %}
+                {% if block.settings.video_id != blank %}
+                  <div id="SlideshowVideo-{{ block.id }}" class="slideshow__video {% if is_background_video %}slideshow__video--background{% endif %} slideshow__video--{{ block.settings.video_type }}"
+                    data-id="{{ block.settings.video_id }}"
+                    data-type="{{ block.settings.video_type }}"
+                    data-slideshow="Slideshow-{{ section.id }}"></div>
+                {% endif %}
+              {% endif %}
+
+              <div class="slideshow__image video-item slideshow__image--{{ block.id }}">
+                {% if block.settings.image == blank %}
+                  <div class="placeholder-background">
+                    {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+                    {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {% endif %}
+
+              </div>
+
+              <div class="slideshow__text-wrap slideshow__text--{{ block.id }} row{% if block.settings.overlay %} slideshow__overlay{% endif %}">
+                <div class="col-md-60{% if block.settings.text_layout == 'center' %} offset-md-15{% elsif block.settings.text_layout == 'right' %} offset-md-30{% endif %} text-{{ block.settings.text_align }} video-content">
+                  <div class="page-width">
+                    {% unless block.settings.title == blank %}
+                      <h2 class="h1 mega-title slideshow__title{% if settings.link != blank %} slideshow__title--has-link{% endif %}{% if section.settings.text_size == 'large' %} mega-title--large{% endif %}">
+                        {{ block.settings.title }}
+                      </h2>
+                    {% endunless %}
+                    {% unless block.settings.title == blank and block.settings.subheading == blank %}
+                    {% endunless %}
+                    {% unless block.settings.subheading == blank %}
+                      <span class="mega-subtitle slideshow__subtitle{% if section.settings.text_size == 'large' %} mega-subtitle--large{% endif %}">
+                        {{ block.settings.subheading | escape }}
+                      </span>
+                    {% endunless %}
+
+                    {% if block.type == 'video' %}
+
+                      {% unless block.settings.video_type == 'background' %}
+                        <div class="slideshow__video-control--play-wrapper{% if block.settings.title != blank or block.settings.subheading != blank %} slideshow__video-control--play-wrapper--push{% endif %}">
+                          <button type="button" class="text-link slideshow__video-control slideshow__video-control--play" data-controls="SlideshowVideo-{{ block.id }}">
+                            {% comment %}{% include 'icon-play-video' %}{% endcomment %}
+                            <span class="icon__fallback-text">{{ 'sections.slideshow.play_video' | t }}</span>
+
+                            <div class="play"></div>
+                          </button>
+                        </div>
+                      {% endunless %}
+                                      
+                    {% else %}
+                      {% if block.settings.link != blank and block.settings.button != blank %}
+                        <span class="btn">{{ block.settings.button }}</span>
+                      {% endif %}
+                    {% endif %}
+                    
+                  </div>
+
+                </div>
+                   <div class="artisan"></div>
+              </div>
+           
+            </div>
+          {% endfor %}
+        </div>
+        <div class="container">
+          {% for  block in section.blocks %}
+    <div class="row bottom-video-content">  
+
+        <div class="col-md-15 wow fadeInUp animated text-center">
+          <h3>{{block.settings.title}}</h3>
+        </div>
+        <div class="col-md-25 wow fadeInUp middleblock animated middleblock ">
+          {{block.settings.content}}
+        </div>
+        <div class="col-md-15 wow fadeInUp animated video-content-btn">
+          <a href="{{block.settings.link}}" class="shopnow">{{block.settings.linktext}}</a>
+        </div>
+  </div>
+  {% endfor %}
+      </div>
+      
+    </div>
+    {% endif %}
+    {% if section.blocks.size == 0 %}
+      <div class="placeholder-noblocks">
+        {{ 'homepage.onboarding.no_content' | t }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+</div>
+
+{% if section.settings.slideshow_height == 'maintain_ratio' %}
+  <style type="text/css">
+    #shopify-section-{{ section.id }} .slideshow.slideshow--maintain_ratio {
+      height: auto;
+    }
+    #shopify-section-{{ section.id }} .slideshow.slideshow--maintain_ratio .slideshow__slide {
+      height: auto;
+    }
+    #shopify-section-{{ section.id }} .slideshow.slideshow--maintain_ratio .slideshow__slide:before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 0px;
+      {% capture img_width %}{{ section.blocks[0].settings.image.width }}{% endcapture %}
+      {% capture img_height %}{{ section.blocks[0].settings.image.height | times: 100 }}{% endcapture %}
+      {% capture rounddown %}{{ img_height | divided_by: img_width }}{% endcapture %}
+      padding-top: {{ rounddown | plus: 1 }}%;
+    }
+  </style>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Video",
+    "class": "index-section",
+    "max_blocks": 1,
+    "settings": [
+      {
+        "type": "radio",
+        "id": "contained",
+        "label": "Slideshow should:",
+        "options": [
+          { "value": "container", "label": "Contstrain to container" },
+          { "value": "container-fluid", "label": "Flow to the width of screen" }
+        ],
+        "default": "container"
+      },
+      {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Auto-rotate slides",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "autoplay_speed",
+        "label": "Change slides every",
+        "options": [
+          { "value": "5000", "label": "5 seconds" },
+          { "value": "6000", "label": "6 seconds" },
+          { "value": "7000", "label": "7 seconds" },
+          { "value": "8000", "label": "8 seconds" },
+          { "value": "9000", "label": "9 seconds" },
+          { "value": "10000", "label": "10 seconds" }
+        ],
+        "default": "7000"
+      },
+      
+      {
+        "type": "select",
+        "id": "slideshow_height",
+        "label": "Section height",
+        "default": "small",
+        "options": [
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          },
+          {
+            "label": "Maintain Ratio based on First Slide",
+            "value": "maintain_ratio"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "text_size",
+        "label": "Text size",
+        "default": "medium",
+        "options": [
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+            
+        "type": "video",
+        "name": "Video slide",
+        "settings": [
+          {
+            "type": "text",
+            "id": "video_id",
+            "label": "YouTube video ID",
+            "default": "_9VUPq3SxOc",
+            "info": "[Find your YouTube video ID](https://docs.joeworkman.net/rapidweaver/stacks/youtube/video-id)."
+          },
+          {
+            "type": "select",
+            "id": "video_type",
+            "label": "Style",
+            "options": [
+              {
+                "value": "chrome",
+                "label": "Image with play button"
+              },
+              {
+                "value": "background-chrome",
+                "label": "Background video with play button"
+              },
+              {
+                "value": "background",
+                "label": "Background video"
+              }
+            ]
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Fallback when autoplaying video is not supported on mobile devices"
+          },
+          {
+            "type": "checkbox",
+            "id": "overlay",
+            "label": "Overlay image with color?",
+            "info": "Overlay color and opacity found in color settings"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+        },
+        {
+          "id": "link",
+          "type": "url",
+          "label": "Button link"
+        },
+        {
+          "id": "linktext",
+          "type": "text",
+          "label": "Button text",
+          "default": "Read More"
+        }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Video",
+      "category": "Image",
+      "settings": {
+        "autoplay": true,
+        "autoplay_speed": "5000"
+      },
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }]
+  }
+{% endschema %}

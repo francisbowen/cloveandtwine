@@ -1,0 +1,177 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-40 offset-lg-10">
+      <div class="rte">
+        {{ page.content }}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container customize-container">
+  <div class="row">
+    <div class="col-md-30 text-col">
+      <h2>{{ section.settings.customize_headline }}</h2>
+      {{ section.settings.customize_content }}
+    </div>
+    <div class="col-md-30 image-col" style="background-image:url({{ section.settings.customize_image | img_url: '800x' }});"></div>
+  </div>
+</div>
+<div class="container-fluid intro-custom-block">
+  <div class="row">
+    <div class="text-center col-60">
+      <div class="custom-block-adjust text-center">
+        <h3>{{ section.settings.intro_headline }}</h3>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="process">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-60 process-headline">
+        <h3>Decoration Methods:</h3>
+      </div>
+    </div>
+    {% for block in section.blocks %} 
+      <div class="row align-items-center">
+        <div class="col-md-30 image-col">
+          {% if block.settings.image_center %}
+            <img src="{{ block.settings.image_center | img_url:'1500x'}}" alt="{{ block.settings.image_center}}">
+          {% endif %}
+        </div>
+        <div class="col-md-30 text-col">
+          <div class="row align-items-center">
+            <div class="col-md-50">
+              {% if block.settings.image %}
+                <div class=" left-image" style="background-image:url({{ block.settings.image | img_url:'100x'}});"></div>
+              {% endif %}
+            </div>
+            <div class="col-md-50">
+              <h4>{{ block.settings.title }}</h4>
+              {{ block.settings.content }}
+            </div>
+          </div>
+        </div>
+        {% unless forloop.last %}<div class="border-item col-60"></div>{% endunless %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+<div class="container customize-container">
+  <div class="row">
+    <div class="col-60 text-center">
+      <a href="/pages/contact" class="btn btn--secondary">CONTACT</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  {% if section.settings.header_bg != blank %}
+    #shopify-section-{{ section.id }} .hero-about {
+      background-image: url({{ section.settings.header_bg | img_url: '1800x' }});
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "name": "How We Customize Page",
+  "max_blocks": 12,
+  "settings": [
+	{
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "image_picker",
+      "id": "header_bg",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Title Here"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+    },
+	{
+      "type": "header",
+      "content": "Customize Quick Text"
+    },
+    {
+      "type": "image_picker",
+      "id": "customize_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "customize_headline",
+      "label": "Heading",
+      "default": "Customize your company gifts"
+    },
+    {
+      "type": "richtext",
+      "id": "customize_content",
+      "label": "Content",
+      "default": "<p>You choose the products, upload your logo and then specify logo placement. We partner with the best decorators in the industry to apply your logo via embroidery, laser engraving, screen printing, embossing/debossing, and other techniques.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Intro to Repaters"
+    },
+    {
+      "type": "text",
+      "id": "intro_headline",
+      "label": "Headline",
+      "default": "We manage the process, save you time &amp; money, and put a big ol' smile on your face."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "select",
+      "name": "Add Section",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_center",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Call to Action Blocks",
+      "category": "CTA button",
+      "blocks": [
+        { 
+          "type": "select"
+        },
+        {
+          "type": "select"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,70 @@
+{% for block in section.blocks %}
+  <div class="sidebar__item border-bottom sidebar__item-{{ block.type }}">
+
+    {% if block.settings.title %}<h4>{{ block.settings.title }}</h4>{% endif %}
+
+    {% case block.type %}
+
+      {% when 'collection_sidebar' %}
+        <div class="feature-slider__container">
+          <a id="prevArrow"><em class="fa fa-angle-left"></em></a>
+          <div class="feature-slider">
+            {%- assign c = collections[block.settings.collection] -%}
+            {% for product in c.products limit: block.settings.collection_qty  %}
+              <div>
+                {% include 'product-card-grid', grid_image_width: '500x' %}
+              </div>
+            {% endfor %}
+          </div>
+          <a id="nextArrow"><em class="fa fa-angle-right"></em></a>
+        </div>
+
+      {% when 'menu_sidebar' %}
+        <ul class="nav__sidebar">
+          {% for link in linklists[block.settings.quick_links].links %}
+            <li><a class="{% if link.active %}active{% endif %}" href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+
+      {% when 'image_sidebar' %}
+        <a href="{{ block.settings.link }}">
+          {% if block.settings.image != blank %}
+            {{ block.settings.image | img_url: '400x' | img_tag }}
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </a>
+
+      {% when 'blog_sidebar' %}
+        {% for article in blogs.style-blog.articles limit: 1 %}
+          <a href="{{ article.url }}">
+            <div class="article__grid-image article__grid-image-sidebar" style="background-image:url({{ article.image.src | img_url: '400x' }})"></div>
+            <p class="collection-grid-item__title">{{ article.title }}</p>
+          </a>
+          <a class="btn btn--secondary" href="/blogs/{{ blogs.style-blog.handle }}">View All Articles</a>
+        {% endfor %}
+
+    {% endcase %}
+
+  </div>
+{% endfor %}
+
+<script>
+  $(document).ready(function(){
+    $('.feature-slider').slick({
+      infinite: true,
+      prevArrow: $('#prevArrow'),
+      nextArrow: $('#nextArrow'),
+      slidesToShow: 2,
+      slidesToScroll: 1,
+      responsive: [
+        {
+          breakpoint: 1200,
+          settings: {
+            slidesToShow: 1,
+          }
+        }
+      ]
+    });
+  });
+</script>

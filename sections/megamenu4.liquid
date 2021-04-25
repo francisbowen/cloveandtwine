@@ -1,0 +1,162 @@
+<div class="container-fluid">
+  <div class="row">
+    {% for block in section.blocks %}
+      <div class="{{ block.settings.column_width }}">
+        {% if block.settings.title != blank %}<h4>{{ block.settings.title }}</h4>{% endif %}
+
+        {% case block.type %}
+          {% when 'megamenu_image' %}
+            {% if block.settings.column_width == 'col-10' %}
+              {%- assign image_size = '250x' -%}
+            {% elsif block.settings.column_width == 'col-20' %}
+              {%- assign image_size = '500x' -%}
+            {% elsif block.settings.column_width == 'col-30' %}
+              {%- assign image_size = '750x' -%}
+            {% elsif block.settings.column_width == 'col-40' %}
+              {%- assign image_size = '1000x' -%}
+            {% elsif block.settings.column_width == 'col-50' %}
+              {%- assign image_size = '1250x' -%}
+            {% elsif block.settings.column_width == 'col-60' %}
+              {%- assign image_size = '1500x' -%}
+            {% else %}
+              {%- assign image_size = '700x' -%}
+            {% endif %}
+            <a href="{{ block.settings.link }}">
+              <img src="{{ block.settings.image | img_url: image_size }}" alt="{{ block.settings.image }}" />
+              {% if block.settings.caption != blank %}<span class="caption">{{ block.settings.caption }}</span>{% endif %}
+            </a>
+
+          {% when 'megamenu_menu' %}
+            {% if block.settings.linklist %}
+              <ul class="submenu_links">
+                {% for link in linklists[block.settings.linklist].links %}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+            {% if block.settings.title_2 != blank %}
+              <h4>{{ block.settings.title_2 }}</h4>
+            {% endif %}
+            {% if block.settings.linklist != blank %}
+              <ul class="submenu_links">
+                {% for link in linklists[block.settings.linklist_2].links %}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+        {% endcase %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Megamenu 4",
+    "class": "megamenu full-width",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Megamenu content",
+        "info": "Remember, setting what this is attached to is done in the [General settings]"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "megamenu_image",
+        "name": "Image Column",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "caption",
+            "label": "Caption"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+            "type": "select",
+            "id": "column_width",
+            "label": "Column span",
+            "info": "Auto will attempt to fill automatically",
+            "options": [
+              { "value": "col", "label": "Auto"},
+              { "value": "col-10", "label": "1/6 Column"},
+              { "value": "col-12", "label": "1/5 Column"},
+              { "value": "col-15", "label": "1/4 Column"},
+              { "value": "col-20", "label": "1/3 Column"},
+              { "value": "col-24", "label": "2/5 Column"},
+              { "value": "col-30", "label": "1/2 Column"},
+              { "value": "col-36", "label": "3/5 Column"},
+              { "value": "col-40", "label": "2/3 Column"},
+              { "value": "col-45", "label": "3/4 Column"},
+              { "value": "col-48", "label": "4/5 Column"},
+              { "value": "col-50", "label": "5/6 Column"},
+              { "value": "col-60", "label": "Full Width"}
+            ]
+          }
+        ]
+      },
+      {
+        "type": "megamenu_menu",
+        "name": "Menu Column",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "link_list",
+            "id": "linklist",
+            "label": "Linklist"
+          },
+          {
+            "type": "text",
+            "id": "title_2",
+            "label": "Title"
+          },
+          {
+            "type": "link_list",
+            "id": "linklist_2",
+            "label": "Linklist"
+          },
+          {
+            "type": "select",
+            "id": "column_width",
+            "label": "Column span",
+            "info": "Auto will attempt to fill automatically",
+            "options": [
+              { "value": "col", "label": "Auto"},
+              { "value": "col-10", "label": "1/6 Column"},
+              { "value": "col-12", "label": "1/5 Column"},
+              { "value": "col-15", "label": "1/4 Column"},
+              { "value": "col-20", "label": "1/3 Column"},
+              { "value": "col-24", "label": "2/5 Column"},
+              { "value": "col-30", "label": "1/2 Column"},
+              { "value": "col-36", "label": "3/5 Column"},
+              { "value": "col-40", "label": "2/3 Column"},
+              { "value": "col-45", "label": "3/4 Column"},
+              { "value": "col-48", "label": "4/5 Column"},
+              { "value": "col-50", "label": "5/6 Column"},
+              { "value": "col-60", "label": "Full Width"}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,164 @@
+<div class="container-fluid">
+  {% if section.settings.title != blank %}
+      <div class="container">
+      <div class="section-header text-center">
+      <hr class="header-line mobilehide">
+      <div class="center-title-home">
+      <h3 class="collection-title">{{ section.settings.title | escape }}</h3>
+      <h4 class="collection-subtitle">{{ section.settings.subtitle | escape }}</h4>
+</div>
+</div>
+    </div>
+  {% endif %}
+
+  {%- assign collection = collections[section.settings.collection] -%}
+
+
+  <div class="grid--view-items product-slide">
+    {% for product in collection.products limit: product_limit %}
+{%- include 'bold-product' with product, hide_action: 'skip' -%}
+      <div class=" grid__item ">
+        {% include 'product-card-grid', grid_image_width: image_size %}
+      </div>
+    {% else %}
+
+      {% for i in (1..product_limit) %}
+        <div class="grid__item ">
+          <div class="grid-view-item">
+            <a href="#" class="grid-view-item__link">
+              <div class="grid-view-item__image">
+                {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+              <div class="h4 grid-view-item__title">{{ 'homepage.onboarding.product_title' | t }}</div>
+              <div class="grid-view-item__meta">
+                {% include 'product-price' %}
+              </div>
+            </a>
+
+          </div>
+
+        </div>
+      {% endfor %}
+    {% endfor %}
+    <span class="product-slide-grid">
+      </span>
+  </div>
+        
+
+  {% if section.settings.show_view_all %}
+    <hr class="hr--invisible"></hr>
+    <div class="text-center">
+      <a href="{{ collection.url }}" class="btn">
+        {{ 'collections.general.view_all' | t }}
+      </a>
+    </div>
+  {% endif %}
+<div class="homebuttons">
+      <a href="{{section.settings.link_shop}}" class="customize btn">{{section.settings.linkshop}}</a><a href="{{section.settings.link}}"class="shopnow btn">{{section.settings.linktext}} </a>
+      </div>
+</div>
+<script type="text/javascript">
+$('.product-slide').slick({
+  slidesToShow: 5,
+  slidesToScroll: 1,
+  autoplaySpeed: 2000,
+   responsive: [
+    {
+      breakpoint: 1100,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+  ]
+});
+
+
+  </script>
+  <style type="text/css">
+     .slick-slide {
+    padding: 0 27px;
+  </style>
+{% schema %}
+  {
+    "name": "Featured collection",
+    "class": "index-sections",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"
+      },
+        {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Sub Heading",
+        "default": "Sub Title"
+      },
+      {
+          "id": "link_shop",
+          "type": "url",
+          "label": "Shop link "
+        },
+        {
+          "id": "linkshop",
+          "type": "text",
+          "label": "Button text",
+          "default": "Click here"
+        },
+       {
+          "id": "link",
+          "type": "url",
+          "label": "Customize link"
+        },
+        {
+          "id": "linktext",
+          "type": "text",
+          "label": "Button text",
+          "default": "Click here"
+        },
+        
+      {
+        "id": "collection",
+        "type": "collection",
+        "label": "Collection"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show product vendors",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_view_all",
+        "label": "Show 'View all' button",
+        "default": false
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}

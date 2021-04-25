@@ -1,0 +1,669 @@
+<div class="full-width">
+  <div class="container">
+    <div class="row">
+      <article class="col-lg-30 offset-lg-15 col-md-40 offset-md-10">
+        <div class="rte">
+          {%- assign start_title = page.content | slice: 0, 3 -%}
+          {% if start_title contains 'h1' %}
+            {%- assign page_title = page.content | split: '</h1>' -%}
+            {{ page_title[1] }}
+          {% else %}
+            {{ page.content }}
+          {% endif %}
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+{% for block in section.blocks %}
+  {% case block.type %}
+    {% when 'heading_row' %}
+      <div class="full-width full-{{ block.type }}">
+        <div class="container about-container">
+          <div class="row row-{{ block.type }} align-items-center">
+            <div class="col-lg-25 col-md-30 img-with-text {% if block.settings.image_side =='right' %}push-md-30{% else %}offset-lg-5{% endif %}">
+              <img src="{{ block.settings.image | img_url: '650x' }}" alt="{{ block.settings.image.alt }}" />
+            </div>
+            <div class="col-lg-25 col-md-30{% if block.settings.image_side =='right' %} pull-lg-20 pull-md-30{% endif %} text-left rte">
+              {% if block.settings.subtitle != blank %}
+                <h4>{{ block.settings.subtitle }}</h4>
+              {% endif %}
+              {% if block.settings.title != blank %}
+                <h2>{{ block.settings.title }}</h2>
+                <hr />
+              {% endif %}
+              {{ block.settings.content }}
+              {% if block.settings.buttonurl %}
+              <p style="text-align: left; font-size: 1.1rem;">
+                <span style="font-weight: 400;">
+                <a href="{{block.settings.buttonurl}}" target="_blank">
+                  <button class="shopnow">{{block.settings.buttontext}}</button>
+                  </a>
+                </span>
+              </p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% when 'image_type' %}
+      <div class="full-width full-{{ block.type }}">
+        <div class="container-fluid">
+          <div class="row row-{{ block.type }}">            
+            <div class="col-md-60 text-center row-{{ block.id }}">
+              {% if block.settings.image_one  %}
+              <img src="{{ block.settings.image_one | img_url: '1500x' }}" alt="{{ block.settings.image.alt }}" />
+               {% endif %}
+              {% if block.settings.title_one != '' %}
+              <h4>{{ block.settings.title_one }}</h4>
+              {% endif %}
+
+              {% if block.settings.content_one != '' %}
+                                          <div class="col-md-45 stores-wrap text-center" style="padding:0px;">
+              {{ block.settings.content_one }}
+                                                        	</div>
+              {% endif%}
+              {% if block.settings.html != '' %}
+                            <div class="col-md-45 stores-wrap text-left">
+              {{ block.settings.html }}
+                                          	</div>
+              {% endif %}
+              {% if block.settings.buttonurl %}
+              <div class="col-md-45 stores-wrap text-center">
+                <a style="    background-color: #000;
+    border-color: #000;
+    color: #fff;
+    font: 700 11px/1.35 Roboto, Arial;text-align:center;" id="questionpop" class="btn btn-secondary" href="{{block.settings.buttonurl}}">{{block.settings.buttontext}}</a>
+              </div>
+              {% endif %}
+
+          </div>
+          </div>
+        </div>
+      </div>
+
+          {% when 'packaging' %}
+        <div class="container about-container">
+          <div class="row row-heading_row"> 
+            <div class="col-md-50 offset-md-5">
+                {% if block.settings.image  %}
+              <img src="{{ block.settings.image | img_url: '1500x' }}" alt="{{ block.settings.image.alt }}"  class="solution-image" />
+               {% endif %}
+              <h4 style="text-align:center;">{{ block.settings.title }}</h4>
+              <span style="text-align:center;">{{ block.settings.content }}</span>
+              <div class="col-md-60 stores-wrap text-left">
+              {{ block.settings.html }}
+            </div>
+            </div>
+          </div>
+        </div>
+  {% when 'half_background_image' %}
+     <div class="full-width full-{{ block.type }}">
+      <div class="container-fluid">
+      <div class="row">
+      <div class="col-md-30 no-padding ">
+        <div class="about-img" style="background-image: url({{ block.settings.image | img_url: '1500x' }});"></div>
+     </div>
+       <div class=" col-md-30 no-padding">
+      <div class="about-img" style="background-image: url({{ block.settings.image_one | img_url: '1500x' }});"></div>
+   </div>
+  </div>
+</div>
+</div>
+
+  {% when 'two_image' %}
+     <div class="full-width full-{{ block.type }}">
+      <div class="container">
+      <div class="row row-heading_row">
+        {% if block.settings.maintitle != '' %}
+        <h4 style="text-align:center;width:100%;margin-top:50px;">{{block.settings.maintitle}}</h4>
+        {%endif %}
+      <div class="col-md-30">
+        <div class="about-img" style="background-image: url({{ block.settings.image | img_url: '1500x' }});"></div>
+        <p style="text-transform: uppercase; font-weight: bold; padding: 10px 0px;color:#8f8377;">
+          {{block.settings.title}}
+        </p>
+     </div>
+       <div class="col-md-30">
+      <div class="about-img" style="background-image: url({{ block.settings.image_one | img_url: '1500x' }});"></div>
+                 <p style="text-transform: uppercase; font-weight: bold; padding: 10px 0px;color:#8f8377;">
+          {{block.settings.title_one}}
+        </p>
+   </div>
+  </div>
+</div>
+</div>
+
+    {% when 'pull_quote' %}
+      <div class="full-width full-{{ block.type }}">
+        <div class="container about-container">
+          <div class="quotes-wrapper">
+            <div class="quotes-slider row ">
+              <div class="quotes col-md-15">
+                  <div class="quotes-slider__image quotes-slider__image-{{ block.settings.position }}" style="background-image:url({{ block.settings.image | img_url:'300x'}});"></div>
+                 </div>
+                <div class="col-md-40 about-quote ">
+                <h3>{{ block.settings.title }}</h3>
+                {{ block.settings.content }}
+                  </div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+  
+{% when 'custom-block' %}
+    <div class="quotes-block-company quotes-company--{{ block.id }} text-center " >
+        <div class="inner custom--{{ block.id }} wow fadeInUp animated animated">
+                 {% if block.settings.title != blank %}
+                <h3>{{ block.settings.title }}</h3>
+              {% endif %}
+              {% if block.settings.quotes-content %}
+              {{ block.settings.quotes-content }}
+              {% endif %}
+          </div>
+       </div>
+   {% when 'join-us-section' %}
+    <div class="join-us-section text-center " >
+        <div class="inner join-us-section col-md-30 offset-md-15 wow fadeInUp animated animated">
+                 {% if block.settings.title != blank %}
+                <h3>{{ block.settings.title }}</h3>
+              {% endif %}
+              {% if block.settings.join-us-content %}
+              {{ block.settings.join-us-content }}
+              {% endif %}
+            {% if block.settings.linktext != blank %}
+              <a href="#questionpop" class="btn product-btn-popup popup-with-form contact-button">{{ block.settings.linktext }}</a>
+          {% endif %}
+            <div id="questionpop" class="mfp-hide white-popup-block ">
+            {% include 'question-form'%}
+          </div>
+          </div>
+       </div>
+<div id="scroll-down">
+       {% when 'two_item_block' %}
+  <div class="two-items four-items {%if block.settings.center %}text-center{%endif%} container " >
+    <div class="row row-heading_row">
+      {% if block.settings.overalltitle != '' %}
+      <h4 style="width:100%;text-align:center;">{{block.settings.overalltitle }}</h4>
+      {% endif %}
+          <div class="col-md-30 image-block-item {% unless block.settings.padding %}block-row-content{%endunless%}">
+              <h3>{{ block.settings.title_one }}</h3>
+                   <span class=" {% if block.settings.insetleft %}insetblock{% endif %}"> {{ block.settings.text_one }} </span>
+                 </div>
+                 <div class="col-md-30 image-block-item {% unless block.settings.padding %}block-row-content{%endunless%}">
+              <h3>{{ block.settings.title_two }}</h3>
+                   <span class=" {% if block.settings.insetright %}insetblock{% endif %}"> {{ block.settings.text_two }} </span>
+                 </div>
+            </div>
+          </div>
+        </div>
+
+       {% when 'threecolumn' %}
+  <div class="three-items four-items txt-center container " >
+    <div class="row row-heading_row">
+      {% if block.settings.maintitle != '' %}
+      <h4 style="width:100%;text-align:center;">{{block.settings.maintitle }}</h4>
+      {% endif %}
+          	<div class="col-md-20 image-block-item block-row-content">
+              	{% if block.settings.image1 %}
+          		<div class="about-img" style="background-image: url({{ block.settings.image1 | img_url: '1500x' }});    background-size: contain;
+    height: 100px;margin-bottom:20px;"></div>
+              	{% endif %}
+              	{% if block.settings.title1 != '' %}
+              	<h3>{{ block.settings.title1 }}</h3>
+              	{% endif %}
+              	{% if block.settings.text1 != '' %}
+              	{{ block.settings.text1 }}
+              	{% endif %}
+              	{% if block.settings.bottomimage1 %}
+          		<div class="about-img" style="background-image: url({{ block.settings.bottomimage1 | img_url: '1500x' }});    background-size: contain;
+    height: 100px;"></div>
+              	{% endif %}
+          	</div>
+          	<div class="col-md-20 image-block-item block-row-content">
+              	{% if block.settings.image2 %}
+          		<div class="about-img" style="background-image: url({{ block.settings.image2 | img_url: '1500x' }});    background-size: contain;
+    height: 100px;margin-bottom:20px;"></div>
+              	{% endif %}
+              	{% if block.settings.title2 != '' %}
+              	<h3>{{ block.settings.title2 }}</h3>
+              	{% endif %}
+              	{% if block.settings.text2 != '' %}
+              	{{ block.settings.text2 }}
+              	{% endif %}
+              	{% if block.settings.bottomimage2 %}
+          		<div class="about-img" style="background-image: url({{ block.settings.bottomimage2 | img_url: '1500x' }});    background-size: contain;
+    height: 100px;"></div>
+              	{% endif %}
+          	</div>
+          	<div class="col-md-20 image-block-item block-row-content">
+              	{% if block.settings.image3 %}
+          		<div class="about-img" style="background-image: url({{ block.settings.image3 | img_url: '1500x' }});    background-size: contain;
+    height: 100px;margin-bottom:20px;"></div>
+              	{% endif %}
+              	{% if block.settings.title3 != '' %}
+              	<h3>{{ block.settings.title3 }}</h3>
+              	{% endif %}
+              	{% if block.settings.text3 != '' %}
+              	{{ block.settings.text3 }}
+              	{% endif %}
+              	{% if block.settings.bottomimage3 %}
+          		<div class="about-img" style="background-image: url({{ block.settings.bottomimage3| img_url: '1500x' }});    background-size: contain;
+    height: 100px;"></div>
+              	{% endif %}
+          	</div>
+      
+      
+      
+
+
+            </div>
+          </div>
+        </div>
+
+       {% when 'dividertext' %}
+        <div class="custom-block text-center" style="margin:50px 0;background-color:{{block.settings.color}};    border-top: 1px solid #cccccc;padding: 50px 0 60px;">
+                <div class="inner" style="max-width:1100px;    margin: 0 auto;">
+                  <h3 style="text-align: center;font-size: 24px;font-weight: 300; text-transform:uppercase;    margin-bottom: 0px;">
+                    {{ block.settings.title}}
+                  </h3>
+                </div>
+             </div>
+
+  {% endcase %}
+
+{% endfor %}
+      
+{% if section.blocks.size == 0 %}
+<div class="full-width">
+  <div class="container about-container">
+    <div class="row row-{{ block.type }}{% if block.type == 'heading_row' %} align-items-center{% endif %}">
+      {% include 'no-blocks' %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% schema %}
+
+  {
+    "name": "Sweet Treats",
+    "blocks": [
+      {
+        "type": "heading_row",
+        "name": "Image/Short Text",
+        "settings": [
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+          },
+          {
+            "type": "url",
+            "id": "buttonurl",
+            "label": "Button Url"
+          },
+          {
+            "type": "text",
+            "id": "buttontext",
+            "label": "Button Text"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "radio",
+            "id": "image_side",
+            "label": "Image side",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "custom-block",
+        "name": "Custom Block",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "html",
+            "id": "quotes-content",
+            "label": "html"
+          }
+        ]
+      },
+      {
+        "type": "join-us-section",
+        "name": "Join Us",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "join-us-content",
+            "label": "text"
+          },
+        {
+          "id": "linktext",
+          "type": "text",
+          "label": "Button text",
+          "default": "Click here"
+        }
+        ]
+      },
+      {
+        "type": "image_type",
+        "name": "Image Block",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image_one",
+            "label": "One Image"
+          },
+          {
+            "type": "text",
+            "id": "title_one",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "content_one",
+            "label": "Content"
+          },
+          {
+            "type": "html",
+            "id": "html",
+            "label": "Content"
+          
+          },
+          {
+            "type": "url",
+            "id": "buttonurl",
+            "label": "Button Url"
+          },
+          {
+            "type": "text",
+            "id": "buttontext",
+            "label": "Button Text"
+          }
+        ]
+      },
+      {
+        "type": "packaging",
+        "name": "Packaging",
+        "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+          },
+          {
+            "type": "html",
+            "id": "html",
+            "label": "html"
+          
+          }
+        ]
+      },
+      {
+        "type": "half_background_image",
+        "name": "Half image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Background Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_one",
+            "label": "Background Image"
+          }
+        ]
+      },
+      {
+        "type": "two_image",
+        "name": "Two image row and sub",
+        "settings": [
+          {
+            "type": "text",
+            "id": "maintitle",
+            "label": "Main Title"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Background Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_one",
+            "label": "Background Image"
+          },
+          {
+            "type": "text",
+            "id": "title_one",
+            "label": "Title"
+          }
+        ]
+      },
+      {
+        "type": "threecolumn",
+        "name": "Three Column",
+        "settings": [
+          {
+            "type": "text",
+            "id": "maintitle",
+            "label": "Main Title"
+          },
+          {
+            "type": "header",
+            "content": "Column 1"
+          },
+          {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Background Image"
+          },
+          {
+            "type": "text",
+            "id": "title1",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "text1",
+            "label": "Content"
+          },
+          {
+            "type": "image_picker",
+            "id": "bottomimage1",
+            "label": "Bottom Image"
+          },
+          {
+            "type": "header",
+            "content": "Column 2"
+          },
+          {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Background Image"
+          },
+          {
+            "type": "text",
+            "id": "title2",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "text2",
+            "label": "Content"
+          },
+          {
+            "type": "image_picker",
+            "id": "bottomimage2",
+            "label": "Bottom Image"
+          },
+          {
+            "type": "header",
+            "content": "Column 3"
+          },
+          {
+            "type": "image_picker",
+            "id": "image3",
+            "label": "Background Image"
+          },
+          {
+            "type": "text",
+            "id": "title3",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "text3",
+            "label": "Content"
+          },
+          {
+            "type": "image_picker",
+            "id": "bottomimage3",
+            "label": "Bottom Image"
+          }
+        ]
+      },
+      {
+        "type": "two_item_block",
+        "name": "Two Item Block",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "padding",
+            "label": "Remove padding?"
+          },
+          {
+            "type": "checkbox",
+            "id": "center",
+            "label": "Center Type?"
+          },
+                  {
+            "type": "text",
+            "id": "overalltitle",
+            "label": "Overall Title"
+          },  
+			{
+            "type": "text",
+            "id": "title_one",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "text_one",
+            "label": "Content"
+          },
+          {
+            "type": "checkbox",
+            "id": "insetleft",
+            "label": "Inset this block into a square"
+          },
+          {
+            "type": "text",
+            "id": "title_two",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "text_two",
+            "label": "Content"
+          },
+          {
+            "type": "checkbox",
+            "id": "insetright",
+            "label": "Inset this block into a square"
+          }
+        ]
+      },
+      {
+        "type": "pull_quote",
+        "name": "Pull Quote",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Optional"
+          },
+         {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+          }
+        ]
+      },
+      {
+        "type": "dividertext",
+        "name": "Divider Text",
+        "settings": [
+        {
+          "type": "color",
+          "id": "barcolor",
+          "label": "Background color",
+          "default": "#e5e1df"
+        },
+         {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          }
+        ]
+      }
+
+    ]
+  }
+{% endschema %}

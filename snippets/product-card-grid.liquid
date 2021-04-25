@@ -1,0 +1,27 @@
+{% unless grid_image_width %}
+  {%- assign grid_image_width = '600x' -%}
+{% endunless %}
+<div class="grid-view-item product-item wow  fadeIn animated{% unless product.available %} product-price--sold-out grid-view-item--sold-out{% endunless %}">
+  <a class="grid-view-item__link animsition-link" href="{{ product.url | within: collection }}">
+    <div class="product-top">
+    <div class="grid-view-item__image" style="background-image:url({{ product.featured_image.src | img_url: '600x' }});"> 
+      <div class="action">
+      <p class="btn-hover btn" onclick="window.location.href='{{ product.url | within: collection }}'"><span data-translate="products.product.select_options">Customize It</span></p>
+    </div>
+  </div>
+
+  </div>
+    <div class="product-bottom">
+    {% if section.settings.show_vendor %}
+      <div class="grid-view-item__vendor">{{ product.vendor }}</div>
+    {% endif %}
+    <div class="grid-view-item__meta">
+      <div class="product-collection">{{ product.type }}</div>
+      <div class="product-price">
+      {% include 'product-price' %}
+      </div>
+    </div>
+    <div class="h4 grid-view-item__title">{{ product.title }}</div>
+  </div>
+  </a>
+</div>

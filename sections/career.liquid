@@ -1,0 +1,85 @@
+<div class="container">
+	<div class="row">
+		<div class="career col-md-40 offset-md-10">
+      <div class="career-top-item">
+	 	 <h1 class="section-header__title text-center"> {{ section.settings.title}}</h1>
+     {% if section.settings.image-t %}
+	 	 <img  src="{{ section.settings.image-t | img_url: 'master' }}" alt="{{ section.settings.image-t }}" >
+     {% endif %}
+     <div class="page-content">
+	 	 	<p>{{page.content}}</p>
+     </div>
+    <div class="career-btn">
+      {% if section.settings.button != blank %}
+  <a class="btn btn-secondary product-btn-popup " href="{{ section.settings.button-link}}">{{ section.settings.button}}</a>
+  {% endif %}
+  </div>
+  </div>
+      {% unless forloop.last %}<div class="border-item"></div> {% endunless %}
+		</div>
+</div>
+</div>
+<div class="container">
+  <div class="row col-md-40 offset-md-10 fullfill-row">
+   {% for block in section.blocks %}
+		<div  class="col-md-30 half-column">
+      <a href="{{ block.settings.link}}"><p>{{ block.settings.title}}<p>
+    {% if block.settings.image %}
+    <div class="kits-img" style="background-image: url({{ block.settings.image | img_url: 'master' }});"></div>{% endif %}</a>
+     
+    </div>
+		{% endfor %}
+	</div>	
+</div>
+{% schema %}
+  {
+    "name": "Bottom Image With Title ",
+    "class": "bottom",
+    "settings": [
+       {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+       },
+       {
+          "type": "image_picker",
+          "id": "image-t",
+          "label": "Main Image"
+       },
+       {
+          "type": "text",
+          "id": "button",
+          "label": "Button Text"
+       },
+       {
+          "type": "text",
+          "id": "button-link",
+          "label": "Button Link"
+       }
+     
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Add block",
+        "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+       },
+       {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+      },
+      {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+       }
+      ]  
+     }  
+    ]
+  }
+{% endschema %}

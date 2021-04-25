@@ -1,0 +1,32 @@
+{% section 'page-template' %}
+
+
+<div class="container-fluid">
+
+	<div class="row">
+
+    {% for article in blogs.news.articles %}
+    <div class="col-sm-60 col-md-30 wow fadeInUp animated blog-warap">
+      <a href="{{ article.url }}"></a>
+      <p class="blog_img">  
+            <a href="{{ article.url }}"><img class="imageborder" src="{{ article.image.src | img_url: '1024x1024' }}"></a>
+        </p>
+      </a>
+      <div class="blog-body col-md-60">
+        <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
+        <p>{{article.content  | truncate: 532 }}</p>
+      </div>
+      <div class="col-md-30">
+      <a href="{{ article.url }}">
+        <div class="btn btn--secondary block-btn">READ MORE</div></a>
+      </div>
+{% if section.settings.show_share_buttons %}
+      {% include 'social-sharing', share_title: article.title, share_permalink: article.url, share_image: article.image %}
+    {% endif %}
+    </div>
+
+{% endfor %}
+
+	</div>
+</div>
+

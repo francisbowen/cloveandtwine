@@ -1,0 +1,283 @@
+{% if settings.header_sticky %}
+  <script>
+    function sticky_relocate() {
+      var window_top = $(window).scrollTop();
+      if($('#sticky-anchor').length) {
+        var div_top = $('#sticky-anchor').offset().top + 130;
+      } else {
+        var div_top = 5;
+      }
+      if (window_top > div_top) {
+        $('#shopify-section-header > div').addClass('sticky-header logo-change');
+      } else {
+        $('#shopify-section-header > div').removeClass('sticky-header logo-change');
+      }
+    }
+
+    $(window).load(function() {
+      $('#shopify-section-header').height($('#shopify-section-header').outerHeight());
+      $(window).scroll(sticky_relocate);
+      sticky_relocate();
+      
+    });
+
+  </script>
+{% endif %}
+
+{% if settings.header_overlay %}
+  {% if template contains 'index' %}
+    <script>
+      function transparentToggle() {
+        var window_top = $(window).scrollTop();
+        var div_top = $('#MainContent > div:nth-child(2)').offset().top - $('#container-header').outerHeight();
+        if (window_top > div_top) {
+          $('#container-header').removeClass('transparentTop');
+        } else {
+          $('#container-header').addClass('transparentTop');
+        }
+      }
+
+      $(document).ready(function(){
+        if($('.hidden-sm-down').is(':visible')) {
+          $('#PageContainer').css('margin-top','-'+$('#container-header').outerHeight()+'px')
+          $(window).scroll(function(){
+            transparentToggle();
+          });
+          transparentToggle();
+        }
+      });
+    </script>
+  {% endif %}
+{% endif %}
+
+<div data-section-type="header-section"{% if settings.header_overlay %} class="homepageoverlay"{% endif %}>
+  <header class=" site-header{% if settings.align_logo == 'left' %} logo--left{% else %} logo--center{% endif %}" role="banner">
+    <div class="notification-bar-header">
+  <div class="container-fluid">
+    <div class="row">
+          <div class="slidelogo"> 
+            {% if settings.logo_scrolled and settings.header_sticky %}
+                <a href="/" itemprop="url">
+                  <img src="{{ settings.logo_scrolled | img_url: image_size }}"
+                       srcset="{{ settings.logo_scrolled | img_url: image_size }} 1x, {{ settings.logo_scrolled | img_url: image_size, scale: 2 }} 2x"
+                       alt="{{ settings.logo.logo_scrolled | default: shop.name }}"
+                       itemprop="logo">
+                </a>
+              {% endif %}
+            </div>
+       <span class="notification-bar__message header-text col-md-20">
+          {{ settings.text}}
+        </span>
+       <div class="icon-wrap">
+          <div class="site-header__search hidden-sm-down">
+              {% include 'search-form' %}
+            </div>
+             <div class="site-header__icons-wrapper">
+          {% if settings.align_logo == 'left' or settings.align_menu == 'inline'  %}
+          {% endif %}
+
+          <button type="button" class="btn--link site-header__search-toggle js-drawer-open-top hidden-md-up">
+            {% include 'icon-search' %}
+            <span class="icon__fallback-text">{{ 'layout.navigation.search' | t }}</span>
+          </button>
+
+          {% if shop.customer_accounts_enabled %}
+            {% if customer %}
+              <a href="/account" class="site-header__account animsition-link">
+                {% include 'icon-login' %}
+                <span class="icon__fallback-text">{{ 'layout.customer.account' | t }}</span>
+              </a>
+            {% else %}
+              <a href="/account/login" class="site-header__account animsition-link">
+                {% include 'icon-login' %}
+                <span class="icon__fallback-text">{{ 'layout.customer.log_in' | t }}</span>
+              </a>
+            {% endif %}
+          {% endif %}
+
+          <a href="/cart" class="site-header__cart">
+            {% include 'icon-cart' %}
+            <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
+            <span class="icon__fallback-text">{{ 'layout.cart.title' | t }}</span>
+
+
+            {% if cart.item_count > 0 %}
+              <div id="CartCount" class="site-header__cart-count">
+                <span>{{ cart.item_count }}</span>
+                <span class="icon__fallback-text hidden-md-up">{{ 'layout.cart.items_count' | t: count: cart.item_count }}</span>
+              </div>
+              {% else %}
+              <div id="CartCount" class="site-header__cart-count">
+                <span>{{ cart.item_count }}</span>
+                <span class="icon__fallback-text hidden-md-up">0</span>
+              </div>
+            {% endif %}
+          </a>
+
+        </div>
+            {% if settings.cartdropdown %}
+          <div class="shopping-cart">
+            {% if cart.item_count > 0 %}
+              <ul class="shopping-cart-items">
+                {% for item in cart.items %}
+                  <li id="cart-item-{{ item.id }}" class="item clearfix">
+                    <a href="{{ item.url }}" class="d-flex animsition-link">
+                      <img src="{{ item.image | product_img_url: 'small' }}" alt="{{ item.title }}" />
+                      <div class="product-details">
+                        <span class="item-name">{{ item.product.title }}</span>
+                        <span class="item-option">
+                          {% if item.product.variants.size != 0 %}
+                            {% unless item.variant.title contains 'Default' %}
+                              <small>{{ item.variant.title }}</small>
+                            {% endunless %}
+                          {% endif %}
+                        </span>
+                        <span class="item-price">{{ item.line_price | money }}</span>
+                        <span class="item-quantity">x {{ item.quantity }}</span>
+                      </div>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+              <div class="shopping-cart-header">
+                {{ 'cart.general.subtotal' | t }}: {{ cart.total_price | money }}
+              </div>
+              <a href="/cart" class="btn btn--secondary ">Cart</a>
+              <a href="/checkout" class="btn btn--secondary ">Checkout</a>
+            {% else %}
+              <p class="text-center">{{ 'cart.general.empty' | t }}</p>
+              <a href="/" class="btn btn--secondary full">{{ 'general.404.link' | t }}{% include 'icon-arrow-right' %}</a>
+            {% endif %}
+          </div>
+
+          <div class="site-header__cart__overlay"></div>
+
+          <script>
+            $.fn.slideFadeToggle  = function(speed, easing, callback) {
+              return this.animate({opacity: 'toggle', height: 'toggle'}, speed, easing, callback);
+            };
+            $('.site-header__cart').click(function(e) {
+              e.preventDefault();
+              $('.shopping-cart').slideFadeToggle().next('.site-header__cart__overlay').toggle();
+            });
+            $('.site-header__cart__overlay').click(function(e){
+              e.preventDefault();
+              $(this).toggle().prev('.shopping-cart').slideFadeToggle();
+            });
+          </script>
+        {% endif %}
+        </div>
+        </div>
+      </div>
+</div>
+    <div class="container">
+    <div class="row align-items-center">
+      {% if settings.align_logo == 'center' %}
+        <div class="hidden-sm-down {% if settings.align_menu == 'below' %}col-md-15{% else %}col-md-22{% endif %}">
+
+          {% if settings.align_menu == 'below' %}
+          {% comment%}
+            <div class="site-header__search">
+              {% include 'search-form' %}
+            </div>  {% endcomment%}
+
+          {% else %}
+            <nav class="hidden-sm-down text-{{ settings.align_menu_text }}" id="AccessibleNav" role="navigation">
+              {% include 'site-nav' %}
+            </nav>
+          {% endif %}
+
+        </div>
+      {% endif %}
+
+      {% if settings.align_logo == 'center' %}
+        {% if settings.align_menu == 'below' %}
+          {%- assign logo_classes = 'col-md-30 logo-align--center' -%}
+        {% else %}
+          {%- assign logo_classes = 'col-md-16 logo-align--center' -%}
+        {% endif %}
+      {% else %}
+        {% if settings.align_menu == 'below' %}
+          {%- assign logo_classes = 'logo-align--left' -%}
+        {% else %}
+          {% if settings.logo_max_width != blank %}
+            {% assign logo_max = settings.logo_max_width | times: 1 %}
+            {% if logo_max > 200 %}
+              {%- assign logo_classes = 'col-md-16 logo-align--left' -%}
+            {% elsif logo_max > 250 %}
+              {%- assign logo_classes = 'col-md-18 logo-align--left' -%}
+            {% else %}
+              {%- assign logo_classes = 'col-md-15 logo-align--left' -%}
+            {% endif %}
+          {% else %}
+            {%- assign logo_classes = 'col-md-15 logo-align--left' -%}
+          {% endif %}
+        {% endif %}
+      {% endif %}
+
+      <div class="col {{ logo_classes }} col-30">
+        {% if template == 'index' %}
+          <h3 class="h2 site-header__logo" itemscope itemtype="http://schema.org/Organization">
+        {% else %}
+          <div class="h2 site-header__logo" itemscope itemtype="http://schema.org/Organization">
+        {% endif %}
+          {% if settings.logo %}
+            <a href="/" itemprop="url" class="site-header__logo-image animsition-link{% if settings.align_logo == 'center' %} site-header__logo-image--centered{% endif %}">
+              {% capture image_size %}{{ settings.logo_max_width }}x{% endcapture %}
+              <div>
+                <img src="{{ settings.logo | img_url: image_size }}"
+                     srcset="{{ settings.logo | img_url: image_size }} 1x, {{ settings.logo | img_url: image_size, scale: 2 }} 2x"
+                     alt="{{ settings.logo.alt | default: shop.name }}"
+                     itemprop="logo">
+              </div>
+              <span class="visually-hidden">{{ shop.name }}</span>
+            </a>
+          {% else %}
+            <a class="site-header__logo-link animsition-link" href="/" itemprop="url">{{ shop.name }}</a>
+          {% endif %}
+        {% if template == 'index' %}
+          </h3>
+        {% else %}
+          </div>
+        {% endif %}
+
+      </div>
+
+      {% if settings.align_logo == 'left' and settings.align_menu == 'inline' %}
+        <nav class="col hidden-sm-down text-{{ settings.align_menu_text }}" id="AccessibleNav" role="navigation">
+          {% include 'site-nav' %}
+        </nav>
+      {% endif %}
+      <div class="{% if settings.align_logo == 'center' %}{% if settings.align_menu == 'below' %}col-md-15{% else %}col-md-20{% endif %}{% else %}{% if settings.align_menu != 'below' %}col-md-15{% endif %}{% endif %} col-30 text-right site-header__icons{% if shop.customer_accounts_enabled %} site-header__icons--plus{% endif %}">
+        <div class="site-header__icons-wrapper">
+          {% unless linklists[settings.main_linklist] == blank %}
+            <button type="button" class="btn--link site-header__menu js-mobile-nav-toggle mobile-nav--open">
+              {% include 'icon-hamburger' %}
+              {% include 'icon-close' %}
+              <span class="icon__fallback-text">{{ 'layout.navigation.toggle' | t }}</span>
+            </button>
+          {% endunless %}
+        </div>
+     </div>
+      </div>
+    </div>
+  </header>
+  {% if settings.align_menu == 'below' %}
+    <nav class="nav-below hidden-sm-down text-{{ settings.align_menu_text }}" id="AccessibleNav" role="navigation">
+      {% include 'site-nav', nav_alignment: 'site-nav--centered' %}
+    </nav>
+  {% endif %}
+</div>
+<style>
+  {% if settings.logo != blank %}
+    .site-header__logo-image {
+      max-width: {{ settings.logo_max_width }}px;
+    }
+  {% endif %}
+
+  {% if settings.align_logo == 'left' %}
+    .site-header__logo-image {
+      margin: 0;
+    }
+  {% endif %}
+</style>

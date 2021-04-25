@@ -1,0 +1,94 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-50 offset-md-5">
+      <div class="section-header text-center">
+        <h1>{{ page.title }}</h1>
+      </div>
+
+      <div class="rte">
+        {{ page.content }}
+
+        {%- assign collection = collections.all -%}
+        {% paginate collection.products by collection.all_products_count %}
+          {% if customer %}
+            <table class="responsive-table wishlist-product">
+              <thead>
+                <tr>
+                  <th class="text-center"></th>
+                  <th class="text-center">Product</th>
+                  <th class="text-center">Price</th>
+                  <th class="text-center">Remove</th>
+                  <th class="text-center">Add to Cart</th>
+                </tr>
+              </thead>
+            <tbody>
+            {% capture tags %}{% for tag in customer.tags %}{{ tag }} {% endfor %}{% endcapture %}
+            {% assign tags = tags | remove:'x' | split:' ' | uniq | join:' ' %}
+            {% for product in collection.products %}
+              {% if tags contains product.id %}
+                {% for tag in customer.tags %}{% if tag contains product.id %}{% assign t = tag %}{% endif %}{% endfor %}
+                {% assign check = t.size | minus:product.id.size | modulo:2 %}
+                {% if check == 0 %}
+                  <tr class="row-{{tag_id}} product-item" id="product-{{ product.id }}">
+                    <td class="text-center">
+                      <a href="{{ product.url }}">
+                        <img src="{{ product.featured_image.src | product_img_url: 'small' }}" alt="{{ product.featured_image.alt | escape }}">
+                      </a>
+                    </td>
+
+                    <td>
+                      <a href='{{ product.url }}' class="product-title">
+                        {{ product.title }}
+                      </a>
+                    </td>
+                    <td class="price text-center">
+                      {% include 'product-price' %}
+                    </td>
+                    <td class="text-center">
+                      <span class="add" data="{{ product.variants[0].id }}">
+                        {% unless current_variant.available %}
+                          {{ 'products.product.sold_out' | t }}
+                        {% else %}
+                          {{ 'products.product.add_to_cart' | t }}
+                        {% endunless %}
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <span class="remove" data="x{{ t }}">
+                        {{ 'cart.general.remove' | t }}
+                      </span>
+                    </td>
+                  </tr>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            {{ 'products.wishlist.not_logged_in_html' | t: title: product.title }}
+          {% endif %}
+        {% endpaginate %}
+
+        {% form 'customer' %} 
+          <input type='hidden' name='contact[email]' value='{{ customer.email }}'/>
+          <input type='hidden' name='contact[tags]' class='remove-value' value='' />
+        {% endform %}
+
+        <form action='/cart/add' class='add-variant' method='post'>
+          <input type='hidden' name='id' class='product-select' value='' />
+        </form>
+
+        <script>
+          $('.remove').click(function() {
+            var value = $(this).attr('data');
+            $('.remove-value').val(value);
+            $('.contact-form').submit();
+          });
+          $('.add').click(function() {
+            var value = $(this).attr('data');
+            $('.product-select').val(value);
+            $('.add-variant').submit();
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+</div>

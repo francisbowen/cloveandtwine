@@ -1,0 +1,19 @@
+<!-- START WAM HEAD -->
+<httpProtocol>
+  <customHeaders>
+    <add name="X-Frame-Options" value="DENY" />
+  </customHeaders>
+</httpProtocol>
+
+{%comment %}
+<script>
+        // START dis allow framing this site to stop troll lawyers
+      	if(top!=self){
+    		top.location.replace(document.location);
+    		alert("For security reasons, framing is not allowed; click OK to remove the frames.")
+		}
+      // END frame stop
+</script>
+{%endcomment%}
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<!-- END WAM HEAD -->

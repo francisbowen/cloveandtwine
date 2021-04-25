@@ -1,0 +1,105 @@
+{% if section.settings.title != blank %}
+  {%- assign header_title = section.settings.title -%}
+{% elsif template contains 'article' %}
+  {%- assign header_title = article.title -%}
+{% elsif template contains 'page' %}
+  {%- assign start_title = page.content | slice: 0, 3 -%}
+  {% if start_title contains 'h1' %}
+    {%- assign first_h1 = page.content | split: '</h1>' %}
+    {%- assign first_h1 = first_h1[0] | split: '<h1>' %}
+    {%- assign header_title = first_h1[1] -%}
+  {% else %}
+    {%- assign header_title = page.title -%}
+  {% endif %}
+{% endif %}
+
+{%- assign header_img = false -%}
+{% if template contains 'page' %}
+  {%- assign curr_image = '' -%}
+    {% for block in section.blocks %}
+      {% if page.handle == block.settings.page and block.settings.image != blank %}
+        {%- assign header_img = true -%}
+        {%- assign subtitle = block.settings.subtitle -%}
+        {%- assign content = block.settings.content -%}
+        {%- assign linktext = block.settings.linktext -%}
+        {%- assign link = block.settings.link -%}
+         {%- assign heading_color = block.settings.heading_color -%}
+         {%- assign subtitle_color = block.settings.subtitle_color -%}
+         {%- assign content_color = block.settings.content_color -%}
+        {%- assign arrow_down = block.settings.arrow_down | img_url: '100x' -%}
+        {%- assign header_image_std = block.settings.image | img_url: '2400x' -%}
+        {%- assign header_image_desktop = block.settings.image | img_url: '1500x' -%}
+        {%- assign header_image_tablet = block.settings.image | img_url: '1000x' -%}
+        {%- assign header_image_mobile = block.settings.image | img_url: '600x' -%}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+{% elsif section.settings.image != blank %}
+  {%- assign header_img = true -%}
+  {%- assign header_image_std = section.settings.image | img_url: '2400x' -%}
+  {%- assign header_image_desktop = section.settings.image | img_url: '1500x' -%}
+  {%- assign header_image_tablet = section.settings.image | img_url: '1000x' -%}
+  {%- assign header_image_mobile = section.settings.image | img_url: '600x' -%}
+{% elsif article.image %}
+  {%- assign header_image_std = article.image.src | img_url: '2400x' -%}
+  {%- assign header_image_desktop = article.image.src | img_url: '1500x' -%}
+  {%- assign header_image_tablet = article.image.src | img_url: '1000x' -%}
+  {%- assign header_image_mobile = article.image.src | img_url: '600x' -%}
+{% endif %}
+ 
+<div class="header-image {% if header_img %}image-bar__overlay{% else %}minimal{% endif %} ">
+  <div class="container">
+  {% if header_title %}
+      <div class="row">
+        <div class="col-md-40 offset-md-10 text-center page-header-title ">
+          <h3 style="color:{{ heading_color }}">{{ header_title }}</h3>
+          <h6 style="color:{{ subtitle_color }}">{{subtitle}}</h6>
+           <p style="color:{{ content_color }}">{{content}}</p>
+           {% if link %}
+        <a href="#questionpop" class="btn product-btn-popup popup-with-form">{{ linktext }}</a>
+          {% endif %}
+          <div id="questionpop" class="mfp-hide white-popup-block ">
+            {% include 'question-form'%}
+          </div>
+        <div class="scrollingdown-cue" style="padding-top: 5%;">
+                <div class="arrow1-about bounce" style="margin:0 auto;">
+                  
+                  <a href="#scroll-down">
+                    {% if arrow_down %}
+                  <img src="{{ arrow_down }}" alt="{{ arrow_down.alt }}" style="width: 50px;" />
+                  {% endif %}
+                  </a>
+                   
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+</div>
+{% if header_img %}
+  <style>
+    .header-image {
+      background-image:linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.15)), url('{{ header_image_std }}');
+    }
+    @media screen and (max-width: 1024px) {
+      .header-image {
+        background-image:linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.15)), url('{{ header_image_desktop }}');
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .header-image {
+        background-image:linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.15)), url('{{ header_image_tablet }}');
+      }
+    }
+    @media screen and (max-width: 425px) {
+      .header-image {
+        background-image:linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.15)), url('{{ header_image_mobile }}');
+      }
+    }
+
+  </style>
+
+{% endif %}
+

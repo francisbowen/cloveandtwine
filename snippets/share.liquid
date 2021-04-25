@@ -1,0 +1,24 @@
+ <div id="share-container">
+   <div id="share">
+     <div class="share">
+       <div class="col-md-60 share-item">
+         <div class="share-text">Share:</div>
+         {% assign title = product.title | remove: '"' %}
+         <div class="jssocials-share jssocials-share-email share-link"><a target="_self"
+             href="mailto:?subject={{title }}%20from%20Clove%20%26%20Twine&amp;body=https%3A%2F%2Fcloveandtwine.com{{product.url}}"
+             class="jssocials-share-link"><i class="fa fa-at jssocials-share-logo"></i></a></div>
+         <div class="share-link"><a target="_blank"
+             href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ article.url }}"><i
+               class="fa fa-facebook"></i></a></div>
+         <div class="share-link"><a target="_blank" href="https://twitter.com/share"><i class="fa fa-twitter"></i></a>
+         </div>
+         <div class="share-link"><a target="_blank"
+             href="https://www.linkedin.com/shareArticle?mini=true&url={{ shop.url }}{{ article.url }}&title={{ article.title }}"><i
+               class="fa fa-linkedin"></i></a></div>
+         <div class="share-link"><a target="_blank"
+             href="http://pinterest.com/pin/create/button/?url={{ shop.url }}{{ article.url }}&description={{ article.title | strip_html }} from {{ shop.url }}&media={{article.featured_image.src | product_img_url: 'grande'}}"><i
+               class="fa fa-pinterest"></i></a></div>
+       </div>
+     </div>
+   </div>
+ </div>

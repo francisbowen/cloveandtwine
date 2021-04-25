@@ -1,0 +1,138 @@
+<nav class="mobile-nav-wrapper hidden-lg-up" role="navigation">
+  <ul id="MobileNav" class="mobile-nav">
+    {% for block in section.blocks %}
+      {% case block.type %}
+
+        {% when 'row' %}
+          <li class="mobile-nav__item{% unless forloop.last %} border-bottom{% endunless %}">
+            <button type="button" class="btn--link js-toggle-submenu mobile-nav__link" data-target="{{ block.settings.main_title | handleize }}" data-level="1">
+              <em class="fa {{block.settings.main_icon}}"></em>{{ block.settings.main_title | escape }}
+              <div class="mobile-nav__icon">
+                {% include 'icon-chevron-right' %}
+                <span class="icon__fallback-text">{{ 'layout.navigation.expand' | t }}</span>
+              </div>
+            </button>
+
+            <ul class="mobile-nav__dropdown" data-parent="{{ block.settings.main_title | handleize }}" data-level="2">
+              <li class="mobile-nav__item border-bottom">
+                <div class="mobile-nav__table">
+                  <div class="mobile-nav__table-cell mobile-nav__return">
+                    <button class="btn--link js-toggle-submenu mobile-nav__return-btn" type="button">
+                      {% include 'icon-chevron-left' %}
+                      <span class="icon__fallback-text">{{ 'layout.navigation.collapse' | t }}</span>
+                    </button>
+                  </div>
+                  <a href="{{ block.settings.main_link }}" class="mobile-nav__sublist-link mobile-nav__sublist-header">
+                    <em class="fa {{block.settings.main_icon}}"></em>{{ block.settings.main_title | escape }}
+                  </a>
+                </div>
+              </li>
+
+              {% for link in linklists[block.settings.main_linklist].links %}
+                <li class="mobile-nav__item{% unless forloop.last %} border-bottom{% endunless %}">
+                  <a href="{{ link.url }}" class="mobile-nav__sublist-link animsition-link">
+                    {{ link.title | escape }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+
+        {% when 'simplerow' %}
+          <li class="mobile-nav__item{% unless forloop.last %} border-bottom{% endunless %}">
+             <a href="{{block.settings.main_link}}" class="mobile-nav__link animsition-link">
+              <em class="fa {{block.settings.main_icon}}"></em>{{ block.settings.main_title | escape}}
+            </a>
+          </li>
+
+      {% endcase %}
+    {% endfor %}
+  </ul>
+</nav>
+
+{% schema %}
+    {
+      "name": "Mobile Nav",
+      "settings": [
+      ],
+      "blocks": [
+            {
+            "type": "row",
+            "name": "Dropdown Section",
+            "settings": [
+              {
+                "type": "header",
+                "content": "Dropdown Section"
+              },
+              {
+                "type": "text",
+                "id": "main_title",
+                "label": "Main title for this row"
+              },
+              {
+                "type": "url",
+                "id": "main_link",
+                "label": "Main link for this row",
+                "info": "Will occur when the dropdown items are also shown"
+              },
+              {
+                "type": "link_list",
+                "id": "main_linklist",
+                "label": "Menu For Dropdown Items",
+                "default": "main-menu"
+              },
+              {
+                "type": "text",
+                "id": "main_icon",
+                "label": "Optional Icon",
+                "info": "[Click here](http:\/\/fontawesome.io\/cheatsheet\/) to view the list of available icons. Example: fa-anchor"
+              },
+              {
+                "type": "checkbox",
+                "id": "enable_icon",
+                "default": false,
+                "label": "Start expanded?"
+              }
+            ]
+        },
+        {
+            "type": "simplerow",
+            "name": "Simple Item",
+            "settings": [
+              {
+                "type": "header",
+                "content": "Simple Item"
+              },
+              {
+                "type": "text",
+                "id": "main_title",
+                "label": "Main title for this row"
+              },
+                {
+                "type": "text",
+                "id": "main_icon",
+                "label": "Optional Icon",
+                "info": "[Click here](http:\/\/fontawesome.io\/cheatsheet\/) to view the list of available icons. Example: fa-anchor"
+              },
+                {
+                "type": "url",
+                "id": "main_link",
+                "label": "Put the link where you'd like this to go"
+              }
+            ]
+        }
+    ],
+    "presets": [
+      {
+        "name": "Mobile Nav",
+        "category": "Advanced layout",
+        "blocks": [
+          {
+            "type": "row",
+            "type": "simplerow"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,40 @@
+{% assign current_first_item = paginate.current_offset | plus:1 %}
+{% if paginate.pages == paginate.current_page %}
+{% assign current_displayed = paginate.items | modulo:paginate.page_size %}
+{% assign current_last_item = paginate.items %}
+{% else %}
+{% assign current_displayed = paginate.page_size %}
+{% assign current_last_item = paginate.current_offset | plus:paginate.page_size %}
+{% endif %}
+
+
+
+<ul class="pagination-custom">
+
+  <li></li>
+    {% if paginate.previous.is_link %}
+    <a href="{{ paginate.previous.url }}" class="pagination-item pagination-previous">Previous</a>
+  {% else %}
+    <a  class="pagination-item pagination-previous pagination-previous--disabled">Previous</a>
+  {% endif %}
+
+  {% for part in paginate.parts %}
+    {% if part.is_link %}
+      <li>
+        <a href="{{ part.url }}" title="">{{ part.title }}</a>
+      </li>
+    {% else %}
+      {% if part.title == paginate.current_page %}
+        <li class="active"><span>{{ part.title }}</span></li>
+      {% else %}
+        <li><span>{{ part.title }}</span></li>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% if paginate.next.is_link %}
+    <a href="{{ paginate.next.url }}" class="pagination-item pagination-next">Next</a>
+  {% else %}
+    <a  class="pagination-item pagination-next pagination-next--disabled">Next</a>
+  {% endif %}
+</ul>

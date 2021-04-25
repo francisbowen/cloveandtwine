@@ -1,0 +1,45 @@
+<style type="text/css">
+  {% for block in section.blocks %}
+    .swatch-element.color.{{ block.settings.title | handleize }} label,
+    .swatch-element.color.swatch-product.{{ block.settings.title | handleize }},
+    #SortTags_color + .custom-select .custom-option[data-value="{{ block.settings.title | handleize }}"]:before {
+    {% if block.settings.colortwo != '' %}
+      background-color: {{ block.settings.color }} !important;
+      background: linear-gradient(to right bottom, {{ block.settings.color }} 50%, {{ block.settings.colortwo }} 50%)
+    {% else %}
+      background-color: {{ block.settings.color }} !important;
+    {% endif %}
+    }
+  {% endfor %}
+</style>
+
+{% schema %}
+  {
+    "name": "Product page swatches",
+    "settings": [
+    ],
+    "blocks": [
+      {
+        "type": "color_swatches",
+        "name": "Color Swatches",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Color Name"
+          },
+          {
+            "type": "color",
+            "id": "color",
+            "label": "Swatch hex color"
+          },
+          {
+            "type": "color",
+            "id": "colortwo",
+            "label": "Swatch hex color #2"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

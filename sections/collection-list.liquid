@@ -1,0 +1,134 @@
+{% case section.settings.grid %}
+  {% when '2' %}
+    {%- assign grid_item_width = 'col-md-30' -%}
+    {%- assign collection_image_size = '750x' -%}
+  {% when '3' %}
+    {%- assign grid_item_width = 'col-md-20 col-sm-30' -%}
+    {%- assign collection_image_size = '500x' -%}
+  {% when '4' %}
+    {%- assign grid_item_width = 'col-md-15 col-sm-30' -%}
+    {%- assign collection_image_size = '450x' -%}
+  {% when '5' %}
+    {%- assign grid_item_width = 'col-md-12 col-sm-30' -%}
+    {%- assign collection_image_size = '300x' -%}
+{% endcase %}
+
+<div class="{% if section.settings.full_width %}container-fluid{% else %}container{% endif %}{% if section.settings.remove_top_margin %} index-section--flush{% endif %}">
+  {% if section.settings.title != blank %}
+    <div class="section-header text-center">
+      <h2>{{ section.settings.title | escape }}</h2>
+      
+    </div>
+  {% endif %}
+
+  <div class="row{% if section.settings.no_gutters %} no-gutters{% endif %}">
+    {% for block in section.blocks %}
+      {%- assign col_handle = block.settings.collection -%}
+      {%- assign collection = collections[col_handle] -%}
+      <div class="{{ grid_item_width }}">
+        {% include 'collection-grid-item' %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Collection list",
+    "class": "index-section",
+    "max_blocks": 12,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Collection list"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Make this full width?",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "no_gutters",
+        "label": "Remove gutters?"
+      },
+      {
+        "type": "checkbox",
+        "id": "remove_top_margin",
+        "label": "Start directly after previous block?"
+      },
+      {
+        "type": "select",
+        "id": "grid",
+        "label": "Products per row",
+        "default": "3",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "move_text_below",
+        "label": "Move collection text below image?"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "featured_collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          },
+    		  {
+            "type": "text",
+            "id": "title",
+            "label": "Collection title override"
+          },
+          {
+            "type": "image_picker",
+            "id": "collectionimage",
+            "label": "Collection image override"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection list",
+        "category": "Collection",
+        "blocks": [
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

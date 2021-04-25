@@ -1,0 +1,244 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xl-40 offset-xl-10 col-lg-50 offset-lg-5">
+      {%- assign start_title = page.content | slice: 0, 3 -%}
+      {% unless start_title contains 'h1' %}
+        <div class="section-header">
+          <h1>{{ page.title }}</h1>
+        </div>
+      {% endunless %}
+
+      {% if page.content.size > 0 %}
+        <div class="rte">
+          {{ page.content }}
+        </div>
+      {% endif %}
+      <div class="row">
+        <div class="col">
+          <div class="accordion">
+            <dl>
+              {% for block in section.blocks %}
+                {% case block.type %}
+
+                  {% when 'text' %}
+                    <dt>
+                      <a href="#accordion{{block.settings.title | handleize}}" aria-expanded="false" aria-controls="accordion{{block.settings.title | handleize}}" class="accordion-title accordionTitle js-accordionTrigger">{{ block.settings.title | escape }}</a>
+                    </dt>
+                    <dd class="accordion-content accordionItem is-collapsed" id="accordion{{block.settings.title | handleize}}" aria-hidden="true">
+                      <p>{{ block.settings.text }} </p>
+                      {% unless block.settings.button_text == blank %}
+                        <a href="{{block.settings.link}}">
+                          <span class="btn btn--secondary">
+                            {{ block.settings.button_text }}
+                          </span>
+                        </a>
+                      {% endunless %}
+                    </dd>
+
+                  {% when 'heading' %}
+                    </dl>
+                      </div>
+                      <h2>{{block.settings.title}}</h2>
+                      <div class="accordion">
+                    <dl>
+
+                {% endcase %}
+
+              {% endfor %}
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% javascript %}
+  (function(){
+    var d = document,
+    accordionToggles = d.querySelectorAll('.js-accordionTrigger'),
+    setAria,
+    setAccordionAria,
+    switchAccordion,
+    touchSupported = ('ontouchstart' in window),
+    pointerSupported = ('pointerdown' in window);
+
+    skipClickDelay = function(e){
+      e.preventDefault();
+      e.target.click();
+    }
+
+      setAriaAttr = function(el, ariaType, newProperty){
+      el.setAttribute(ariaType, newProperty);
+    };
+    setAccordionAria = function(el1, el2, expanded){
+      switch(expanded) {
+        case "true":
+          setAriaAttr(el1, 'aria-expanded', 'true');
+          setAriaAttr(el2, 'aria-hidden', 'false');
+          break;
+        case "false":
+          setAriaAttr(el1, 'aria-expanded', 'false');
+          setAriaAttr(el2, 'aria-hidden', 'true');
+          break;
+        default:
+          break;
+      }
+    };
+
+    switchAccordion = function(e) {
+      e.preventDefault();
+      var thisAnswer = e.target.parentNode.nextElementSibling;
+      var thisQuestion = e.target;
+      if(thisAnswer.classList.contains('is-collapsed')) {
+        setAccordionAria(thisQuestion, thisAnswer, 'true');
+      } else {
+        setAccordionAria(thisQuestion, thisAnswer, 'false');
+      }
+      thisQuestion.classList.toggle('is-collapsed');
+      thisQuestion.classList.toggle('is-expanded');
+      thisAnswer.classList.toggle('is-collapsed');
+      thisAnswer.classList.toggle('is-expanded');
+
+      thisAnswer.classList.toggle('animateIn');
+    };
+    for (var i=0,len=accordionToggles.length; i<len; i++) {
+      if(touchSupported) {
+        accordionToggles[i].addEventListener('touchstart', skipClickDelay, false);
+      }
+      if(pointerSupported){
+        accordionToggles[i].addEventListener('pointerdown', skipClickDelay, false);
+      }
+      accordionToggles[i].addEventListener('click', switchAccordion, false);
+    }
+  })();
+{% endjavascript %}
+
+
+
+{% schema %}
+  {
+    "name": "FAQs",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Text columns with images"
+      },
+      {
+        "type": "select",
+        "id": "align_text",
+        "label": "Text alignment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Centered"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "FAQ Row",
+        "settings": [
+      {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Talk about your brand"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+          },
+          {
+            "type": "select",
+            "id": "width",
+            "label": "Container width",
+            "default": "50%",
+            "options": [
+              {
+                "value": "25%",
+                "label": "25%"
+              },
+              {
+                "value": "33%",
+                "label": "33%"
+              },
+              {
+                "value": "50%",
+                "label": "50%"
+              },
+              {
+                "value": "66%",
+                "label": "66%"
+              },
+              {
+                "value": "75%",
+                "label": "75%"
+              },
+              {
+                "value": "100%",
+                "label": "100%"
+              }
+            ]
+          },
+    {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button Title"
+          },
+    {
+            "type": "url",
+            "id": "button",
+            "label": "Button Link"
+          },
+          {
+            "type": "select",
+            "id": "alignment",
+            "label": "Vertical alignment",
+            "default": "align-self-center",
+            "options": [
+              {"value": "align-self-start", "label": "Top"},
+              {"value": "align-self-center", "label": "Middle"},
+              {"value": "align-self-end", "label": "Bottom"}
+            ]
+          },
+          {
+            "type": "select",
+            "id": "align_text",
+            "label": "Horizontal alignment",
+            "default": "left",
+            "options": [
+              {"value": "left", "label": "Left"},
+              {"value": "center", "label": "Centered"},
+              {"value": "right", "label": "Right"}
+            ]
+          }
+        ]
+      },
+  {
+        "type": "heading",
+        "name": "Heading",
+        "settings": [
+      {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Talk about your brand"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

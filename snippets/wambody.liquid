@@ -1,0 +1,329 @@
+  {% assign inwam = false %}
+{% if cart.attributes.accessibilitymode == "true" %}
+{% assign inwam = true %}
+{% endif %}
+
+
+	<a class="wamswitch" href="#"><div class="wambutton">accessibility mode: <strong class="wamstatus">{% if inwam %}on{% else %}off{%endif%}</strong></div></a>
+
+
+	<style>
+                  .noshow {    height: 1px !important;
+    width: 1px !important;
+    overflow: hidden!important;
+    padding: 0px !important;
+    margin: 0px !important;
+    line-height: 0px !important;
+    border: 0px !important;
+    min-width: 0px !important;
+    min-height: 0px !important;
+                  font-size: 0px;
+    max-width: 0px;
+    max-height: 0px;
+    opacity: 0;
+                  display:block;}
+ 		.wambutton {
+          display: none;
+        }
+      @media screen and (min-width: 419px) {
+		.wambutton {
+          display: none;
+          position: absolute;
+          background-color: white;
+          color: black;
+          top: 0;
+          left: 0;
+          padding: 3px 20px 2px 46px;
+          font-size: 1em;
+          z-index: 999 !important;
+		}
+      }
+	{% if inwam %}
+            .noshow {height:1px;width:1px;overflow:hidden!important;}
+    #container-outside #mega-menu-wrap-top #mega-menu-top > li.mega-menu-item > a.mega-menu-link { color: black !important;}
+    .wamon p, .wamon button,.wamon #rateCode,.wamon .btn,.wamon h1,.wamon h2,.wamon h3,.wamon h4,.wamon h5, .wamon li, .wamon a, .wamon small, .wamon em, .wamon span, .wamon select, .wamon b, .wamon strong, .wamon .soldout .crossed-item-top {background-color: white !important; color: black !important;-webkit-tap-highlight-color: rgba(0, 0, 0, 1);}
+		p, button, .btn,h1,h2,h3,h4,h5, li, a, small, em, span, aelect, b, strong, .soldout .crossed-item-top {background-color: white !important; color: black !important;-webkit-tap-highlight-color: rgba(0, 0, 0, 1);}
+   {% endif %}
+	</style>
+
+
+
+
+	<script>
+    	const svg = `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248.72 115.58"><defs><style>svg{width:300px;}.cls-1{fill:#57626f;}.cls-2{fill:#70cac2;}.cls-3{fill:#b6565b;}.cls-4{fill:#ed7470;}.cls-5{fill:#fff;}.cls-6{font-size:23.07px;font-family:HelveticaNeue-CondensedBold, Helvetica Neue;font-weight:700;}</style></defs><title>wamlogo</title><path class="cls-1" d="M4.28,4.12A4.56,4.56,0,0,1,7.67,2a31.38,31.38,0,0,1,13.84.07c2.69.61,4.66,2,5.28,4.78,1.52,6.78,2.95,13.58,4.44,20.37.47,2.13,1,4.27,1.57,6.36.16.57.78,1,1.2,1.49.41-.54,1.08-1,1.18-1.62.87-5,1.61-10.08,2.45-15.12.35-2,.85-4.06,1.31-6.08a3.85,3.85,0,0,1,3.39-3.3c3-.29,6-.27,9-.32.83,0,1.67.22,2.51.25a5.17,5.17,0,0,1,5.43,4.52c.62,3.13,1,6.31,1.6,9.45.63,3.41,1.34,6.81,2,10.22a2.17,2.17,0,0,0,.34.94,13.26,13.26,0,0,0,1.17,1.07c.34-.42.89-.8,1-1.26.46-2.31.77-4.65,1.21-7C67.85,20.41,69,13.94,70.42,7.56c1-4.13,3-5.62,7.22-5.73,3.86-.09,7.74.08,11.61.28,2.4.13,3.77,1.54,3.68,4a35.22,35.22,0,0,1-.88,7.32C87.9,29.79,83.74,46.2,79.35,62.55a75.91,75.91,0,0,1-4.64,11.86c-1.48,3.23-4.08,4.35-7.6,4-2-.18-4-.16-6-.22-3.45-.1-5-1.2-6.15-4.43C53.6,70.05,52.38,66.27,51,62.54a12.15,12.15,0,0,0-1.71-2.47,12.53,12.53,0,0,0-1.72,2.3c-1.61,3.57-3,7.23-4.66,10.8-1.95,4.28-4.42,5.58-9.1,5.2-1.79-.15-3.6-.08-5.39-.13-3.49-.09-5-1.37-6.17-4.62-6-16.92-10.34-34.33-14.61-51.74C6.43,17,5.39,12.07,4.28,7.16Z" transform="translate(-4.28 -0.42)"/><path class="cls-2" d="M90.21,79.27c-1.4-.08-2.79-.19-4.18-.25-3.18-.15-4.48-1.73-3.74-4.87,1.26-5.4,2.49-10.81,4-16.13a123.67,123.67,0,0,1,4.36-12.71A173.09,173.09,0,0,0,97,25.12c1.83-6.8,4.41-13.4,6.66-20.08.94-2.79,3-3.9,5.81-3.9,4.83,0,9.66.07,14.49,0A5.22,5.22,0,0,1,129,4a72.63,72.63,0,0,1,6.88,15.66c2.16,7.08,4.82,14,6.66,21.17,2.57,10,4.58,20.1,6.8,30.17a10.26,10.26,0,0,1,.17,2.35c0,3.52-1.82,5.53-5.34,5.55-5.39,0-10.78-.16-16.16-.27a2.42,2.42,0,0,1-2.39-2.19c-.38-1.52-.64-3.08-1.11-4.57-.85-2.7-2.3-3.64-5.13-3.62-1.86,0-3.71-.14-5.56-.06-3.59.17-5,1.51-5.5,5.06-.59,4.07-1.56,5-5.73,5.36-1.89.18-3.77.45-5.65.67ZM116.4,48.62v0h1.85c2.13,0,2.7-.62,2.7-2.71a8.36,8.36,0,0,0-.12-1.5c-.77-3.9-1.49-7.81-2.36-11.68A11.09,11.09,0,0,0,117,30.1c-.68.82-1.71,1.53-2,2.47-1.17,3.85-2.26,7.73-3.11,11.66-.8,3.7,0,4.45,3.83,4.39Z" transform="translate(-4.28 -0.42)"/><path class="cls-3" d="M243.2.42c1.88.21,3.78.34,5.66.64,3,.47,4.29,1.94,4.13,4.93-.15,2.56-.79,5.09-1,7.65-.52,5.91-.76,11.86-1.42,17.76s-1.6,11.87-2.67,17.75c-.59,3.25-2,4.32-5.32,4.6-2.68.22-5.38.34-8.06.3-3.25-.06-4.49-1.18-4.83-4.38-.63-5.86-1.11-11.72-1.66-17.59-.62-6.69-1.3-13.38-1.86-20.09a22.07,22.07,0,0,1,.14-5.51,6.19,6.19,0,0,1,5.84-5.38c2.39-.28,4.81-.31,7.22-.46.6,0,1.21-.15,1.81-.22Z" transform="translate(-4.28 -0.42)"/><path class="cls-4" d="M157.32,6.29c.15-3.9,1.37-5,5.2-5s7.4.21,11.1.32c3.46.11,5.67,1.94,7.18,4.95,1.28,2.55,2.77,5,4.16,7.5,1.28,2.29,2.72,2.49,4.43.47a21.8,21.8,0,0,0,2.22-3.37c.73-1.26,1.36-2.57,2-3.88a9.67,9.67,0,0,1,8.9-5.89c3.81-.11,7.63-.13,11.44-.07,2.56,0,3.76,1,4,3.62.42,5.14.83,10.3.88,15.46.13,16.61.1,33.23.12,49.85,0,6.44-1.83,8.17-8.28,8-2.64-.06-5.28,0-7.91.06-4.23.08-5.61-1.15-5.65-5.4-.1-9.88-.1-19.75-.14-29.63a8.47,8.47,0,0,0,0-1.51c-.1-.51-.28-1.32-.6-1.41a1.94,1.94,0,0,0-1.61.44,14.25,14.25,0,0,0-2.09,2.61c-1,1.5-1.78,3.12-2.77,4.61-1.51,2.28-3.59,2.24-5-.12-.79-1.29-1.31-2.73-2-4.06a32.26,32.26,0,0,0-2.27-3.73,1.79,1.79,0,0,0-1.52-.65c-.4.13-.76.92-.8,1.46a35.1,35.1,0,0,0,0,3.7c.08,8.8.18,17.61.24,26.42a26.8,26.8,0,0,1-.24,3.69c-.28,2.13-1.38,3.39-3.48,3.45-4.43.11-8.87.14-13.29-.08-2.73-.13-4.21-1.83-4.59-4.53a23.47,23.47,0,0,1-.22-3q0-14.82,0-29.64C156.46,41,156.85,17.85,157.32,6.29Z" transform="translate(-4.28 -0.42)"/><path class="cls-3" d="M239,78.24a38.14,38.14,0,0,1-5.37-.39c-1-.21-2.48-.95-2.74-1.77-1.26-3.94-1.76-8-.25-12a3.76,3.76,0,0,1,3.86-2.64c3.36,0,6.72,0,10.07,0,1.63,0,2.63.84,2.58,2.47q-.17,5.81-.68,11.59a2.72,2.72,0,0,1-2.6,2.47C242.25,78.09,240.62,78.13,239,78.24Z" transform="translate(-4.28 -0.42)"/><path class="cls-5" d="M116.4,48.62h-.67c-3.84.06-4.63-.69-3.83-4.39.85-3.93,1.94-7.81,3.11-11.66.28-.94,1.31-1.65,2-2.47a11.09,11.09,0,0,1,1.47,2.66c.87,3.87,1.59,7.78,2.36,11.68a8.36,8.36,0,0,1,.12,1.5c0,2.09-.57,2.66-2.7,2.71H116.4Z" transform="translate(-4.28 -0.42)"/><text class="cls-6" transform="translate(24.31 107.83)"><tspan class="cls-1">web</tspan><tspan x="38.46" y="0"> </tspan><tspan class="cls-2" x="44" y="0">accessibility</tspan><tspan x="158.39" y="0"> </tspan><tspan class="cls-4" x="163.93" y="0">mode</tspan></text></svg>`  
+      	const svgDataUrl = `data:image/svg+xml;base64,${btoa(svg)}`
+        const dot = `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.45 16.87"><defs><style>.cls-1{fill:#b6565b;}.cls-2{fill:#70cac2;}.cls-3{fill:#fff;}</style></defs><title>Untitled-2</title><path class="cls-1" d="M9,17.24a38.14,38.14,0,0,1-5.37-.39c-1-.21-2.48-1-2.74-1.77C-.37,11.14-.87,7.1.64,3A3.76,3.76,0,0,1,4.5.4c3.36,0,6.72-.05,10.07,0,1.63,0,2.63.84,2.58,2.47Q17,8.65,16.47,14.44a2.72,2.72,0,0,1-2.6,2.47C12.25,17.09,10.62,17.13,9,17.24Z" transform="translate(0.3 -0.37)"/><path class="cls-2" d="M9,17.24a38.14,38.14,0,0,1-5.37-.39c-1-.21-2.48-1-2.74-1.77C-.37,11.14-.87,7.1.64,3A3.76,3.76,0,0,1,4.5.4c3.36,0,6.72-.05,10.07,0,1.63,0,2.63.84,2.58,2.47Q17,8.65,16.47,14.44a2.72,2.72,0,0,1-2.6,2.47C12.25,17.09,10.62,17.13,9,17.24Z" transform="translate(0.3 -0.37)"/><path class="cls-3" d="M6.6,10.84l.84-1.22C9,7.29,10.61,5,12.17,2.64c.57-.84,1-.76,1.57-.29l.79.56a.68.68,0,0,1,.17,1l-4.23,6.26q-1.35,2-2.72,4a1,1,0,0,1-1.62.19C5,13.25,3.87,12.13,2.75,11c-.28-.28-.56-.56-.82-.84a.62.62,0,0,1,0-.94c.33-.36.68-.71,1-1.05a.64.64,0,0,1,1,0c.84.81,1.67,1.63,2.5,2.45Z" transform="translate(0.3 -0.37)"/></svg>`
+		const dotDataUrl = `data:image/svg+xml;base64,${btoa(dot)}`
+console.log('%c ', `background-image: url(${ svgDataUrl });padding-bottom: 100px;padding-left: 200px;width:300px;margin: 0 20px;background-size: contain;background-position: center center;background-repeat: no-repeat;`)
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'WAM Starting');  
+// START dis allow framing this site to stop troll lawyers
+      	if(top!=self){
+    		top.location.replace(document.location);
+    		alert("For security reasons, framing is not allowed; click OK to remove the frames.")
+		}
+      // END frame stop
+      
+      // turn on and off WAM by cast attributes
+		$( ".wamswitch" ).click(function() {
+        	var wamstate = $( ".wamstatus" ).text();
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'visual WAM is: ' + wamstate);            
+			if ( wamstate == 'off'){
+				//$( ".wamstatus" ).text('On');
+                $.ajax({
+                	type: "POST",
+                  	url: '/cart.js',
+                  	data: {"attributes[accessibilitymode]": true},
+                  	success: function(d){
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'visual WAM is: on');                           
+                      	location.reload();
+                  	},
+                  	dataType: 'json'
+             	});
+			} else {
+				//$( ".wamstatus" ).text('Off');
+                $.ajax({
+                	type: "POST",
+                  	url: '/cart.js',
+                  	data: {"attributes[accessibilitymode]": false},
+                  	success: function(d){
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'visual WAM is: off');                            
+                      	location.reload();
+                  	},
+                  	dataType: 'json'
+             	});              
+			}
+      	}); 
+	</script>
+
+
+
+	<script>
+        $('html').attr('lang','en');
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'added html lang');
+      
+    setTimeout(function(){
+          $('iframe html').attr('lang','en');
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            '(Late Loaded) added iframe html lang');      
+        }, 2000); 
+          setTimeout(function(){
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'WAM Complete');  
+console.log('%c ', `background-image: url(${ svgDataUrl });padding-bottom: 100px;padding-left: 200px;width:300px;margin: 0 20px;background-size: contain;background-position: center center;background-repeat: no-repeat;`)        
+            }, 5000); 
+      
+        $(document).ready(function() {
+            // start doc ready changes
+          // let's delay by a second incase other scripts happen on ready
+    setTimeout(function(){
+      
+      $("[name='viewport']").remove();
+      $('head').append('<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes,maximum-scale=5" />');
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'reset the viewport tag to be correct');
+    
+      
+            
+      
+            $('img').each(function(){
+              var $img = $(this);
+              var filename = $img.attr('src')
+              var attr = $(this).attr('alt');
+                if (typeof attr == typeof undefined || attr == false) {
+                    $img.attr('alt', filename.substring(0, filename.lastIndexOf('.')));
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'fixed an image alt');                  
+                }
+            });
+          
+            $('a').each(function(){
+              var $a = $(this);
+              var filename = $a.attr('href')
+              var attr = $(this).attr('aria-label');
+              $a.removeAttr( "aria-controls" );
+              $a.removeAttr( "aria-describedby" );
+              $a.removeAttr( "aria-has-popup" );
+                if (typeof attr == typeof undefined || attr == false) {
+                    $a.attr('aria-label', filename);
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'Added an aria-label to an a link');                  
+                }
+            });
+  
+            $('iframe').each(function(){
+              var $iframe = $(this);
+              var filename = $iframe.attr('id')
+              var attr = $(this).attr('title');
+                if (typeof attr == typeof undefined || attr == false) {
+                    $iframe.attr('title', filename);
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'put title on iframe');
+                }
+            });
+      
+         $('input').each(function(){
+           var $input = $(this);
+           $input.removeAttr( "aria-controls" );
+           $input.removeAttr( "aria-describedby" );
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'checked input for bad aria labels');           
+           var label = $('label[for="' + $(this).attr('name') + '"]');
+           var item = $(this).attr('name');
+           var sid = $(this).attr('id');
+            if(sid == undefined) {
+              $(this).attr('id', item);  
+              if(label.length <= 0) {
+               $( this ).before('<label class="noshow" for="'+item+'">'+item+'</label>');
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'input label fixed');                
+              } else{
+              }
+            }else{
+              if(label.length <= 0) {
+                $( this ).before('<label class="noshow" for="'+sid+'">'+sid+'</label>');
+              }
+            }
+          });
+      
+      
+           $('select').each(function(){
+            var label = $('label[for="' + $(this).attr('name') + '"]');
+            var item = $(this).attr('name');
+            var sid = $(this).attr('id');
+            if(sid == undefined) {
+              $(this).attr('id', item);  
+              if(label.length <= 0) {
+               $( this ).before('<label class="noshow" for="'+item+'">'+item+'</label>');
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'select label fixed');                
+              } else{
+              }
+            }else{
+              if(label.length <= 0) {
+                $( this ).before('<label class="noshow" for="'+sid+'">'+sid+'</label>');
+              }
+            }
+          });
+      
+      
+             $('li').each(function(){
+              var $li = $(this);
+              $li.removeAttr( "aria-controls" );
+              $li.removeAttr( "aria-describedby" );
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'checked li for bad aria labels');                
+            });
+      
+               $('.slick-dots li').each(function(){
+              var $ul = $(this);
+              $ul.removeAttr( "role" );
+              $ul.attr('role', 'tab');
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'added tab role to dots');                  
+            });
+      
+             $('div').each(function(){
+              var $div = $(this);
+              $div.removeAttr( "aria-controls" );
+              $div.removeAttr( "aria-describedby" );
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'checked divs for bad aria labels');               
+            });
+          
+            $('h2').each(function(){ // For each element
+                $(this).removeAttr( 'aria-describedby' );
+                if( $(this).text().trim() === '' )
+                    $(this).remove(); // if it is empty, it removes it
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'cleared an empty h2');              
+                });
+      
+      
+            $('h3').each(function(){ // For each element
+                $(this).removeAttr( 'aria-describedby' );
+                if( $(this).text().trim() === '' )
+                    $(this).remove(); // if it is empty, it removes it
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'cleared an empty h3');              
+            });
+      
+      
+            $('h4').each(function(){ // For each element
+                $(this).removeAttr( 'aria-describedby' );
+                if( $(this).text().trim() === '' )
+                    $(this).remove(); // if it is empty, it removes it
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'cleared an empty h4');              
+            });
+      
+      
+            $('h5').each(function(){ // For each element
+                $(this).removeAttr( "aria-describedby" );
+                if( $(this).text().trim() === '' )
+                    $(this).remove(); // if it is empty, it removes it
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'cleared an empty h5');              
+                });
+            // end doc ready changes
+          }, 500);
+          
+              setTimeout(function(){
+            $('img').each(function(){
+              var $img = $(this);
+              var filename = $img.attr('src')
+              var attr = $(this).attr('alt');
+                if (typeof attr == typeof undefined || attr == false) {
+                    $img.attr('alt', filename.substring(0, filename.lastIndexOf('.')));
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            '(Late Loaded) fixed and image alt');                  
+                }
+            });
+            $('li').each(function(){
+              var $li = $(this);
+              $li.removeAttr( "aria-controls" );
+              $li.removeAttr( "aria-describedby" );
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            '(Late Loaded) checked li for bad aria labels');              
+            });
+                }, 2000);
+        });
+      
+        // function to be able to switch tag types (for em an i )
+      $.fn.changeElementType = function(newType) {
+        this.each(function() {
+            var attrs = {};
+            $.each(this.attributes, function(idx, attr) {
+              attrs[attr.nodeName] = attr.nodeValue;
+            });
+            $(this).replaceWith(function() {
+              return $("<" + newType + "/>", attrs).append($(this).contents());
+            });
+        });
+      };
+      
+        // fix shopify reviews
+      function review_check(num) {
+        var j = parseInt(num);
+        $('i').changeElementType('em');
+        $('b').changeElementType('strong');
+        if($('.spr-reviews .spr-review').length > 0) {
+            $('i').changeElementType('em');
+console.log('%c ', `background-image: url(${ dotDataUrl });padding-bottom: 5px;padding-left: 5px;width:5px;margin: 0 0px;background-size: contain;background-position: center center;background-repeat: no-repeat;`,
+            'changed i tags to em');                   
+        } else {
+            if(j < 20) {
+              j = num + 1;
+              setTimeout(function(){review_check(j)}, 1000);
+            }
+        }
+      }
+      
+      $(document).ready(function(){
+        review_check(1);
+      });
+	</script>

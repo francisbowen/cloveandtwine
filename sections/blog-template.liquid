@@ -1,0 +1,197 @@
+{% paginate blog.articles by 4 %}
+
+
+        <div class="container-fluid">
+
+            <div class="row" style="margin: 0 auto;">
+
+              {% for article in blog.articles %}
+              <div class="col-sm-60 col-md-30 wow fadeInUp animated blog-warap" style="visibility: visible; animation-name: fadeInUp;">
+                <a href="{{ article.url }}"></a>
+                <p class="blog_img">  
+                      <a href="{{ article.url }}"><img class="imageborder" src="{{ article.image.src | img_url: '1024x1024' }}"></a>
+                  </p>
+                </a>
+                <div class="blog-body col-md-60">
+                  <h2><a href="{{ article.url }}">{{ article.title | truncate: 1000 }}</a></h2>
+                  <p>{{article.content  | truncate: 532 | strip_html }}</p>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row blog-btn-bottom" style="margin: 0 auto;">
+                <div class="col-md-30 blog-btn-read">
+                <a href="{{ article.url }}">
+                  <div class="btn btn--secondary block-btn">READ MORE</div></a>
+                </div>
+                  <div class="col-md-30 sharebtn">
+              <button>
+                 <ul class="social">
+                   <span>SHARE</span>
+                  <li class="facebook">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=http://cloveandtwine.com{{ article.url }}" title="Facebook" target="_blank">
+                    </a>
+                  </li>
+                  <li class="twitter">
+                    <a href="https://twitter.com/share" title="Twitter" target="_blank">
+                    </a>
+                  </li>
+                   <li class="linkedin">
+                     <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ shop.url }}{{ article.url }}&title={{ article.title }}"><i class="fa fa-linkedin"></i></a>
+                   </li>
+                 </ul>
+              </button>
+            </div>
+            </div>
+              </div>
+
+          {% endfor %}
+
+            </div>
+          </div>
+
+          
+        
+
+  {% if paginate.pages > 1 %}
+    {% include 'pagination' %}
+  {% endif %}
+</div>
+
+{% endpaginate %}
+<style type="text/css">
+  ul.social { margin: 0; padding: 0; }
+ul.social li { display: inline-block; vertical-align:middle; margin-right: 0; padding: 0; border: 1px solid #58595b; -webkit-border-radius: 100%; -moz-border-radius: 100%; border-radius: 100%; -webkit-transition: all 0.5s; -moz-transition: all 0.5s; -o-transition: all 0.5s; transition: all 0.5s; }
+ul.social li a { background: url(//cdn.shopify.com/s/files/1/1540/3055/t/14/assets/social.png?8070123777627357450) no-repeat 0 center; border: 0; display: block; width: 36px; height: 36px; text-indent:-999em; }
+ul.social li:hover { background-color: #4a73bd; border-color: transparent; }
+ul.social li.twitter a { background-position: -36px center; }
+ul.social li.twitter:hover { background-color: #46b0e2; }
+ul.social li.google-plus a { background-position: -72px center; }
+ul.social li.google-plus:hover { background-color: #007bb6; }
+ul.social li.pinterest a { background-position: -179px center; }
+ul.social li.pinterest:hover { background-color: #c91d1f; }
+ul.social li.linkedin a { background-position: -71px center; }
+ul.social li.linkedin:hover { background-color: #0077b5; }
+ul.social li.instagram a { background-position: -108px center;  }
+ul.social li.instagram:hover { background: url(//cdn.shopify.com/s/files/1/1540/3055/t/14/assets/bkg_instagram.png?8070123777627357450) no-repeat; }
+ul.social li.rss a { background-position: -144px center; }
+ul.social li.rss:hover { background-color: #f9bc2e; }
+</style>
+{% schema %}
+  {
+    "name": "Blog pages",
+    "settings": [
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "default": "list",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid"
+          },
+          {
+            "value": "list",
+            "label": "List"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_author",
+        "label": "Show author",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_sidebar",
+        "label": "Enable sidebar?"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection_sidebar",
+        "name": "Featured Collection",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection to use"
+          },
+          {
+            "type": "select",
+            "id": "collection_qty",
+            "options": [
+              { "value": "2", "label": "2" },
+              { "value": "3", "label": "3" },
+              { "value": "4", "label": "4" },
+              { "value": "5", "label": "5" },
+              { "value": "6", "label": "6" }
+            ],
+            "label": "Number of products to show"
+          }
+        ]
+      },
+      {
+        "type": "menu_sidebar",
+        "name": "Quick Links",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "link_list",
+            "id": "quick_links",
+            "label": "Linklist to use"
+          }
+        ]
+      },
+      {
+        "type": "image_sidebar",
+        "name": "Advertisement",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Ad image"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Ad link"
+          }
+        ]
+      },
+      {
+        "type": "blog_sidebar",
+        "name": "Most Recent Blog Post",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Latest Article"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
